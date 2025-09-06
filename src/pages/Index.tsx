@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input'; // Import Input component
 
 interface Habit {
   id: string;
@@ -36,6 +37,7 @@ const Index = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // New state for search term
 
   const fetchHabits = useCallback(async () => {
     if (!user) return;
@@ -139,6 +141,11 @@ const Index = () => {
     setHabitToDelete(null);
   };
 
+  const filteredHabits = habits.filter(habit =>
+    habit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (habit.description && habit.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -160,7 +167,7 @@ const Index = () => {
       );
     }
 
-    if (habits.length === 0) {
+    if (filteredHabits.length === 0 && searchTerm === '') {
       return (
         <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
           <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito encontrado</h2>
@@ -171,9 +178,20 @@ const Index = () => {
       );
     }
 
+    if (filteredHabits.length === 0 && searchTerm !== '') {
+      return (
+        <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito corresponde à sua busca.</h2>
+          <p className="text-gray-600">
+            Tente um termo de busca diferente ou adicione um novo hábito.
+          </p>
+        </div>
+      );
+    }
+
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {habits.map((habit) => (
+        {filteredHabits.map((habit) => (
           <Link to={`/habit/${habit.id}`} key={habit.id} className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg">
             <Card className="flex flex-col h-full transition-all border-2 border-transparent hover:border-primary">
               <CardHeader className="flex-row items-start justify-between">
@@ -238,9 +256,18 @@ const Index = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Seus Hábitos</h2>
-          <AddHabitDialog onHabitAdded={fetchHabits} />
+          <div className="flex gap-4 w-full sm:w-auto">
+            <Input
+              type="text"
+              placeholder="Buscar hábitos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+            <AddHabitDialog onHabitAdded={fetchHabits} />
+          </div>
         </div>
         {renderContent()}
       </main>
