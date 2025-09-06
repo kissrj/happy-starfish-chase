@@ -24,6 +24,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import Confetti from 'react-confetti';
+import FinancialOverview from '@/components/FinancialOverview';
 
 interface Habit {
   id: string;
@@ -326,7 +327,7 @@ const Index = () => {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         {/* Daily Summary Section */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="text-center">
             <CardHeader>
               <CardTitle className="text-lg font-semibold">Total de Hábitos</CardTitle>
@@ -351,6 +352,7 @@ const Index = () => {
               <p className="text-4xl font-bold text-red-600">{dailySummary.remaining}</p>
             </CardContent>
           </Card>
+          <FinancialOverview />
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
