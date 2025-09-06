@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HabitDetail from "./pages/HabitDetail";
 import FinancePage from "./pages/Finance";
 import Settings from "./pages/Settings";
+import Calendar from "./pages/Calendar";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} /> {/* Add the new profile route */}
               <Route path="/finance" element={<FinancePage />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/calendar" element={<Calendar />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

@@ -1,1 +1,4 @@
-import HabitGoalProgress from '@/components/HabitGoalProgress';
+);
+};
+
+export default HabitDetail;
