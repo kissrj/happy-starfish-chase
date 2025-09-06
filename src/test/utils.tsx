@@ -72,5 +72,8 @@ export const mockSupabaseResponse = (data: any, error = null) => ({
   error,
 });
 
+// Explicitly re-export these to resolve "declares locally but not exported" errors
+export { screen, fireEvent, waitFor };
+
 export * from '@testing-library/react';
 export { customRender as render };
