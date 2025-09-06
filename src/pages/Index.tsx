@@ -21,6 +21,8 @@ import StreakCounter from '@/components/StreakCounter';
 import AchievementsPanel from '@/components/AchievementsPanel';
 import HabitTrendsChart from '@/components/HabitTrendsChart';
 import { useStreak } from '@/hooks/useStreak';
+import { useHabitTrends } from '@/hooks/useHabitTrends';
+import { useAchievements } from '@/hooks/useAchievements';
 
 const Index = () => {
   const { user } = useAuth();
@@ -28,6 +30,7 @@ const Index = () => {
   const { dailySummary } = useDailySummary(habits);
   const { habitToDelete, setHabitToDelete, showConfetti, handleToggleCompletion, handleDeleteHabit } = useHabitActions(habits, updateHabits);
   const { currentStreak, longestStreak } = useStreak();
+  const { allAchievements, unlockedAchievements } = useAchievements();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -87,6 +90,8 @@ const Index = () => {
           longestStreak={longestStreak}
           totalHabits={totalHabits}
           completedToday={completedToday}
+          unlockedAchievementsCount={unlockedAchievements.length}
+          totalAchievementsCount={allAchievements.length}
         />
         
         <AchievementsPanel />

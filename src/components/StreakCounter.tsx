@@ -7,13 +7,17 @@ interface StreakCounterProps {
   longestStreak: number;
   totalHabits: number;
   completedToday: number;
+  unlockedAchievementsCount: number;
+  totalAchievementsCount: number;
 }
 
 const StreakCounter: React.FC<StreakCounterProps> = ({ 
   currentStreak, 
   longestStreak, 
   totalHabits,
-  completedToday
+  completedToday,
+  unlockedAchievementsCount,
+  totalAchievementsCount
 }) => {
   const completionPercentage = totalHabits > 0 ? Math.round((completedToday / totalHabits) * 100) : 0;
   
@@ -58,7 +62,7 @@ const StreakCounter: React.FC<StreakCounterProps> = ({
           <CardTitle className="text-sm font-medium ml-2">Achievements</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">3/10</div>
+          <div className="text-2xl font-bold">{unlockedAchievementsCount}/{totalAchievementsCount}</div>
           <p className="text-xs text-muted-foreground">Unlock more</p>
         </CardContent>
       </Card>
