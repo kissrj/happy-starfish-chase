@@ -1,69 +1,13 @@
 "use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import { useAuth } from '@/context/AuthProvider';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { showError } from '@/utils/toast';
-import { Skeleton } from '@/components/ui/skeleton';
-
-interface ExpenseData {
-  category: string;
-  amount: number;
-}
+import { useExpenseChart } from '@/hooks/useExpenseChart';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658'];
 
 const ExpenseChart = () => {
-  const { user } = useAuth();
-  const [expenseData, setExpenseData] = useState<ExpenseData[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchExpenseData = useCallback(async () => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    const today = new Date();
-    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString();
-    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999).toISOString();
-
-    const { data, error } = await supabase
-      .from('transactions')
-      .select('category, amount')
-      .eq('user_id', user.id)
-      .eq('type', 'expense')
-      .gte('created_at', firstDayOfMonth)
-      .lte('created_at', lastDayOfMonth);
-
-    if (error) {
-      showError('Falha ao carregar dados de despesas.');
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-
-    // Group expenses by category
-    const categoryTotals: { [key: string]: number } = {};
-    data.forEach((transaction) => {
-      categoryTotals[transaction.category] = (categoryTotals[transaction.category] || 0) + transaction.amount;
-    });
-
-    const chartData = Object.entries(categoryTotals).map(([category, amount]) => ({
-      category,
-      amount,
-    }));
-
-    setExpenseData(chartData);
-    setLoading(false);
-  }, [user]);
-
-  useEffect(() => {
-    fetchExpenseData();
-  }, [fetchExpenseData]);
+  const { expenseData, loading } = useExpenseChart();
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
     const RADIAN = Math.PI / 180;
@@ -86,7 +30,7 @@ const ExpenseChart = () => {
           <CardDescription>Visualização das suas despesas no mês atual.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Skeleton className="h-[300px] w-full" />
+          <div className="h-[300px] bg-gray-100 rounded animate-pulse"></div>
         </CardContent>
       </Card>
     );
