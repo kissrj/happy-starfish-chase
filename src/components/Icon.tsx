@@ -10,7 +10,7 @@ import {
   Icon as LucideIcon,
 } from 'lucide-react';
 
-const iconMap: { [key: string]: typeof LucideIcon } = {
+const iconMap: { [key: string]: React.ElementType } = {
   Footprints,
   Flame,
   Rocket,
@@ -20,10 +20,8 @@ const iconMap: { [key: string]: typeof LucideIcon } = {
   Trophy,
 };
 
-interface IconProps {
+interface IconProps extends React.ComponentProps<typeof LucideIcon> {
   name: string;
-  className?: string;
-  size?: string | number;
 }
 
 const Icon = ({ name, ...props }: IconProps) => {

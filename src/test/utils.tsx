@@ -1,6 +1,6 @@
 /// <reference types="@testing-library/jest-dom" />
 import React, { ReactElement } from 'react';
-import { render as rtlRender, RenderOptions } from '@testing-library/react';
+import { render as rtlRender, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
@@ -77,7 +77,6 @@ export const mockSupabaseResponse = (data: any, error = null) => ({
   error,
 });
 
-// Re-export everything from testing-library
-export * from '@testing-library/react';
-// Override the render method with our custom one
+// Explicitly re-export these from @testing-library/react
+export { screen, fireEvent, waitFor };
 export { customRender as render };

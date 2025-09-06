@@ -1,40 +1,32 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import * as LucideIcons from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import Icon from '@/components/Icon';
+import { cn } from '@/lib/utils';
 import { Achievement } from '@/types/achievements';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 interface AchievementCardProps {
   achievement: Achievement;
-  unlocked: boolean;
-  unlockedAt?: string | null;
+  isUnlocked: boolean;
 }
 
-const AchievementCard = ({ achievement, unlocked, unlockedAt }: AchievementCardProps) => {
-  const unlockedDate = unlockedAt ? format(new Date(unlockedAt), "d 'de' MMMM 'de' yyyy", { locale: ptBR }) : null;
+const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, isUnlocked }) => {
+  const Icon = LucideIcons[achievement.icon] || LucideIcons.Award;
 
   return (
-    <Card className={`transition-all ${unlocked ? 'border-green-500' : 'opacity-50'}`}>
-      <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-        <div className={`p-3 rounded-full ${unlocked ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-800'}`}>
-          <Icon name={achievement.icon} className={`h-6 w-6 ${unlocked ? 'text-green-500' : 'text-gray-500'}`} />
-        </div>
-        <div className="flex-1">
-          <CardTitle>{achievement.name}</CardTitle>
-          <CardDescription>{achievement.description}</CardDescription>
+    <Card className={cn('transition-all', isUnlocked ? 'border-green-500 bg-green-50' : 'opacity-60')}>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Icon className={cn('h-10 w-10', isUnlocked ? 'text-green-600' : 'text-gray-400')} />
+            <div>
+              <CardTitle>{achievement.name}</CardTitle>
+              <CardDescription>{achievement.description}</CardDescription>
+            </div>
+          </div>
+          {isUnlocked && <Badge variant="secondary">Desbloqueado</Badge>}
         </div>
       </CardHeader>
-      <CardContent>
-        {unlocked && unlockedDate ? (
-          <Badge variant="secondary" className="bg-green-100 text-green-700">
-            Desbloqueado em {unlockedDate}
-          </Badge>
-        ) : (
-          <Badge variant="outline">Bloqueado</Badge>
-        )}
-      </CardContent>
     </Card>
   );
 };

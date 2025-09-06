@@ -1,57 +1,33 @@
-"use client";
-
 import React from 'react';
 import { useAchievements } from '@/hooks/useAchievements';
 import AchievementCard from '@/components/AchievementCard';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const AchievementsPage = () => {
-  const { allAchievements, userAchievements, loading } = useAchievements();
-
-  const unlockedAchievementIds = new Set(userAchievements.map(ua => ua.achievement_id));
-
-  const getUnlockedInfo = (achievementId: string) => {
-    const userAchievement = userAchievements.find(ua => ua.achievement_id === achievementId);
-    return {
-      unlocked: unlockedAchievementIds.has(achievementId),
-      unlockedAt: userAchievement?.unlocked_at,
-    };
-  };
+  const { achievements, unlockedAchievementIds, isLoading } = useAchievements();
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Suas Conquistas</h1>
-        <p className="text-muted-foreground">
-          Veja as medalhas que você ganhou por manter seus hábitos.
-        </p>
-      </div>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-2">Conquistas</h1>
+      <p className="text-muted-foreground mb-8">
+        Desbloqueie conquistas completando seus hábitos e mantendo a consistência.
+      </p>
 
-      {loading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="flex items-center space-x-4 rounded-lg border p-4">
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            </div>
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
           ))}
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {allAchievements.map(achievement => {
-            const { unlocked, unlockedAt } = getUnlockedInfo(achievement.id);
-            return (
-              <AchievementCard
-                key={achievement.id}
-                achievement={achievement}
-                unlocked={unlocked}
-                unlockedAt={unlockedAt}
-              />
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {achievements.map(achievement => (
+            <AchievementCard
+              key={achievement.id}
+              achievement={achievement}
+              isUnlocked={unlockedAchievementIds.has(achievement.id)}
+            />
+          ))}
         </div>
       )}
     </div>

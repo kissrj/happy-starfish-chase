@@ -1,54 +1,44 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/context/AuthProvider';
+import { getAchievements, getUserAchievements } from '@/services/achievementService';
 import { Achievement, UserAchievement } from '@/types/achievements';
 import { showError } from '@/utils/toast';
 
 export const useAchievements = () => {
   const { user } = useAuth();
-  const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
-  const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchAchievements = async () => {
-      setLoading(true);
+  const { data: achievements = [], isLoading: isLoadingAchievements } = useQuery<Achievement[]>({
+    queryKey: ['achievements'],
+    queryFn: async () => {
       try {
-        // Fetch all possible achievements
-        const { data: all, error: allError } = await supabase
-          .from('achievements')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (allError) throw allError;
-        setAllAchievements(all || []);
-
-        // Fetch user's unlocked achievements
-        const { data: unlocked, error: unlockedError } = await supabase
-          .from('user_achievements')
-          .select('*, achievements(*)')
-          .eq('user_id', user.id);
-
-        if (unlockedError) throw unlockedError;
-        setUserAchievements(unlocked || []);
-
+        return await getAchievements();
       } catch (error) {
-        console.error('Error fetching achievements:', error);
         showError('Não foi possível carregar as conquistas.');
-      } finally {
-        setLoading(false);
+        return [];
       }
-    };
+    },
+  });
 
-    fetchAchievements();
-  }, [user]);
+  const { data: userAchievements = [], isLoading: isLoadingUserAchievements } = useQuery<UserAchievement[]>({
+    queryKey: ['userAchievements', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      try {
+        return await getUserAchievements(user.id);
+      } catch (error) {
+        showError('Não foi possível carregar suas conquistas desbloqueadas.');
+        return [];
+      }
+    },
+    enabled: !!user,
+  });
 
-  return { allAchievements, userAchievements, loading };
+  const unlockedAchievementIds = new Set(userAchievements.map(ua => ua.achievement_id));
+
+  return {
+    achievements,
+    userAchievements,
+    unlockedAchievementIds,
+    isLoading: isLoadingAchievements || isLoadingUserAchievements,
+  };
 };
