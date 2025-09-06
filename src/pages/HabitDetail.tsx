@@ -11,6 +11,7 @@ import { showError } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { EditHabitDialog } from '@/components/EditHabitDialog';
+import HabitCompletionChart from '@/components/HabitCompletionChart'; // Import the new component
 
 interface Habit {
   id: string;
@@ -75,6 +76,7 @@ const HabitDetail = () => {
             <Skeleton className="h-[300px] w-[340px]" />
           </CardContent>
         </Card>
+        <Skeleton className="h-[300px] w-full mt-6" /> {/* Skeleton for the chart */}
       </div>
     );
   }
@@ -125,6 +127,10 @@ const HabitDetail = () => {
               />
             </CardContent>
           </Card>
+
+          {/* New Habit Completion Chart */}
+          <HabitCompletionChart completedDates={completedDates} />
+
         </div>
       </main>
       <MadeWithDyad />
