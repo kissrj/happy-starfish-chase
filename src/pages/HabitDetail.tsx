@@ -11,6 +11,7 @@ import HabitGoalProgress from '@/components/HabitGoalProgress';
 import HabitStreakDisplay from '@/components/HabitStreakDisplay';
 import HabitCalendar from '@/components/HabitCalendar';
 import HabitCompletionChart from '@/components/HabitCompletionChart';
+import HabitDetailStats from '@/components/HabitDetailStats';
 
 const HabitDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +27,15 @@ const HabitDetail = () => {
   } = useHabitDetail(id);
 
   const [selectedCalendarDate, setSelectedCalendarDate] = useState<Date | undefined>(undefined);
+
+  // Mock data for demonstration
+  const completionRate = 85;
+  const totalCompletions = 25;
+  const goal = {
+    type: 'daily' as const,
+    target: 1,
+    current: habit?.completed_today ? 1 : 0
+  };
 
   if (loading) {
     return (
@@ -50,9 +60,9 @@ const HabitDetail = () => {
         <header className="bg-white shadow-sm border-b">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center">
             <div className="text-center">
-              <h2 className="text-xl font-semibold">Hábito não encontrado</h2>
+              <h2 className="text-xl font-semibold">Habit not found</h2>
               <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-                Voltar para o painel
+                Return to dashboard
               </a>
             </div>
           </div>
@@ -67,6 +77,15 @@ const HabitDetail = () => {
 
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         <HabitInfo habit={habit} />
+        
+        <HabitDetailStats
+          habitName={habit.name}
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
+          completionRate={completionRate}
+          totalCompletions={totalCompletions}
+          goal={goal}
+        />
 
         {/* Goal Progress */}
         {habit.goal_type && habit.goal_type !== 'none' && habit.goal_target && (

@@ -17,6 +17,9 @@ import HabitList from '@/components/HabitList';
 import QuickStart from '@/components/QuickStart';
 import DeleteHabitDialog from '@/components/DeleteHabitDialog';
 import { exportHabitsData } from '@/utils/habitExport';
+import StreakCounter from '@/components/StreakCounter';
+import AchievementsPanel from '@/components/AchievementsPanel';
+import HabitTrendsChart from '@/components/HabitTrendsChart';
 
 const Index = () => {
   const { user } = useAuth();
@@ -38,17 +41,23 @@ const Index = () => {
 
   const categories = ['all', ...Array.from(new Set(habits.map(h => h.category).filter(Boolean)))];
 
+  // Mock data for streaks and achievements
+  const currentStreak = 7;
+  const longestStreak = 14;
+  const totalHabits = habits.length;
+  const completedToday = habits.filter(habit => habit.completed_today).length;
+
   return (
     <div className="min-h-screen bg-background">
       {showConfetti && <Confetti recycle={false} onConfettiComplete={() => {}} />}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">Meu Painel de Controle</h1>
+          <h1 className="text-xl font-bold text-gray-900">My Dashboard</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600 hidden sm:block">{user?.email}</span>
             <Button variant="outline" size="sm" onClick={handleExportHabits} disabled={habits.length === 0}>
               <Download className="mr-2 h-4 w-4" />
-              Exportar Hábitos
+              Export Habits
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/insights">
@@ -57,23 +66,34 @@ const Index = () => {
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/notifications">
-                🔔 Notificações
+                🔔 Notifications
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/finance">Finanças</Link>
+              <Link to="/finance">Finance</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/profile">Perfil</Link>
+              <Link to="/profile">Profile</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/settings">Configurações</Link>
+              <Link to="/settings">Settings</Link>
             </Button>
-            <Button onClick={handleLogout} variant="outline" size="sm">Sair</Button>
+            <Button onClick={handleLogout} variant="outline" size="sm">Logout</Button>
           </div>
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <StreakCounter 
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
+          totalHabits={totalHabits}
+          completedToday={completedToday}
+        />
+        
+        <AchievementsPanel />
+        
+        <HabitTrendsChart />
+        
         <DailySummary
           total={dailySummary.total}
           completed={dailySummary.completed}
@@ -83,7 +103,7 @@ const Index = () => {
         {habits.length === 0 && <QuickStart onHabitAdded={fetchHabits} />}
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-          <h2 className="text-2xl font-bold text-gray-800">Seus Hábitos</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Your Habits</h2>
           <HabitFilters
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
