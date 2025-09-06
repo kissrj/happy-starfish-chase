@@ -7,10 +7,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile"; // Import the new Profile page
-import Finance from "./pages/Finance"; // Import the new Finance page
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HabitDetail from "./pages/HabitDetail";
+import FinanceTracker from "./pages/FinanceTracker";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/habit/:id" element={<HabitDetail />} />
               <Route path="/profile" element={<Profile />} /> {/* Add the new profile route */}
-              <Route path="/finance" element={<Finance />} /> {/* Add the new finance route */}
+              <Route path="/finance" element={<FinanceTracker />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
