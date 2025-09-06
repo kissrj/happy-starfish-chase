@@ -27,6 +27,7 @@ import Confetti from 'react-confetti';
 import FinancialOverview from '@/components/FinancialOverview';
 import { exportToCSV } from '@/utils/exportData';
 import { format } from 'date-fns';
+import { loadAndScheduleReminders, requestNotificationPermission } from '@/utils/notifications';
 
 interface Habit {
   id: string;
@@ -34,6 +35,7 @@ interface Habit {
   description: string | null;
   created_at: string;
   completed_today: boolean;
+  reminder_time?: string;
 }
 
 const Index = () => {
@@ -92,12 +94,20 @@ const Index = () => {
       remaining: remainingTodayCount,
     });
 
+    // Schedule reminders for habits that have them
+    loadAndScheduleReminders(habitsWithCompletion);
+
     setLoading(false);
   }, [user]);
 
   useEffect(() => {
     fetchHabits();
   }, [fetchHabits]);
+
+  // Request notification permission on app load
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -308,6 +318,11 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">
                   {habit.description || "Nenhuma descrição fornecida."}
                 </p>
+                {habit.reminder_time && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    🔔 Lembrete: {habit.reminder_time}
+                  </p>
+                )}
               </CardContent>
               <CardFooter>
                 <div

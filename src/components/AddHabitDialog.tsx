@@ -28,10 +28,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { showSuccess, showError } from "@/utils/toast";
 import { PlusCircle } from "lucide-react";
+import { requestNotificationPermission } from "@/utils/notifications";
 
 const habitSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório."),
   description: z.string().optional(),
+  reminder_time: z.string().optional(),
 });
 
 type HabitFormValues = z.infer<typeof habitSchema>;
@@ -49,6 +51,7 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
     defaultValues: {
       name: "",
       description: "",
+      reminder_time: "",
     },
   });
 
@@ -56,6 +59,16 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
     if (!user) {
       showError("Você precisa estar logado para adicionar um hábito.");
       return;
+    }
+
+    // Request notification permission if reminder is set
+    if (data.reminder_time) {
+      const hasPermission = await requestNotificationPermission();
+      if (!hasPermission) {
+        showError("Permissão para notificações negada. O lembrete não será configurado.");
+        // Continue without reminder
+        data.reminder_time = undefined;
+      }
     }
 
     const { error } = await supabase
@@ -112,6 +125,23 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   <FormControl>
                     <Textarea
                       placeholder="Ex: Ler um livro de ficção por 15 minutos."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="reminder_time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hora do Lembrete (Opcional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      placeholder="Ex: 09:00"
                       {...field}
                     />
                   </FormControl>

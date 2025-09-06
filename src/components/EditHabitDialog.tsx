@@ -27,10 +27,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { showSuccess, showError } from "@/utils/toast";
 import { Pencil } from "lucide-react";
+import { requestNotificationPermission } from "@/utils/notifications";
 
 const habitSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório."),
   description: z.string().optional(),
+  reminder_time: z.string().optional(),
 });
 
 type HabitFormValues = z.infer<typeof habitSchema>;
@@ -40,6 +42,7 @@ interface EditHabitDialogProps {
     id: string;
     name: string;
     description: string | null;
+    reminder_time?: string;
   };
   onHabitUpdated: () => void;
 }
@@ -52,6 +55,7 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
     defaultValues: {
       name: habit.name,
       description: habit.description || "",
+      reminder_time: habit.reminder_time || "",
     },
   });
 
@@ -59,13 +63,24 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
     form.reset({
       name: habit.name,
       description: habit.description || "",
+      reminder_time: habit.reminder_time || "",
     });
   }, [habit, form]);
 
   const onSubmit = async (data: HabitFormValues) => {
+    // Request notification permission if reminder is set
+    if (data.reminder_time) {
+      const hasPermission = await requestNotificationPermission();
+      if (!hasPermission) {
+        showError("Permissão para notificações negada. O lembrete não será configurado.");
+        // Continue without reminder
+        data.reminder_time = undefined;
+      }
+    }
+
     const { error } = await supabase
       .from("habits")
-      .update({ name: data.name, description: data.description })
+      .update({ name: data.name, description: data.description, reminder_time: data.reminder_time })
       .eq("id", habit.id);
 
     if (error) {
@@ -124,9 +139,26 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="reminder_time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hora do Lembrete (Opcional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      placeholder="Ex: 09:00"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
+                {form.formState.isSubmitting ? "Salvando..." : "Salvar Alterações"}
               </Button>
             </DialogFooter>
           </form>
