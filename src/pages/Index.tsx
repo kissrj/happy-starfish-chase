@@ -36,6 +36,8 @@ interface Habit {
   created_at: string;
   completed_today: boolean;
   reminder_time?: string;
+  goal_type?: string;
+  goal_target?: number;
 }
 
 const Index = () => {
@@ -322,6 +324,18 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground mt-2">
                     🔔 Lembrete: {habit.reminder_time}
                   </p>
+                )}
+                {habit.goal_type && habit.goal_type !== 'none' && habit.goal_target && (
+                  <div className="mt-3 pt-3 border-t">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground">
+                        Meta {habit.goal_type === 'daily' ? 'diária' : habit.goal_type === 'weekly' ? 'semanal' : 'mensal'}
+                      </span>
+                      <span className="font-medium">
+                        {habit.goal_target} {habit.goal_type === 'daily' ? 'vezes/dia' : habit.goal_type === 'weekly' ? 'vezes/semana' : 'vezes/mês'}
+                      </span>
+                    </div>
+                  </div>
                 )}
               </CardContent>
               <CardFooter>

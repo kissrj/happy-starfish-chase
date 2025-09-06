@@ -29,11 +29,22 @@ import { useAuth } from "@/context/AuthProvider";
 import { showSuccess, showError } from "@/utils/toast";
 import { PlusCircle } from "lucide-react";
 import { requestNotificationPermission } from "@/utils/notifications";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const habitSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório."),
   description: z.string().optional(),
   reminder_time: z.string().optional(),
+  goal_type: z.enum(["none", "daily", "weekly", "monthly"], { required_error: "Selecione um tipo de meta." }),
+  goal_target: z.coerce.number().optional(),
+}).superRefine((data, ctx) => {
+  if (data.goal_type !== "none" && (!data.goal_target || data.goal_target <= 0)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Defina um alvo válido para a meta.",
+      path: ["goal_target"],
+    });
+  }
 });
 
 type HabitFormValues = z.infer<typeof habitSchema>;
@@ -52,6 +63,8 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
       name: "",
       description: "",
       reminder_time: "",
+      goal_type: "none",
+      goal_target: undefined,
     },
   });
 
@@ -149,6 +162,51 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="goal_type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipo de Meta (Opcional)</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione um tipo de meta" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="none">Nenhuma meta</SelectItem>
+                      <SelectItem value="daily">Diária</SelectItem>
+                      <SelectItem value="weekly">Semanal</SelectItem>
+                      <SelectItem value="monthly">Mensal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {form.watch("goal_type") !== "none" && (
+              <FormField
+                control={form.control}
+                name="goal_target"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Meta de Conclusões ({form.watch("goal_type") === "daily" ? "por dia" : form.watch("goal_type") === "weekly" ? "por semana" : "por mês"})
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="1"
+                        placeholder="Ex: 5"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
