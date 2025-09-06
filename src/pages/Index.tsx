@@ -6,36 +6,72 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { AddHabitDialog } from '@/components/AddHabitDialog';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Trash2 } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Habit {
   id: string;
   name: string;
   description: string | null;
   created_at: string;
+  completed_today: boolean;
 }
 
 const Index = () => {
   const { user } = useAuth();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
 
   const fetchHabits = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const { data: habitsData, error: habitsError } = await supabase
       .from('habits')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) {
+    if (habitsError) {
       showError('Falha ao carregar os hábitos.');
-      console.error(error);
-    } else {
-      setHabits(data || []);
+      console.error(habitsError);
+      setLoading(false);
+      return;
     }
+
+    const { data: completionsData, error: completionsError } = await supabase
+      .from('habit_completions')
+      .select('habit_id')
+      .eq('completed_at', today);
+
+    if (completionsError) {
+      showError('Falha ao carregar o status dos hábitos.');
+      console.error(completionsError);
+    }
+
+    const completedHabitIds = new Set(completionsData?.map(c => c.habit_id) || []);
+
+    const habitsWithCompletion = habitsData.map(habit => ({
+      ...habit,
+      completed_today: completedHabitIds.has(habit.id),
+    }));
+
+    setHabits(habitsWithCompletion);
     setLoading(false);
   }, [user]);
 
@@ -45,6 +81,61 @@ const Index = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+  };
+
+  const handleToggleCompletion = async (habit: Habit) => {
+    const today = new Date().toISOString().split('T')[0];
+    const wasCompleted = habit.completed_today;
+
+    // Optimistic UI update
+    setHabits(currentHabits =>
+      currentHabits.map(h =>
+        h.id === habit.id ? { ...h, completed_today: !wasCompleted } : h
+      )
+    );
+
+    if (!wasCompleted) {
+      const { error } = await supabase.from('habit_completions').insert({
+        habit_id: habit.id,
+        user_id: user!.id,
+        completed_at: today,
+      });
+      if (error) {
+        showError("Erro ao marcar o hábito.");
+        setHabits(currentHabits =>
+          currentHabits.map(h =>
+            h.id === habit.id ? { ...h, completed_today: wasCompleted } : h
+          )
+        );
+      }
+    } else {
+      const { error } = await supabase
+        .from('habit_completions')
+        .delete()
+        .match({ habit_id: habit.id, completed_at: today });
+      if (error) {
+        showError("Erro ao desmarcar o hábito.");
+        setHabits(currentHabits =>
+          currentHabits.map(h =>
+            h.id === habit.id ? { ...h, completed_today: wasCompleted } : h
+          )
+        );
+      }
+    }
+  };
+
+  const handleDeleteHabit = async () => {
+    if (!habitToDelete) return;
+
+    const { error } = await supabase.from('habits').delete().match({ id: habitToDelete.id });
+
+    if (error) {
+      showError("Falha ao excluir o hábito.");
+    } else {
+      showSuccess("Hábito excluído com sucesso.");
+      setHabits(habits.filter(h => h.id !== habitToDelete.id));
+    }
+    setHabitToDelete(null);
   };
 
   const renderContent = () => {
@@ -58,8 +149,10 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-1/2 mt-2" />
               </CardContent>
+              <CardFooter>
+                <Skeleton className="h-6 w-28" />
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -80,15 +173,33 @@ const Index = () => {
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {habits.map((habit) => (
-          <Card key={habit.id}>
-            <CardHeader>
+          <Card key={habit.id} className="flex flex-col">
+            <CardHeader className="flex-row items-start justify-between">
               <CardTitle>{habit.name}</CardTitle>
+              <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={() => setHabitToDelete(habit)}>
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-grow">
               <p className="text-sm text-muted-foreground">
                 {habit.description || "Nenhuma descrição fornecida."}
               </p>
             </CardContent>
+            <CardFooter>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`habit-${habit.id}`}
+                  checked={habit.completed_today}
+                  onCheckedChange={() => handleToggleCompletion(habit)}
+                />
+                <label
+                  htmlFor={`habit-${habit.id}`}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Feito hoje
+                </label>
+              </div>
+            </CardFooter>
           </Card>
         ))}
       </div>
@@ -114,6 +225,24 @@ const Index = () => {
         {renderContent()}
       </main>
       <MadeWithDyad />
+
+      <AlertDialog open={!!habitToDelete} onOpenChange={() => setHabitToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Isso excluirá permanentemente o hábito
+              "{habitToDelete?.name}" e todos os seus dados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteHabit} className="bg-destructive hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
