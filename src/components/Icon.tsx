@@ -7,6 +7,9 @@ import {
   Crown,
   HeartPulse,
   Trophy,
+  DollarSign,
+  Heart,
+  Palette,
   Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -18,6 +21,9 @@ const iconMap: { [key: string]: React.ElementType } = {
   Crown,
   HeartPulse,
   Trophy,
+  DollarSign,
+  Heart,
+  Palette,
 };
 
 interface IconProps extends React.ComponentProps<typeof LucideIcon> {
