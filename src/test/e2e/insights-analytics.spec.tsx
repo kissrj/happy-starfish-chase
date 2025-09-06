@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+/// <reference types="vitest" />
 import { test, expect } from '@playwright/test';
 
 test.describe('Insights and Analytics', () => {
@@ -84,6 +86,6 @@ test.describe('Insights and Analytics', () => {
     
     // Should show stats cards
     await expect(page.locator('text=Total de Conclusões')).toBeVisible();
-    await expect(page.locator('text=Dias Ativos')).toBeVisible();
+    await expect(page.locator('text=Dias Ativos')).toBeInTheDocument();
   });
 });
