@@ -25,6 +25,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -40,6 +41,15 @@ const transactionSchema = z.object({
   amount: z.coerce.number().positive("O valor deve ser positivo."),
   type: z.enum(["income", "expense"], { required_error: "O tipo é obrigatório." }),
   category: z.string().min(1, "A categoria é obrigatória."),
+  newCategoryName: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.category === "Outra" && (!data.newCategoryName || data.newCategoryName.trim() === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Por favor, insira o nome da nova categoria.",
+      path: ["newCategoryName"],
+    });
+  }
 });
 type TransactionFormValues = z.infer<typeof transactionSchema>;
 
@@ -54,6 +64,7 @@ const AddTransactionDialog = ({ onTransactionAdded, budgets }: { onTransactionAd
       amount: 0,
       type: "expense",
       category: "",
+      newCategoryName: "",
     },
   });
 
@@ -63,9 +74,23 @@ const AddTransactionDialog = ({ onTransactionAdded, budgets }: { onTransactionAd
       return;
     }
 
+    let finalCategory = data.category;
+    if (data.category === "Outra") {
+      finalCategory = data.newCategoryName!; // Use the new category name
+      // Add the new category to the budgets table
+      const { error: budgetInsertError } = await supabase
+        .from("budgets")
+        .insert([{ user_id: user.id, category: finalCategory, amount: 0 }]); // amount can be 0 or some default
+      if (budgetInsertError) {
+        console.error("Erro ao adicionar nova categoria aos orçamentos:", budgetInsertError);
+        showError("Ocorreu um erro ao adicionar a nova categoria.");
+        return; // Prevent transaction from being added if category fails
+      }
+    }
+
     const { error } = await supabase
       .from("transactions")
-      .insert([{ ...data, user_id: user.id }]);
+      .insert([{ ...data, category: finalCategory, user_id: user.id }]);
 
     if (error) {
       showError("Ocorreu um erro ao adicionar a transação.");
@@ -157,7 +182,12 @@ const AddTransactionDialog = ({ onTransactionAdded, budgets }: { onTransactionAd
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoria</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={(value) => {
+                    field.onChange(value);
+                    if (value !== "Outra") {
+                      form.setValue("newCategoryName", ""); // Clear newCategoryName if not "Outra"
+                    }
+                  }} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
@@ -174,6 +204,24 @@ const AddTransactionDialog = ({ onTransactionAdded, budgets }: { onTransactionAd
                 </FormItem>
               )}
             />
+            {form.watch("category") === "Outra" && (
+              <FormField
+                control={form.control}
+                name="newCategoryName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome da Nova Categoria</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: Lazer, Educação" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Esta categoria será adicionada para uso futuro.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
