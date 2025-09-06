@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Skeleton } from '@/components/ui/skeleton';
 import { showError, showSuccess } from '@/utils/toast';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Download } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +25,8 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import Confetti from 'react-confetti';
 import FinancialOverview from '@/components/FinancialOverview';
+import { exportToCSV } from '@/utils/exportData';
+import { format } from 'date-fns';
 
 interface Habit {
   id: string;
@@ -204,6 +206,35 @@ const Index = () => {
     setHabitToDelete(null);
   };
 
+  const handleExportHabits = async () => {
+    if (!user) return;
+
+    // Fetch all habit completions for export
+    const { data: completionsData, error: completionsError } = await supabase
+      .from('habit_completions')
+      .select('habit_id, completed_at')
+      .eq('user_id', user.id)
+      .order('completed_at', { ascending: false });
+
+    if (completionsError) {
+      showError('Falha ao carregar dados de hábitos para exportação.');
+      return;
+    }
+
+    const exportData = habits.map(habit => {
+      const completions = completionsData?.filter(c => c.habit_id === habit.id) || [];
+      return {
+        Nome: habit.name,
+        Descrição: habit.description || '',
+        'Data de Criação': habit.created_at.split('T')[0],
+        'Total de Conclusões': completions.length,
+        'Última Conclusão': completions.length > 0 ? completions[0].completed_at : '',
+      };
+    });
+
+    exportToCSV(exportData, `habitos_${format(new Date(), 'yyyy-MM-dd')}`);
+  };
+
   const filteredHabits = habits.filter(habit =>
     habit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (habit.description && habit.description.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -315,6 +346,10 @@ const Index = () => {
           <h1 className="text-xl font-bold text-gray-900">Meu Painel de Controle</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600 hidden sm:block">{user?.email}</span>
+            <Button variant="outline" size="sm" onClick={handleExportHabits} disabled={habits.length === 0}>
+              <Download className="mr-2 h-4 w-4" />
+              Exportar Hábitos
+            </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/finance">Finanças</Link>
             </Button>

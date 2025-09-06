@@ -25,16 +25,17 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { exportToCSV } from '@/utils/exportData';
 
 const transactionSchema = z.object({
   description: z.string().min(1, "A descrição é obrigatória."),
@@ -287,6 +288,17 @@ const TransactionManager = () => {
     fetchData();
   }, [fetchData]);
 
+  const handleExportTransactions = () => {
+    const exportData = transactions.map(t => ({
+      Data: format(new Date(t.created_at), 'dd/MM/yyyy'),
+      Descrição: t.description,
+      Categoria: t.category,
+      Tipo: t.type === 'income' ? 'Receita' : 'Despesa',
+      Valor: t.amount.toFixed(2),
+    }));
+    exportToCSV(exportData, `transacoes_${format(new Date(), 'yyyy-MM-dd')}`);
+  };
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -344,7 +356,13 @@ const TransactionManager = () => {
           <CardTitle>Transações Recentes</CardTitle>
           <CardDescription>Acompanhe suas receitas e despesas.</CardDescription>
         </div>
-        <AddTransactionDialog onTransactionAdded={fetchData} budgets={budgets} />
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleExportTransactions} disabled={transactions.length === 0}>
+            <Download className="mr-2 h-4 w-4" />
+            Exportar CSV
+          </Button>
+          <AddTransactionDialog onTransactionAdded={fetchData} budgets={budgets} />
+        </div>
       </CardHeader>
       <CardContent>
         {renderContent()}
