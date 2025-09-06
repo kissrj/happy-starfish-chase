@@ -7,12 +7,13 @@ import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { EditHabitDialog } from '@/components/EditHabitDialog';
 import HabitCompletionChart from '@/components/HabitCompletionChart';
-import { format, isSameDay, subDays, addDays } from 'date-fns';
+import { format, isSameDay, subDays, addDays, isFuture } from 'date-fns';
+import { useAuth } from '@/context/AuthProvider'; // Import useAuth to get user ID
 
 interface Habit {
   id: string;
@@ -22,11 +23,13 @@ interface Habit {
 
 const HabitDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth(); // Get user from AuthProvider
   const [habit, setHabit] = useState<Habit | null>(null);
   const [completedDates, setCompletedDates] = useState<Date[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [longestStreak, setLongestStreak] = useState(0);
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState<Date | undefined>(undefined);
 
   const calculateStreaks = useCallback((dates: Date[]) => {
     if (dates.length === 0) {
@@ -43,23 +46,25 @@ const HabitDetail = () => {
     let longest = 0;
     let tempStreak = 0;
 
-    // Check for current streak ending today or yesterday
-    let checkDate = today;
-    let foundToday = false;
-    if (completedDates.some(d => isSameDay(d, today))) {
-      foundToday = true;
-    } else if (completedDates.some(d => isSameDay(d, subDays(today, 1)))) {
-      // If not completed today, check if it was completed yesterday
-      checkDate = subDays(today, 1);
+    // Calculate current streak
+    let checkDateForCurrentStreak = today;
+    const isTodayCompleted = sortedDates.some(d => isSameDay(d, today));
+    const isYesterdayCompleted = sortedDates.some(d => isSameDay(d, subDays(today, 1)));
+
+    if (isTodayCompleted) {
+      current = 1;
+      checkDateForCurrentStreak = subDays(today, 1);
+    } else if (isYesterdayCompleted) {
+      current = 1; // Streak continues from yesterday if today is not completed
+      checkDateForCurrentStreak = subDays(today, 2);
     } else {
-      // If not completed today or yesterday, current streak is 0
-      setCurrentStreak(0);
+      current = 0;
     }
 
-    if (foundToday || completedDates.some(d => isSameDay(d, subDays(today, 1)))) {
+    if (current > 0) {
       let i = 0;
       while (true) {
-        const targetDate = subDays(checkDate, i);
+        const targetDate = subDays(checkDateForCurrentStreak, i);
         const isCompleted = sortedDates.some(d => isSameDay(d, targetDate));
         if (isCompleted) {
           current++;
@@ -68,9 +73,8 @@ const HabitDetail = () => {
           break;
         }
       }
-      setCurrentStreak(current);
     }
-
+    setCurrentStreak(current);
 
     // Calculate longest streak
     for (let i = 0; i < sortedDates.length; i++) {
@@ -91,7 +95,7 @@ const HabitDetail = () => {
       }
     }
     setLongestStreak(longest);
-  }, [completedDates]);
+  }, []);
 
   const fetchHabitDetails = useCallback(async () => {
     if (!id) return;
@@ -129,6 +133,64 @@ const HabitDetail = () => {
   useEffect(() => {
     fetchHabitDetails();
   }, [fetchHabitDetails]);
+
+  const handleMarkDate = async () => {
+    if (!selectedCalendarDate || !user || !habit) return;
+
+    const formattedDate = format(selectedCalendarDate, 'yyyy-MM-dd');
+    const isAlreadyCompleted = completedDates.some(d => isSameDay(d, selectedCalendarDate));
+
+    if (isAlreadyCompleted) {
+      showError('Hábito já marcado como concluído nesta data.');
+      return;
+    }
+
+    const { error } = await supabase.from('habit_completions').insert({
+      habit_id: habit.id,
+      user_id: user.id,
+      completed_at: formattedDate,
+    });
+
+    if (error) {
+      showError('Erro ao marcar o hábito nesta data.');
+      console.error(error);
+    } else {
+      showSuccess('Hábito marcado como concluído nesta data!');
+      const newCompletedDates = [...completedDates, selectedCalendarDate];
+      setCompletedDates(newCompletedDates);
+      calculateStreaks(newCompletedDates);
+    }
+  };
+
+  const handleUnmarkDate = async () => {
+    if (!selectedCalendarDate || !user || !habit) return;
+
+    const formattedDate = format(selectedCalendarDate, 'yyyy-MM-dd');
+    const isAlreadyCompleted = completedDates.some(d => isSameDay(d, selectedCalendarDate));
+
+    if (!isAlreadyCompleted) {
+      showError('Hábito não está marcado como concluído nesta data.');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('habit_completions')
+      .delete()
+      .match({ habit_id: habit.id, completed_at: formattedDate });
+
+    if (error) {
+      showError('Erro ao desmarcar o hábito nesta data.');
+      console.error(error);
+    } else {
+      showSuccess('Hábito desmarcado nesta data!');
+      const newCompletedDates = completedDates.filter(d => !isSameDay(d, selectedCalendarDate));
+      setCompletedDates(newCompletedDates);
+      calculateStreaks(newCompletedDates);
+    }
+  };
+
+  const isSelectedDateCompleted = selectedCalendarDate ? completedDates.some(d => isSameDay(d, selectedCalendarDate)) : false;
+  const isSelectedDateFuture = selectedCalendarDate ? isFuture(selectedCalendarDate) : false;
 
   if (loading) {
     return (
@@ -204,16 +266,34 @@ const HabitDetail = () => {
           <Card>
             <CardHeader>
               <CardTitle>Calendário de Progresso</CardTitle>
-              <CardDescription>Os dias marcados indicam quando você completou este hábito.</CardDescription>
+              <CardDescription>Clique em uma data para marcar/desmarcar a conclusão do hábito.</CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-center">
+            <CardContent className="flex flex-col items-center">
               <Calendar
-                mode="multiple"
-                selected={completedDates}
-                disabled={(date) => date > new Date() || date < new Date("2000-01-01")}
+                mode="single"
+                selected={selectedCalendarDate}
+                onSelect={setSelectedCalendarDate}
+                disabled={(date) => isFuture(date)} // Disable future dates
                 initialFocus
                 className="rounded-md border"
               />
+              {selectedCalendarDate && (
+                <div className="mt-4 flex gap-2">
+                  <Button
+                    onClick={handleMarkDate}
+                    disabled={isSelectedDateCompleted || isSelectedDateFuture}
+                  >
+                    Marcar {format(selectedCalendarDate, 'dd/MM/yyyy')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleUnmarkDate}
+                    disabled={!isSelectedDateCompleted || isSelectedDateFuture}
+                  >
+                    Desmarcar {format(selectedCalendarDate, 'dd/MM/yyyy')}
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
