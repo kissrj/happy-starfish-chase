@@ -21,6 +21,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Form,
   FormControl,
   FormField,
@@ -29,7 +39,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Trash2 } from "lucide-react";
+import { EditBudgetDialog } from './EditBudgetDialog';
 
 const budgetSchema = z.object({
   category: z.string().min(1, "A categoria é obrigatória."),
@@ -139,6 +150,7 @@ const BudgetManager = () => {
   const { user } = useAuth();
   const [budgets, setBudgets] = useState<BudgetWithSpent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [budgetToDelete, setBudgetToDelete] = useState<BudgetWithSpent | null>(null);
 
   const fetchBudgets = useCallback(async () => {
     if (!user) return;
@@ -186,6 +198,20 @@ const BudgetManager = () => {
     fetchBudgets();
   }, [fetchBudgets]);
 
+  const handleDeleteBudget = async () => {
+    if (!budgetToDelete) return;
+
+    const { error } = await supabase.from('budgets').delete().match({ id: budgetToDelete.id });
+
+    if (error) {
+      showError("Falha ao excluir o orçamento.");
+    } else {
+      showSuccess("Orçamento excluído com sucesso.");
+      fetchBudgets();
+    }
+    setBudgetToDelete(null);
+  };
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -224,9 +250,16 @@ const BudgetManager = () => {
                 <div key={budget.id}>
                     <div className="flex justify-between items-center mb-1">
                         <h3 className="font-semibold">{budget.category}</h3>
-                        <p className="text-sm text-muted-foreground">
-                            R$ {spentFormatted} / R$ {amountFormatted}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm text-muted-foreground">
+                              R$ {spentFormatted} / R$ {amountFormatted}
+                          </p>
+                          <EditBudgetDialog budget={budget} onBudgetUpdated={fetchBudgets} />
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => setBudgetToDelete(budget)}>
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Excluir Orçamento</span>
+                          </Button>
+                        </div>
                     </div>
                     <Progress value={progress} className="h-2" indicatorClassName={progressColor} />
                     {progress > 100 && (
@@ -240,18 +273,37 @@ const BudgetManager = () => {
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Orçamentos do Mês</CardTitle>
-          <CardDescription>Acompanhe seus gastos em relação aos seus orçamentos.</CardDescription>
-        </div>
-        <AddBudgetDialog onBudgetAdded={fetchBudgets} />
-      </CardHeader>
-      <CardContent>
-        {renderContent()}
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Orçamentos do Mês</CardTitle>
+            <CardDescription>Acompanhe seus gastos em relação aos seus orçamentos.</CardDescription>
+          </div>
+          <AddBudgetDialog onBudgetAdded={fetchBudgets} />
+        </CardHeader>
+        <CardContent>
+          {renderContent()}
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={!!budgetToDelete} onOpenChange={() => setBudgetToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Isso excluirá permanentemente o orçamento para "{budgetToDelete?.category}".
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteBudget} className="bg-destructive hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
