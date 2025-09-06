@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+/// <reference types="vitest" />
 import { test, expect } from '@playwright/test';
 
 test.describe('Habit Management', () => {
@@ -6,61 +8,99 @@ test.describe('Habit Management', () => {
     await page.goto('/login');
     await page.fill('[type="email"]', 'test@example.com');
     await page.fill('[type="password"]', 'password');
-    await page.click('button:has-text("Sign in")');
+    await page.click('text=Sign In');
     await page.waitForURL('/');
   });
 
   test('user can create a new habit', async ({ page }) => {
+    // Navigate to main page
     await page.goto('/');
-    await page.click('button:has-text("Adicionar Hábito")');
+    
+    // Click add habit button
+    await page.click('text=Adicionar Hábito');
+    
+    // Wait for dialog to open
     await page.waitForSelector('[role="dialog"]');
-    await page.click('button[role="tab"]:has-text("Personalizado")');
     
-    await page.fill('input[placeholder="Ex: Ler 10 páginas"]', 'Test Habit from E2E');
-    await page.fill('textarea[placeholder="Ex: Ler um livro de ficção por 15 minutos."]', 'Test description');
+    // Switch to custom tab
+    await page.click('text=Personalizado');
     
-    await page.click('[role="combobox"]');
-    await page.click('[role="option"]:has-text("Saúde")');
+    // Fill out the form
+    await page.fill('[placeholder="Ex: Ler 10 páginas"]', 'Test Habit');
+    await page.fill('[placeholder="Ex: Ler um livro de ficção por 15 minutos."]', 'Test description');
+    await page.selectOption('select', 'Saúde');
     
-    await page.click('button:has-text("Salvar")');
+    // Submit the form
+    await page.click('text=Salvar');
     
-    await expect(page.locator('text=Test Habit from E2E')).toBeVisible();
+    // Verify habit appears in the list
+    await expect(page.locator('text=Test Habit')).toBeVisible();
     await expect(page.locator('text=Test description')).toBeVisible();
   });
 
   test('user can mark habit as completed', async ({ page }) => {
+    // Assuming there's already a habit created
     await page.goto('/');
     
-    const checkbox = page.locator('label:has-text("Feito hoje")').first();
-    await checkbox.click();
+    // Find the checkbox for the first habit
+    const checkbox = page.locator('[type="checkbox"]').first();
     
-    await expect(checkbox.locator('~ button[role="checkbox"]')).toBeChecked();
-  });
-
-  test('user can edit a habit', async ({ page }) => {
-    await page.goto('/');
+    // Mark as completed
+    await checkbox.check();
     
-    await page.click('text=Test Habit from E2E');
-    await page.waitForURL(/\/habit\//);
-
-    await page.click('button:has-text("Editar Hábito")');
-    await page.waitForSelector('[role="dialog"]');
+    // Verify it's checked
+    await expect(checkbox).toBeChecked();
     
-    const nameInput = page.locator('input[placeholder="Ex: Ler 10 páginas"]');
-    await nameInput.fill('Updated Habit Name');
-    
-    await page.click('button:has-text("Salvar Alterações")');
-    
-    await expect(page.locator('h2:text("Updated Habit Name")')).toBeVisible();
+    // Check if confetti appears (if all habits are completed)
+    const confetti = page.locator('[data-testid="confetti"]');
+    // This might not appear if there are multiple habits
+    // await expect(confetti).toBeVisible();
   });
 
   test('user can delete a habit', async ({ page }) => {
     await page.goto('/');
     
-    await page.locator('button[aria-label*="Excluir hábito"]').first().click();
+    // Click the delete button (trash icon)
+    await page.click('[aria-label*="excluir"]').first();
     
-    await page.click('button:has-text("Excluir")');
+    // Confirm deletion in alert dialog
+    await page.click('text=Excluir');
     
-    await expect(page.locator('text=Updated Habit Name')).not.toBeVisible();
+    // Verify habit is removed
+    await expect(page.locator('text=Test Habit')).not.toBeVisible();
+  });
+
+  test('user can edit a habit', async ({ page }) => {
+    await page.goto('/');
+    
+    // Click edit button
+    await page.click('text=Editar Hábito').first();
+    
+    // Wait for dialog
+    await page.waitForSelector('[role="dialog"]');
+    
+    // Update habit name
+    const nameInput = page.locator('[placeholder="Ex: Ler 10 páginas"]');
+    await nameInput.fill('Updated Habit Name');
+    
+    // Save changes
+    await page.click('text=Salvar Alterações');
+    
+    // Verify update
+    await expect(page.locator('text=Updated Habit Name')).toBeVisible();
+  });
+
+  test('habit completion persists across page reloads', async ({ page }) => {
+    await page.goto('/');
+    
+    // Mark habit as completed
+    const checkbox = page.locator('[type="checkbox"]').first();
+    await checkbox.check();
+    
+    // Reload page
+    await page.reload();
+    
+    // Verify habit is still marked as completed
+    await expect(checkbox).toBeChecked();
   });
 });

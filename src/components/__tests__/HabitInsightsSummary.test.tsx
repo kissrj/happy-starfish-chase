@@ -1,5 +1,7 @@
+/// <reference types="@testing-library/jest-dom" />
+/// <reference types="vitest" />
 import { render, screen } from '@/test/utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import HabitInsightsSummary from '@/components/HabitInsightsSummary';
 
 const mockInsights = [

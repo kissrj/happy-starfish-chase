@@ -1,11 +1,11 @@
 /// <reference types="@testing-library/jest-dom" />
 import React, { ReactElement } from 'react';
-import { render, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render as rtlRender, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
-// Create a custom render function that includes providers
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -32,7 +32,12 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, { wrapper: AllTheProviders, ...options });
+) => {
+  return {
+    user: userEvent.setup(),
+    ...rtlRender(ui, { wrapper: AllTheProviders, ...options }),
+  }
+};
 
 // Mock data generators
 export const createMockHabit = (overrides = {}) => ({
@@ -72,6 +77,6 @@ export const mockSupabaseResponse = (data: any, error = null) => ({
   error,
 });
 
-// Explicitly export common testing-library functions
-export { screen, waitFor, fireEvent };
+// Explicitly re-export these from @testing-library/react
+export { screen, fireEvent, waitFor };
 export { customRender as render };

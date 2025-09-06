@@ -1,6 +1,7 @@
+/// <reference types="@testing-library/jest-dom" />
 /// <reference types="vitest" />
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { useDailySummary } from '@/hooks/useDailySummary';
 import { createMockHabit } from '@/test/utils';
 

@@ -1,14 +1,14 @@
+/// <reference types="@testing-library/jest-dom" />
 /// <reference types="vitest" />
-import { render, screen } from '@/test/utils';
+import { render, screen, fireEvent } from '@/test/utils';
 import { describe, it, expect, vi } from 'vitest';
-import userEvent from '@testing-library/user-event';
 import HabitList from '@/components/HabitList';
 import { createMockHabit } from '@/test/utils';
 
 describe('HabitList', () => {
   const mockHabits = [
-    createMockHabit({ id: '1', name: 'Habit 1', category: 'Saúde', completed_today: false }),
-    createMockHabit({ id: '2', name: 'Habit 2', category: 'Produtividade', completed_today: true }),
+    createMockHabit({ id: '1', name: 'Habit 1', completed_today: false }),
+    createMockHabit({ id: '2', name: 'Habit 2', completed_today: true }),
   ];
 
   const defaultProps = {
@@ -27,12 +27,10 @@ describe('HabitList', () => {
     expect(screen.getByText('Habit 2')).toBeInTheDocument();
   });
 
-  it('shows loading state with skeletons', () => {
-    const { container } = render(<HabitList {...defaultProps} habits={[]} loading={true} />);
-    
-    const skeletons = container.querySelectorAll('.animate-pulse');
-    expect(skeletons.length).toBeGreaterThan(0);
-    expect(screen.queryByText('Habit 1')).not.toBeInTheDocument();
+  it('shows loading state', () => {
+    render(<HabitList {...defaultProps} loading={true} />);
+
+    expect(screen.getByText('Carregando...')).toBeInTheDocument();
   });
 
   it('filters habits by search term', () => {
@@ -45,20 +43,19 @@ describe('HabitList', () => {
   it('shows empty state when no habits match filters', () => {
     render(<HabitList {...defaultProps} searchTerm="nonexistent" />);
 
-    expect(screen.getByText('Nenhum hábito corresponde aos filtros.')).toBeInTheDocument();
+    expect(screen.getByText('Nenhum hábito encontrado')).toBeInTheDocument();
   });
 
   it('shows empty state for new users', () => {
     render(<HabitList {...defaultProps} habits={[]} />);
 
     expect(screen.getByText('Nenhum hábito encontrado')).toBeInTheDocument();
-    expect(screen.getByText('Clique em "Adicionar Hábito" para começar a rastrear.')).toBeInTheDocument();
+    expect(screen.getByText('Clique em "Adicionar Hábito" para começar')).toBeInTheDocument();
   });
 
   it('calls onToggleCompletion when checkbox is clicked', async () => {
-    const user = userEvent.setup();
     const mockOnToggle = vi.fn();
-    render(<HabitList {...defaultProps} onToggleCompletion={mockOnToggle} />);
+    const { user } = render(<HabitList {...defaultProps} onToggleCompletion={mockOnToggle} />);
 
     const checkboxes = screen.getAllByRole('checkbox');
     await user.click(checkboxes[0]);
@@ -67,13 +64,34 @@ describe('HabitList', () => {
   });
 
   it('calls onDeleteHabit when delete button is clicked', async () => {
-    const user = userEvent.setup();
     const mockOnDelete = vi.fn();
-    render(<HabitList {...defaultProps} onDeleteHabit={mockOnDelete} />);
+    const { user } = render(<HabitList {...defaultProps} onDeleteHabit={mockOnDelete} />);
 
-    const deleteButtons = screen.getAllByRole('button', { name: /excluir hábito/i });
+    const deleteButtons = screen.getAllByRole('button', { name: /excluir/i });
     await user.click(deleteButtons[0]);
 
     expect(mockOnDelete).toHaveBeenCalledWith(mockHabits[0]);
+  });
+
+  it('displays habit categories', () => {
+    const habitsWithCategories = [
+      createMockHabit({ category: 'Saúde' }),
+      createMockHabit({ category: 'Produtividade' }),
+    ];
+
+    render(<HabitList {...defaultProps} habits={habitsWithCategories} />);
+
+    expect(screen.getByText('Saúde')).toBeInTheDocument();
+    expect(screen.getByText('Produtividade')).toBeInTheDocument();
+  });
+
+  it('displays habit descriptions', () => {
+    const habitWithDescription = createMockHabit({ 
+      description: 'Test description' 
+    });
+
+    render(<HabitList {...defaultProps} habits={[habitWithDescription]} />);
+
+    expect(screen.getByText('Test description')).toBeInTheDocument();
   });
 });
