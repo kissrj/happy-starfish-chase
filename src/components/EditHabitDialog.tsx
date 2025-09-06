@@ -36,6 +36,7 @@ const habitSchema = z.object({
   reminder_time: z.string().optional(),
   goal_type: z.enum(["none", "daily", "weekly", "monthly"], { required_error: "Selecione um tipo de meta." }),
   goal_target: z.coerce.number().optional(),
+  category: z.string().min(1, "A categoria é obrigatória."),
 }).superRefine((data, ctx) => {
   if (data.goal_type !== "none" && (!data.goal_target || data.goal_target <= 0)) {
     ctx.addIssue({
@@ -56,6 +57,7 @@ interface EditHabitDialogProps {
     reminder_time?: string;
     goal_type?: string;
     goal_target?: number;
+    category?: string;
   };
   onHabitUpdated: () => void;
 }
@@ -71,6 +73,7 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
       reminder_time: habit.reminder_time || "",
       goal_type: (habit.goal_type as "none" | "daily" | "weekly" | "monthly") || "none",
       goal_target: habit.goal_target || undefined,
+      category: habit.category || "",
     },
   });
 
@@ -81,6 +84,7 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
       reminder_time: habit.reminder_time || "",
       goal_type: (habit.goal_type as "none" | "daily" | "weekly" | "monthly") || "none",
       goal_target: habit.goal_target || undefined,
+      category: habit.category || "",
     });
   }, [habit, form]);
 
@@ -97,7 +101,7 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
 
     const { error } = await supabase
       .from("habits")
-      .update({ name: data.name, description: data.description, reminder_time: data.reminder_time, goal_type: data.goal_type, goal_target: data.goal_target })
+      .update({ name: data.name, description: data.description, reminder_time: data.reminder_time, goal_type: data.goal_type, goal_target: data.goal_target, category: data.category })
       .eq("id", habit.id);
 
     if (error) {
@@ -152,6 +156,33 @@ export const EditHabitDialog = ({ habit, onHabitUpdated }: EditHabitDialogProps)
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoria</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma categoria" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Saúde">Saúde</SelectItem>
+                      <SelectItem value="Produtividade">Produtividade</SelectItem>
+                      <SelectItem value="Aprendizado">Aprendizado</SelectItem>
+                      <SelectItem value="Finanças">Finanças</SelectItem>
+                      <SelectItem value="Relacionamentos">Relacionamentos</SelectItem>
+                      <SelectItem value="Criatividade">Criatividade</SelectItem>
+                      <SelectItem value="Bem-estar">Bem-estar</SelectItem>
+                      <SelectItem value="Outro">Outro</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { MadeWithDyad } from "@/components/made-with-dyad";
-import { AddHabitDialog } from '@/components/AddHabitDialog';
+import AddHabitDialog from '@/components/AddHabitDialog';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { showError, showSuccess } from '@/utils/toast';
@@ -28,6 +28,7 @@ import FinancialOverview from '@/components/FinancialOverview';
 import { exportToCSV } from '@/utils/exportData';
 import { format } from 'date-fns';
 import { loadAndScheduleReminders, requestNotificationPermission } from '@/utils/notifications';
+import { Badge } from '@/components/ui/badge';
 
 interface Habit {
   id: string;
@@ -38,6 +39,7 @@ interface Habit {
   reminder_time?: string;
   goal_type?: string;
   goal_target?: number;
+  category?: string;
 }
 
 const Index = () => {
@@ -46,6 +48,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [dailySummary, setDailySummary] = useState({ total: 0, completed: 0, remaining: 0 });
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -238,6 +241,7 @@ const Index = () => {
       return {
         Nome: habit.name,
         Descrição: habit.description || '',
+        Categoria: habit.category || '',
         'Data de Criação': habit.created_at.split('T')[0],
         'Total de Conclusões': completions.length,
         'Última Conclusão': completions.length > 0 ? completions[0].completed_at : '',
@@ -247,10 +251,14 @@ const Index = () => {
     exportToCSV(exportData, `habitos_${format(new Date(), 'yyyy-MM-dd')}`);
   };
 
-  const filteredHabits = habits.filter(habit =>
-    habit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (habit.description && habit.description.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredHabits = habits.filter(habit => {
+    const matchesSearch = habit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (habit.description && habit.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = selectedCategory === 'all' || habit.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const categories = ['all', ...Array.from(new Set(habits.map(h => h.category).filter(Boolean)))];
 
   const renderContent = () => {
     if (loading) {
@@ -273,7 +281,7 @@ const Index = () => {
       );
     }
 
-    if (filteredHabits.length === 0 && searchTerm === '') {
+    if (filteredHabits.length === 0 && searchTerm === '' && selectedCategory === 'all') {
       return (
         <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
           <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito encontrado</h2>
@@ -284,12 +292,12 @@ const Index = () => {
       );
     }
 
-    if (filteredHabits.length === 0 && searchTerm !== '') {
+    if (filteredHabits.length === 0) {
       return (
         <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito corresponde à sua busca.</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito corresponde aos filtros.</h2>
           <p className="text-gray-600">
-            Tente um termo de busca diferente ou adicione um novo hábito.
+            Tente ajustar sua busca ou categoria.
           </p>
         </div>
       );
@@ -317,6 +325,13 @@ const Index = () => {
                 </Button>
               </CardHeader>
               <CardContent className="flex-grow">
+                <div className="flex items-center gap-2 mb-2">
+                  {habit.category && (
+                    <Badge variant="secondary" className="text-xs">
+                      {habit.category}
+                    </Badge>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   {habit.description || "Nenhuma descrição fornecida."}
                 </p>
@@ -432,6 +447,16 @@ const Index = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-sm"
             />
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-2 border rounded-md bg-white"
+            >
+              <option value="all">Todas as Categorias</option>
+              {categories.filter(cat => cat !== 'all').map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
             <AddHabitDialog onHabitAdded={fetchHabits} />
           </div>
         </div>

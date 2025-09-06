@@ -17,6 +17,7 @@ interface Habit {
   id: string;
   name: string;
   description: string | null;
+  category?: string;
 }
 
 interface CompletionData {
@@ -247,7 +248,9 @@ const Calendar = () => {
               >
                 <option value="all">Todos os Hábitos</option>
                 {habits.map(habit => (
-                  <option key={habit.id} value={habit.id}>{habit.name}</option>
+                  <option key={habit.id} value={habit.id}>
+                    {habit.name} {habit.category ? `(${habit.category})` : ''}
+                  </option>
                 ))}
               </select>
             </CardContent>

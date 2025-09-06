@@ -15,6 +15,7 @@ import HabitCompletionChart from '@/components/HabitCompletionChart';
 import { format, isSameDay, subDays, addDays, isFuture } from 'date-fns';
 import { useAuth } from '@/context/AuthProvider';
 import HabitGoalProgress from '@/components/HabitGoalProgress';
+import { Badge } from '@/components/ui/badge';
 
 interface Habit {
   id: string;
@@ -22,6 +23,7 @@ interface Habit {
   description: string | null;
   goal_type?: string;
   goal_target?: number;
+  category?: string;
 }
 
 const HabitDetail = () => {
@@ -241,7 +243,12 @@ const HabitDetail = () => {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800">{habit.name}</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-3xl font-bold text-gray-800">{habit.name}</h2>
+            {habit.category && (
+              <Badge variant="secondary">{habit.category}</Badge>
+            )}
+          </div>
           <p className="text-muted-foreground mt-2 mb-6">
             {habit.description || "Nenhuma descrição fornecida."}
           </p>

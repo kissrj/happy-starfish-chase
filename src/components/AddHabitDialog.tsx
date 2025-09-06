@@ -37,6 +37,7 @@ const habitSchema = z.object({
   reminder_time: z.string().optional(),
   goal_type: z.enum(["none", "daily", "weekly", "monthly"], { required_error: "Selecione um tipo de meta." }),
   goal_target: z.coerce.number().optional(),
+  category: z.string().min(1, "A categoria é obrigatória."),
 }).superRefine((data, ctx) => {
   if (data.goal_type !== "none" && (!data.goal_target || data.goal_target <= 0)) {
     ctx.addIssue({
@@ -53,7 +54,7 @@ interface AddHabitDialogProps {
   onHabitAdded: () => void;
 }
 
-export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
+const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
 
@@ -65,6 +66,7 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
       reminder_time: "",
       goal_type: "none",
       goal_target: undefined,
+      category: "",
     },
   });
 
@@ -147,6 +149,33 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
             />
             <FormField
               control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoria</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma categoria" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Saúde">Saúde</SelectItem>
+                      <SelectItem value="Produtividade">Produtividade</SelectItem>
+                      <SelectItem value="Aprendizado">Aprendizado</SelectItem>
+                      <SelectItem value="Finanças">Finanças</SelectItem>
+                      <SelectItem value="Relacionamentos">Relacionamentos</SelectItem>
+                      <SelectItem value="Criatividade">Criatividade</SelectItem>
+                      <SelectItem value="Bem-estar">Bem-estar</SelectItem>
+                      <SelectItem value="Outro">Outro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="reminder_time"
               render={({ field }) => (
                 <FormItem>
@@ -218,3 +247,5 @@ export const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
     </Dialog>
   );
 };
+
+export default AddHabitDialog;
