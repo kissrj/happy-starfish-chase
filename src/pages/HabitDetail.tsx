@@ -11,7 +11,8 @@ import { showError } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { EditHabitDialog } from '@/components/EditHabitDialog';
-import HabitCompletionChart from '@/components/HabitCompletionChart'; // Import the new component
+import HabitCompletionChart from '@/components/HabitCompletionChart';
+import { format, isSameDay, subDays, addDays } from 'date-fns';
 
 interface Habit {
   id: string;
@@ -24,6 +25,73 @@ const HabitDetail = () => {
   const [habit, setHabit] = useState<Habit | null>(null);
   const [completedDates, setCompletedDates] = useState<Date[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
+
+  const calculateStreaks = useCallback((dates: Date[]) => {
+    if (dates.length === 0) {
+      setCurrentStreak(0);
+      setLongestStreak(0);
+      return;
+    }
+
+    const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize today to start of day
+
+    let current = 0;
+    let longest = 0;
+    let tempStreak = 0;
+
+    // Check for current streak ending today or yesterday
+    let checkDate = today;
+    let foundToday = false;
+    if (completedDates.some(d => isSameDay(d, today))) {
+      foundToday = true;
+    } else if (completedDates.some(d => isSameDay(d, subDays(today, 1)))) {
+      // If not completed today, check if it was completed yesterday
+      checkDate = subDays(today, 1);
+    } else {
+      // If not completed today or yesterday, current streak is 0
+      setCurrentStreak(0);
+    }
+
+    if (foundToday || completedDates.some(d => isSameDay(d, subDays(today, 1)))) {
+      let i = 0;
+      while (true) {
+        const targetDate = subDays(checkDate, i);
+        const isCompleted = sortedDates.some(d => isSameDay(d, targetDate));
+        if (isCompleted) {
+          current++;
+          i++;
+        } else {
+          break;
+        }
+      }
+      setCurrentStreak(current);
+    }
+
+
+    // Calculate longest streak
+    for (let i = 0; i < sortedDates.length; i++) {
+      if (i === 0) {
+        tempStreak = 1;
+      } else {
+        const prevDate = sortedDates[i - 1];
+        const currentDate = sortedDates[i];
+        // Check if current date is exactly one day after previous date
+        if (isSameDay(currentDate, addDays(prevDate, 1))) {
+          tempStreak++;
+        } else if (!isSameDay(currentDate, prevDate)) { // If not consecutive and not same day, reset
+          tempStreak = 1;
+        }
+      }
+      if (tempStreak > longest) {
+        longest = tempStreak;
+      }
+    }
+    setLongestStreak(longest);
+  }, [completedDates]);
 
   const fetchHabitDetails = useCallback(async () => {
     if (!id) return;
@@ -52,10 +120,11 @@ const HabitDetail = () => {
     } else {
       const dates = completionsData.map(c => new Date(c.completed_at + 'T00:00:00'));
       setCompletedDates(dates);
+      calculateStreaks(dates); // Calculate streaks after fetching dates
     }
 
     setLoading(false);
-  }, [id]);
+  }, [id, calculateStreaks]);
 
   useEffect(() => {
     fetchHabitDetails();
@@ -76,7 +145,7 @@ const HabitDetail = () => {
             <Skeleton className="h-[300px] w-[340px]" />
           </CardContent>
         </Card>
-        <Skeleton className="h-[300px] w-full mt-6" /> {/* Skeleton for the chart */}
+        <Skeleton className="h-[300px] w-full mt-6" />
       </div>
     );
   }
@@ -112,6 +181,26 @@ const HabitDetail = () => {
             {habit.description || "Nenhuma descrição fornecida."}
           </p>
 
+          {/* Streak Display */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <Card className="text-center">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Sequência Atual</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-4xl font-bold text-blue-600">{currentStreak} dias</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Maior Sequência</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-4xl font-bold text-purple-600">{longestStreak} dias</p>
+              </CardContent>
+            </Card>
+          </div>
+
           <Card>
             <CardHeader>
               <CardTitle>Calendário de Progresso</CardTitle>
@@ -128,7 +217,6 @@ const HabitDetail = () => {
             </CardContent>
           </Card>
 
-          {/* New Habit Completion Chart */}
           <HabitCompletionChart completedDates={completedDates} />
 
         </div>
