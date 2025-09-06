@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Calendar } from '@/components/ui/calendar';
@@ -10,6 +10,7 @@ import { ArrowLeft } from 'lucide-react';
 import { showError } from '@/utils/toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MadeWithDyad } from '@/components/made-with-dyad';
+import { EditHabitDialog } from '@/components/EditHabitDialog';
 
 interface Habit {
   id: string;
@@ -23,41 +24,41 @@ const HabitDetail = () => {
   const [completedDates, setCompletedDates] = useState<Date[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchHabitDetails = async () => {
-      if (!id) return;
-      setLoading(true);
+  const fetchHabitDetails = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
 
-      const { data: habitData, error: habitError } = await supabase
-        .from('habits')
-        .select('*')
-        .eq('id', id)
-        .single();
+    const { data: habitData, error: habitError } = await supabase
+      .from('habits')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-      if (habitError || !habitData) {
-        showError('Falha ao carregar os detalhes do hábito.');
-        setLoading(false);
-        return;
-      }
-      setHabit(habitData);
-
-      const { data: completionsData, error: completionsError } = await supabase
-        .from('habit_completions')
-        .select('completed_at')
-        .eq('habit_id', id);
-
-      if (completionsError) {
-        showError('Falha ao carregar o histórico do hábito.');
-      } else {
-        const dates = completionsData.map(c => new Date(c.completed_at + 'T00:00:00'));
-        setCompletedDates(dates);
-      }
-
+    if (habitError || !habitData) {
+      showError('Falha ao carregar os detalhes do hábito.');
       setLoading(false);
-    };
+      return;
+    }
+    setHabit(habitData);
 
-    fetchHabitDetails();
+    const { data: completionsData, error: completionsError } = await supabase
+      .from('habit_completions')
+      .select('completed_at')
+      .eq('habit_id', id);
+
+    if (completionsError) {
+      showError('Falha ao carregar o histórico do hábito.');
+    } else {
+      const dates = completionsData.map(c => new Date(c.completed_at + 'T00:00:00'));
+      setCompletedDates(dates);
+    }
+
+    setLoading(false);
   }, [id]);
+
+  useEffect(() => {
+    fetchHabitDetails();
+  }, [fetchHabitDetails]);
 
   if (loading) {
     return (
@@ -92,13 +93,14 @@ const HabitDetail = () => {
   return (
     <div className="min-h-screen bg-background">
        <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Voltar
             </Link>
           </Button>
+          {habit && <EditHabitDialog habit={habit} onHabitUpdated={fetchHabitDetails} />}
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
