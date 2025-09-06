@@ -6,13 +6,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import Profile from "./pages/Profile"; // Import the new Profile page
+import Profile from "./pages/Profile";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HabitDetail from "./pages/HabitDetail";
 import FinancePage from "./pages/Finance";
 import Settings from "./pages/Settings";
 import Calendar from "./pages/Calendar";
+import HabitInsights from "./pages/HabitInsights";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -28,10 +30,12 @@ const App = () => (
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Index />} />
               <Route path="/habit/:id" element={<HabitDetail />} />
-              <Route path="/profile" element={<Profile />} /> {/* Add the new profile route */}
+              <Route path="/profile" element={<Profile />} />
               <Route path="/finance" element={<FinancePage />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/insights" element={<HabitInsights />} />
+              <Route path="/notifications" element={<Notifications />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

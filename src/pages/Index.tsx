@@ -51,6 +51,16 @@ const Index = () => {
               Exportar Hábitos
             </Button>
             <Button asChild variant="outline" size="sm">
+              <Link to="/insights">
+                📊 Insights
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/notifications">
+                🔔 Notificações
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
               <Link to="/finance">Finanças</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
