@@ -88,9 +88,11 @@ const AddTransactionDialog = ({ onTransactionAdded, budgets }: { onTransactionAd
       }
     }
 
+    const { newCategoryName, ...transactionData } = data; // Destructure newCategoryName to exclude it
+
     const { error } = await supabase
       .from("transactions")
-      .insert([{ ...data, category: finalCategory, user_id: user.id }]);
+      .insert([{ ...transactionData, category: finalCategory, user_id: user.id }]);
 
     if (error) {
       showError("Ocorreu um erro ao adicionar a transação.");
