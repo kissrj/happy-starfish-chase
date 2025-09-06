@@ -32,7 +32,7 @@ import { requestNotificationPermission } from "@/utils/notifications";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useHabitTemplates } from "@/hooks/useHabitTemplates";
-import { HabitTemplatesGrid } from "@/components/HabitTemplatesGrid";
+import HabitTemplatesGrid from "@/components/HabitTemplatesGrid";
 import { HabitTemplate } from "@/hooks/useHabitTemplates";
 
 const habitSchema = z.object({
