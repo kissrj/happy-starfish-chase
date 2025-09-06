@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,39 +21,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { showError, showSuccess } from "@/utils/toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlusCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
+import { showError, showSuccess } from "@/utils/toast";
 
 const transactionSchema = z.object({
   description: z.string().min(1, "A descrição é obrigatória."),
   amount: z.coerce.number().positive("O valor deve ser positivo."),
   type: z.enum(["income", "expense"], { required_error: "O tipo é obrigatório." }),
   category: z.string().min(1, "A categoria é obrigatória."),
+  newCategoryName: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.category === "Outra" && (!data.newCategoryName || data.newCategoryName.trim() === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Por favor, insira o nome da nova categoria.",
+      path: ["newCategoryName"],
+    });
+  }
 });
+
+type TransactionFormValues = z.infer<typeof transactionSchema>;
 
 interface AddTransactionDialogProps {
   onTransactionAdded: () => void;
+  budgets: { category: string }[];
 }
 
-interface Budget {
-  category: string;
-}
-
-export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialogProps) => {
-  const { user } = useAuth();
+export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransactionDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const { user } = useAuth();
 
-  const form = useForm<z.infer<typeof transactionSchema>>({
+  const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       description: "",
@@ -64,33 +67,31 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
     },
   });
 
-  useEffect(() => {
-    if (!user || !open) return;
-
-    const fetchBudgets = async () => {
-      const { data, error } = await supabase
-        .from("budgets")
-        .select("category")
-        .eq("user_id", user.id);
-
-      if (error) {
-        console.error("Error fetching budgets for categories", error);
-      } else {
-        setBudgets(data);
-      }
-    };
-
-    fetchBudgets();
-  }, [user, open]);
-
-  const onSubmit = async (values: z.infer<typeof transactionSchema>) => {
+  const onSubmit = async (data: TransactionFormValues) => {
     if (!user) {
       showError("Você precisa estar logado para adicionar uma transação.");
       return;
     }
 
-    const { error } = await supabase.from("transactions").insert({
-      ...values,
+    let finalCategory = data.category;
+    if (data.category === "Outra") {
+      finalCategory = data.newCategoryName!; // Use the new category name
+      // Add the new category to the budgets table
+      const { error: budgetInsertError } = await supabase
+        .from("budgets")
+        .insert([{ user_id: user.id, category: finalCategory, amount: 0 }]); // amount can be 0 or some default
+      if (budgetInsertError) {
+        console.error("Erro ao adicionar nova categoria aos orçamentos:", budgetInsertError);
+        showError("Ocorreu um erro ao adicionar a nova categoria.");
+        return; // Prevent transaction from being added if category fails
+      }
+    }
+
+    const { newCategoryName, ...transactionData } = data; // Destructure newCategoryName to exclude it
+
+    const { error } = await supabase.from('transactions').insert({
+      ...transactionData,
+      category: finalCategory,
       user_id: user.id,
     });
 
@@ -117,7 +118,7 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
         <DialogHeader>
           <DialogTitle>Adicionar Nova Transação</DialogTitle>
           <DialogDescription>
-            Registre uma nova receita ou despesa.
+            Preencha os detalhes da sua nova transação.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -129,7 +130,7 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
                 <FormItem>
                   <FormLabel>Descrição</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: Salário, Compras no mercado" {...field} />
+                    <Input placeholder="Ex: Café da manhã, Salário" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,7 +143,7 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Ex: 150.50" {...field} />
+                    <Input type="number" step="0.01" placeholder="Ex: 15.50" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,19 +153,28 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
               control={form.control}
               name="type"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="space-y-3">
                   <FormLabel>Tipo</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o tipo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="expense">Despesa</SelectItem>
-                      <SelectItem value="income">Receita</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex space-x-4"
+                    >
+                      <FormItem className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem value="expense" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Despesa</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem value="income" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Receita</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -175,17 +185,20 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoria</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={(value) => {
+                    field.onChange(value);
+                    if (value !== "Outra") {
+                      form.setValue("newCategoryName", ""); // Clear newCategoryName if not "Outra"
+                    }
+                  }} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {budgets.map((budget) => (
-                        <SelectItem key={budget.category} value={budget.category}>
-                          {budget.category}
-                        </SelectItem>
+                      {budgets.map(budget => (
+                        <SelectItem key={budget.category} value={budget.category}>{budget.category}</SelectItem>
                       ))}
                       <SelectItem value="Outra">Outra</SelectItem>
                     </SelectContent>
@@ -194,6 +207,24 @@ export const AddTransactionDialog = ({ onTransactionAdded }: AddTransactionDialo
                 </FormItem>
               )}
             />
+            {form.watch("category") === "Outra" && (
+              <FormField
+                control={form.control}
+                name="newCategoryName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome da Nova Categoria</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: Lazer, Educação" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Esta categoria será adicionada para uso futuro.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Salvando..." : "Salvar"}

@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import BudgetManager from '@/components/BudgetManager';
 import TransactionManager from '@/components/TransactionManager';
+import ExpenseChart from '@/components/ExpenseChart';
 
 const FinancePage = () => {
   return (
@@ -24,15 +25,19 @@ const FinancePage = () => {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         <Tabs defaultValue="transactions" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="transactions">Transações</TabsTrigger>
             <TabsTrigger value="budgets">Orçamentos</TabsTrigger>
+            <TabsTrigger value="analysis">Análise</TabsTrigger>
           </TabsList>
           <TabsContent value="transactions">
             <TransactionManager />
           </TabsContent>
           <TabsContent value="budgets">
             <BudgetManager />
+          </TabsContent>
+          <TabsContent value="analysis">
+            <ExpenseChart />
           </TabsContent>
         </Tabs>
       </main>
