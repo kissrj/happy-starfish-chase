@@ -1,68 +1,95 @@
 import { supabase } from '@/integrations/supabase/client';
-import { unlockAchievement } from '@/services/achievementService';
+import { getAchievements, unlockAchievement } from '@/services/achievementService';
 import { showSuccess } from './toast';
+import { differenceInCalendarDays, isToday, isYesterday } from 'date-fns';
 
-export const checkAndAwardAchievements = async (userId: string) => {
-  try {
-    // Check for streak achievements
-    const { data: streakData } = await supabase
-      .from('habit_completions')
-      .select('completed_at')
-      .eq('user_id', userId)
-      .order('completed_at', { ascending: false })
-      .limit(30);
-
-    if (streakData) {
-      const currentStreak = calculateCurrentStreak(streakData.map(s => new Date(s.completed_at)));
-      
-      if (currentStreak >= 7) {
-        await unlockAchievement(userId, 'week-warrior-achievement-id'); // You'll need to get actual IDs
-      }
-      
-      if (currentStreak >= 30) {
-        await unlockAchievement(userId, 'habit-master-achievement-id');
-      }
-    }
-
-    // Check for total completions
-    const { count: totalCompletions } = await supabase
-      .from('habit_completions')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId);
-
-    if (totalCompletions && totalCompletions >= 100) {
-      await unlockAchievement(userId, 'consistency-king-achievement-id');
-    }
-
-    // You can add more checks for category-specific achievements here
-
-  } catch (error) {
-    console.error('Error checking achievements:', error);
+const calculateCurrentStreak = (completions: { completed_at: string }[]): number => {
+  if (!completions || completions.length === 0) {
+    return 0;
   }
-};
 
-const calculateCurrentStreak = (completionDates: Date[]): number => {
-  if (completionDates.length === 0) return 0;
-  
-  let streak = 1;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  for (let i = 1; i < completionDates.length; i++) {
-    const prevDate = new Date(completionDates[i - 1]);
-    const currentDate = new Date(completionDates[i]);
-    prevDate.setHours(0, 0, 0, 0);
-    currentDate.setHours(0, 0, 0, 0);
-    
-    const diffTime = Math.abs(prevDate.getTime() - currentDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 1) {
-      streak++;
+  const dates = [...new Set(completions.map(d => d.completed_at))]
+    .map(d => new Date(d))
+    .sort((a, b) => a.getTime() - b.getTime());
+
+  if (dates.length === 0) {
+    return 0;
+  }
+
+  const lastDate = dates[dates.length - 1];
+  // Streak is broken if the last completion was not today or yesterday.
+  if (!isToday(lastDate) && !isYesterday(lastDate)) {
+    return 0;
+  }
+
+  let currentStreak = 1;
+  for (let i = dates.length - 2; i >= 0; i--) {
+    if (differenceInCalendarDays(dates[i + 1], dates[i]) === 1) {
+      currentStreak++;
     } else {
       break;
     }
   }
   
-  return streak;
+  return currentStreak;
+};
+
+export const checkAndAwardAchievements = async (userId: string) => {
+  try {
+    // 1. Get all achievements and user's unlocked achievements
+    const allAchievements = await getAchievements();
+    const { data: userAchievementsData, error: userAchievementsError } = await supabase
+      .from('user_achievements')
+      .select('achievement_id')
+      .eq('user_id', userId);
+
+    if (userAchievementsError) throw userAchievementsError;
+
+    const unlockedAchievementIds = new Set(userAchievementsData.map(ua => ua.achievement_id));
+    const achievementsToCheck = allAchievements.filter(a => !unlockedAchievementIds.has(a.id));
+
+    if (achievementsToCheck.length === 0) {
+      return; // No new achievements to check
+    }
+
+    // 2. Get user stats
+    const { count: totalCompletions } = await supabase
+      .from('habit_completions')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
+
+    const { data: streakData } = await supabase
+      .from('habit_completions')
+      .select('completed_at')
+      .eq('user_id', userId)
+      .order('completed_at', { ascending: true });
+
+    const currentStreak = calculateCurrentStreak(streakData || []);
+
+    // 3. Check each achievement
+    for (const achievement of achievementsToCheck) {
+      let shouldUnlock = false;
+      switch (achievement.type) {
+        case 'STREAK':
+          if (currentStreak >= achievement.threshold) {
+            shouldUnlock = true;
+          }
+          break;
+        case 'TOTAL_COMPLETIONS':
+          if ((totalCompletions ?? 0) >= achievement.threshold) {
+            shouldUnlock = true;
+          }
+          break;
+      }
+
+      if (shouldUnlock) {
+        const unlocked = await unlockAchievement(userId, achievement.id);
+        if (unlocked && unlocked.achievements) {
+          showSuccess(`Achievement Unlocked: ${unlocked.achievements.name}!`);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error checking and awarding achievements:', error);
+  }
 };

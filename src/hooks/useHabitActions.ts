@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { showError, showSuccess } from '@/utils/toast';
 import { Habit } from './useHabits';
+import { checkAndAwardAchievements } from '@/utils/achievementChecker';
 
 export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[]) => void) => {
   const { user } = useAuth();
@@ -41,6 +42,10 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
         showError("Erro ao marcar o hábito.");
         // Revert optimistic update
         updateHabits(habits);
+      } else {
+        if (user) {
+          checkAndAwardAchievements(user.id);
+        }
       }
     } else {
       const { error } = await supabase
