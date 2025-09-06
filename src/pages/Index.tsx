@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Link } from 'react-router-dom';
-import { Input } from '@/components/ui/input'; // Import Input component
+import { Input } from '@/components/ui/input';
 
 interface Habit {
   id: string;
@@ -37,7 +37,8 @@ const Index = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>(''); // New state for search term
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [dailySummary, setDailySummary] = useState({ total: 0, completed: 0, remaining: 0 });
 
   const fetchHabits = useCallback(async () => {
     if (!user) return;
@@ -75,6 +76,17 @@ const Index = () => {
     }));
 
     setHabits(habitsWithCompletion);
+
+    // Calculate daily summary
+    const totalHabits = habitsData.length;
+    const completedTodayCount = habitsWithCompletion.filter(h => h.completed_today).length;
+    const remainingTodayCount = totalHabits - completedTodayCount;
+    setDailySummary({
+      total: totalHabits,
+      completed: completedTodayCount,
+      remaining: remainingTodayCount,
+    });
+
     setLoading(false);
   }, [user]);
 
@@ -90,12 +102,23 @@ const Index = () => {
     const today = new Date().toISOString().split('T')[0];
     const wasCompleted = habit.completed_today;
 
-    // Optimistic UI update
-    setHabits(currentHabits =>
-      currentHabits.map(h =>
+    // Optimistic UI update for habits list and daily summary
+    setHabits(currentHabits => {
+      const updatedHabits = currentHabits.map(h =>
         h.id === habit.id ? { ...h, completed_today: !wasCompleted } : h
-      )
-    );
+      );
+
+      const totalHabits = updatedHabits.length;
+      const completedTodayCount = updatedHabits.filter(h => h.completed_today).length;
+      const remainingTodayCount = totalHabits - completedTodayCount;
+      setDailySummary({
+        total: totalHabits,
+        completed: completedTodayCount,
+        remaining: remainingTodayCount,
+      });
+
+      return updatedHabits;
+    });
 
     if (!wasCompleted) {
       const { error } = await supabase.from('habit_completions').insert({
@@ -105,11 +128,21 @@ const Index = () => {
       });
       if (error) {
         showError("Erro ao marcar o hábito.");
-        setHabits(currentHabits =>
-          currentHabits.map(h =>
+        // Revert optimistic UI update if error
+        setHabits(currentHabits => {
+          const revertedHabits = currentHabits.map(h =>
             h.id === habit.id ? { ...h, completed_today: wasCompleted } : h
-          )
-        );
+          );
+          const totalHabits = revertedHabits.length;
+          const completedTodayCount = revertedHabits.filter(h => h.completed_today).length;
+          const remainingTodayCount = totalHabits - completedTodayCount;
+          setDailySummary({
+            total: totalHabits,
+            completed: completedTodayCount,
+            remaining: remainingTodayCount,
+          });
+          return revertedHabits;
+        });
       }
     } else {
       const { error } = await supabase
@@ -118,11 +151,21 @@ const Index = () => {
         .match({ habit_id: habit.id, completed_at: today });
       if (error) {
         showError("Erro ao desmarcar o hábito.");
-        setHabits(currentHabits =>
-          currentHabits.map(h =>
+        // Revert optimistic UI update if error
+        setHabits(currentHabits => {
+          const revertedHabits = currentHabits.map(h =>
             h.id === habit.id ? { ...h, completed_today: wasCompleted } : h
-          )
-        );
+          );
+          const totalHabits = revertedHabits.length;
+          const completedTodayCount = revertedHabits.filter(h => h.completed_today).length;
+          const remainingTodayCount = totalHabits - completedTodayCount;
+          setDailySummary({
+            total: totalHabits,
+            completed: completedTodayCount,
+            remaining: remainingTodayCount,
+          });
+          return revertedHabits;
+        });
       }
     }
   };
@@ -136,7 +179,18 @@ const Index = () => {
       showError("Falha ao excluir o hábito.");
     } else {
       showSuccess("Hábito excluído com sucesso.");
-      setHabits(habits.filter(h => h.id !== habitToDelete.id));
+      setHabits(currentHabits => {
+        const updatedHabits = currentHabits.filter(h => h.id !== habitToDelete.id);
+        const totalHabits = updatedHabits.length;
+        const completedTodayCount = updatedHabits.filter(h => h.completed_today).length;
+        const remainingTodayCount = totalHabits - completedTodayCount;
+        setDailySummary({
+          total: totalHabits,
+          completed: completedTodayCount,
+          remaining: remainingTodayCount,
+        });
+        return updatedHabits;
+      });
     }
     setHabitToDelete(null);
   };
@@ -256,6 +310,34 @@ const Index = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Daily Summary Section */}
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">Total de Hábitos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-4xl font-bold text-primary">{dailySummary.total}</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">Completados Hoje</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-4xl font-bold text-green-600">{dailySummary.completed}</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">Restantes Hoje</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-4xl font-bold text-red-600">{dailySummary.remaining}</p>
+            </CardContent>
+          </Card>
+        </div>
+
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Seus Hábitos</h2>
           <div className="flex gap-4 w-full sm:w-auto">
