@@ -14,6 +14,7 @@ import FinancePage from "./pages/Finance";
 import Settings from "./pages/Settings";
 import Calendar from "./pages/Calendar";
 import HabitInsights from "./pages/HabitInsights";
+import AchievementsPage from "./pages/Achievements";
 import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
@@ -34,7 +35,22 @@ const App = () => (
               <Route path="/finance" element={<FinancePage />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/calendar" element={<Calendar />} />
-              <Route path="/insights" element={<HabitInsights />} />
+              <Route
+                path="/insights"
+                element={
+                  <ProtectedRoute>
+                    <HabitInsights />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/achievements"
+                element={
+                  <ProtectedRoute>
+                    <AchievementsPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/notifications" element={<Notifications />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
