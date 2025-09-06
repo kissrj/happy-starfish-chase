@@ -20,12 +20,14 @@ import { exportHabitsData } from '@/utils/habitExport';
 import StreakCounter from '@/components/StreakCounter';
 import AchievementsPanel from '@/components/AchievementsPanel';
 import HabitTrendsChart from '@/components/HabitTrendsChart';
+import { useStreak } from '@/hooks/useStreak';
 
 const Index = () => {
   const { user } = useAuth();
   const { habits, loading, fetchHabits, updateHabits } = useHabits();
   const { dailySummary } = useDailySummary(habits);
   const { habitToDelete, setHabitToDelete, showConfetti, handleToggleCompletion, handleDeleteHabit } = useHabitActions(habits, updateHabits);
+  const { currentStreak, longestStreak } = useStreak();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -41,9 +43,6 @@ const Index = () => {
 
   const categories = ['all', ...Array.from(new Set(habits.map(h => h.category).filter(Boolean)))];
 
-  // Mock data for streaks and achievements
-  const currentStreak = 7;
-  const longestStreak = 14;
   const totalHabits = habits.length;
   const completedToday = habits.filter(habit => habit.completed_today).length;
 
