@@ -21,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Link } from 'react-router-dom';
 
 interface Habit {
   id: string;
@@ -173,34 +174,53 @@ const Index = () => {
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {habits.map((habit) => (
-          <Card key={habit.id} className="flex flex-col">
-            <CardHeader className="flex-row items-start justify-between">
-              <CardTitle>{habit.name}</CardTitle>
-              <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={() => setHabitToDelete(habit)}>
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-sm text-muted-foreground">
-                {habit.description || "Nenhuma descrição fornecida."}
-              </p>
-            </CardContent>
-            <CardFooter>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={`habit-${habit.id}`}
-                  checked={habit.completed_today}
-                  onCheckedChange={() => handleToggleCompletion(habit)}
-                />
-                <label
-                  htmlFor={`habit-${habit.id}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          <Link to={`/habit/${habit.id}`} key={habit.id} className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg">
+            <Card className="flex flex-col h-full transition-all border-2 border-transparent hover:border-primary">
+              <CardHeader className="flex-row items-start justify-between">
+                <CardTitle className="pr-2">{habit.name}</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 shrink-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setHabitToDelete(habit);
+                  }}
+                  aria-label={`Excluir hábito ${habit.name}`}
                 >
-                  Feito hoje
-                </label>
-              </div>
-            </CardFooter>
-          </Card>
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-sm text-muted-foreground">
+                  {habit.description || "Nenhuma descrição fornecida."}
+                </p>
+              </CardContent>
+              <CardFooter>
+                <div
+                  className="flex items-center space-x-2"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <Checkbox
+                    id={`habit-${habit.id}`}
+                    checked={habit.completed_today}
+                    onCheckedChange={() => handleToggleCompletion(habit)}
+                    aria-label={`Marcar ${habit.name} como feito hoje`}
+                  />
+                  <label
+                    htmlFor={`habit-${habit.id}`}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Feito hoje
+                  </label>
+                </div>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
     );
