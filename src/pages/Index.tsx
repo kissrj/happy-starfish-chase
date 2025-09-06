@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import Confetti from 'react-confetti';
 
 interface Habit {
   id: string;
@@ -39,6 +40,7 @@ const Index = () => {
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [dailySummary, setDailySummary] = useState({ total: 0, completed: 0, remaining: 0 });
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const fetchHabits = useCallback(async () => {
     if (!user) return;
@@ -116,6 +118,12 @@ const Index = () => {
         completed: completedTodayCount,
         remaining: remainingTodayCount,
       });
+
+      // Trigger confetti if all habits are completed
+      if (!wasCompleted && remainingTodayCount === 0 && totalHabits > 0) {
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 5000); // Confetti for 5 seconds
+      }
 
       return updatedHabits;
     });
@@ -300,6 +308,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {showConfetti && <Confetti recycle={false} onConfettiComplete={() => setShowConfetti(false)} />}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-900">Rastreador de Hábitos</h1>
