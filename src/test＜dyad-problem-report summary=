@@ -1,0 +1,181 @@
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="35" column="142" code="1002">Unterminated string literal.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="36" column="1" code="1005">',' expected.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="121" column="4" code="1005">'}' expected.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="36" column="14" code="1005">'&gt;' expected.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="37" column="8" code="1161">Unterminated regular expression literal.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="48" column="14" code="1005">'&gt;' expected.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="49" column="8" code="1161">Unterminated regular expression literal.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="77" column="14" code="1005">'&gt;' expected.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="78" column="8" code="1161">Unterminated regular expression literal.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="112" column="14" code="1005">'&gt;' expected.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="113" column="8" code="1161">Unterminated regular expression literal.</problem>
+<problem file="vitest.config.ts" line="1" column="30" code="2307">Cannot find module 'vitest/config' or its corresponding type declarations.</problem>
+<problem file="src/test/setup.ts" line="4" column="20" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/test/setup.ts" line="33" column="5" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="36" column="41" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="41" column="21" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="42" column="17" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="43" column="15" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="44" column="22" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="45" column="20" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="46" column="20" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="47" column="15" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="48" column="19" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="49" column="16" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="50" column="21" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="51" column="19" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="52" column="16" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="53" column="17" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="54" column="21" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="55" column="15" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="60" column="18" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/setup.ts" line="99" column="16" code="2686">'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.</problem>
+<problem file="src/test/utils.tsx" line="2" column="39" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/test/utils.tsx" line="74" column="15" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/Button.test.tsx" line="1" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/Button.test.tsx" line="3" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/Button.test.tsx" line="37" column="25" code="2304">Cannot find name 'vi'.</problem>
+<problem file="src/hooks/__tests__/useHabits.test.tsx" line="1" column="37" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabits.test.tsx" line="2" column="54" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabits.test.tsx" line="4" column="49" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/DailySummary.test.tsx" line="1" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/DailySummary.test.tsx" line="2" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitList.test.tsx" line="1" column="43" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitList.test.tsx" line="2" column="42" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitList.test.tsx" line="4" column="33" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitActions.test.tsx" line="1" column="33" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitActions.test.tsx" line="2" column="54" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitActions.test.tsx" line="4" column="49" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useDailySummary.test.tsx" line="1" column="33" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useDailySummary.test.tsx" line="2" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useDailySummary.test.tsx" line="4" column="33" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/AddHabitDialog.test.tsx" line="1" column="52" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/AddHabitDialog.test.tsx" line="2" column="54" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/AddHabitDialog.test.tsx" line="4" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitTemplates.test.tsx" line="1" column="33" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitTemplates.test.tsx" line="2" column="54" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitTemplates.test.tsx" line="4" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitTemplates.test.tsx" line="83" column="15" code="2304">Cannot find name 'supabase'.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="1" column="37" code="2307">Cannot find module '@testing-library/react' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="2" column="54" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="4" column="49" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="62" column="15" code="2304">Cannot find name 'supabase'.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="96" column="15" code="2304">Cannot find name 'supabase'.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="124" column="15" code="2304">Cannot find name 'supabase'.</problem>
+<problem file="src/hooks/__tests__/useHabitInsights.test.tsx" line="151" column="15" code="2304">Cannot find name 'supabase'.</problem>
+<problem file="src/components/__tests__/HabitInsightsCard.test.tsx" line="1" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitInsightsCard.test.tsx" line="2" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="1" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="2" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="36" column="32" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/components/__tests__/HabitInsightsSummary.test.tsx" line="37" column="38" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/habit-management.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/user-authentication.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/finance-tracking.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/insights-analytics.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/mobile-responsiveness.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/accessibility.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/performance.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/e2e/smoke-tests.spec.ts" line="1" column="30" code="2307">Cannot find module '@playwright/test' or its corresponding type declarations.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="1" column="41" code="2307">Cannot find module '@/test/utils' or its corresponding type declarations.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="2" column="42" code="2307">Cannot find module 'vitest' or its corresponding type declarations.</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="35" column="8" code="2749">'BrowserRouter' refers to a value, but is being used as a type here. Did you mean 'typeof BrowserRouter'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="36" column="10" code="2749">'App' refers to a value, but is being used as a type here. Did you mean 'typeof App'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="47" column="8" code="2749">'BrowserRouter' refers to a value, but is being used as a type here. Did you mean 'typeof BrowserRouter'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="48" column="10" code="2749">'App' refers to a value, but is being used as a type here. Did you mean 'typeof App'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="76" column="8" code="2749">'BrowserRouter' refers to a value, but is being used as a type here. Did you mean 'typeof BrowserRouter'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="77" column="10" code="2749">'App' refers to a value, but is being used as a type here. Did you mean 'typeof App'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="111" column="8" code="2749">'BrowserRouter' refers to a value, but is being used as a type here. Did you mean 'typeof BrowserRouter'?</problem>
+<problem file="src/test/integration/auth-flow.spec.ts" line="112" column="10" code="2749">'App' refers to a value, but is being used as a type here. Did you mean 'typeof App'?</problem>
+</dyad-problem-report><think>I need to fix all these TypeScript compilation errors. Let me analyze them:
+
+
+## Investigating TypeScript errors  
+- Found compilation errors in `src/components/__tests__/HabitInsightsSummary.test.tsx`.  
+- Identified a malformed dyad-write tag as the initial issue causing the errors.</think><dyad-write path="src/components/__tests__/HabitInsightsSummary.test.tsx" description="Fixing the broken test file structure.">
+import { render, screen } from '@/test/utils';
+import { describe, it, expect } from 'vitest';
+import HabitInsightsSummary from '@/components/HabitInsightsSummary';
+
+const mockInsights = [
+  {
+    id: '1',
+    name: 'Habit 1',
+    completionRate: 80,
+    currentStreak: 5,
+    longestStreak: 10,
+    totalCompletions: 20,
+    weeklyTrend: 'up' as const,
+    monthlyTrend: 'stable' as const,
+    bestDay: 'Monday',
+    worstDay: 'Friday',
+    recommendation: 'Good job!',
+  },
+  {
+    id: '2',
+    name: 'Habit 2',
+    completionRate: 60,
+    currentStreak: 3,
+    longestStreak: 8,
+    totalCompletions: 15,
+    weeklyTrend: 'stable' as const,
+    monthlyTrend: 'up' as const,
+    bestDay: 'Tuesday',
+    worstDay: 'Saturday',
+    recommendation: 'Keep going!',
+  },
+];
+
+describe('HabitInsightsSummary', () => {
+  it('renders summary cards with correct data', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    expect(screen.getByText('Taxa Média de Conclusão')).toBeInTheDocument();
+    expect(screen.getByText('Sequência Média Atual')).toBeInTheDocument();
+    expect(screen.getByText('Hábitos Melhorando')).toBeInTheDocument();
+    expect(screen.getByText('Melhor Desempenho')).toBeInTheDocument();
+  });
+
+  it('calculates and displays average completion rate', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    // (80 + 60) / 2 = 70
+    expect(screen.getByText('70%')).toBeInTheDocument();
+  });
+
+  it('calculates and displays average current streak', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    // (5 + 3) / 2 = 4
+    expect(screen.getByText('4')).toBeInTheDocument();
+  });
+
+  it('counts improving habits', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    // Only one habit has weeklyTrend: 'up'
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
+
+  it('identifies best performing habit', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    // Habit 1 has 80% completion rate
+    expect(screen.getByText('80%')).toBeInTheDocument();
+  });
+
+  it('handles empty insights array', () => {
+    render(<HabitInsightsSummary insights={[]} />);
+    
+    expect(screen.getByText('Resumo dos Insights')).toBeInTheDocument();
+    expect(screen.getByText('Nenhum insight disponível.')).toBeInTheDocument();
+  });
+
+  it('displays correct labels for each metric', () => {
+    render(<HabitInsightsSummary insights={mockInsights} />);
+    
+    expect(screen.getByText('Média de todos os hábitos')).toBeInTheDocument();
+    expect(screen.getByText('Dias consecutivos')).toBeInTheDocument();
+    expect(screen.getByText('Tendência semanal positiva')).toBeInTheDocument();
+  });
+});
