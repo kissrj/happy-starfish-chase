@@ -371,6 +371,9 @@ const Index = () => {
             <Button asChild variant="outline" size="sm">
               <Link to="/profile">Perfil</Link>
             </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/settings">Configurações</Link>
+            </Button>
             <Button onClick={handleLogout} variant="outline" size="sm">Sair</Button>
           </div>
         </div>

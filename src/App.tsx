@@ -11,6 +11,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HabitDetail from "./pages/HabitDetail";
 import FinancePage from "./pages/Finance";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/habit/:id" element={<HabitDetail />} />
               <Route path="/profile" element={<Profile />} /> {/* Add the new profile route */}
               <Route path="/finance" element={<FinancePage />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
