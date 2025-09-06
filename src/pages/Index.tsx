@@ -311,7 +311,7 @@ const Index = () => {
       {showConfetti && <Confetti recycle={false} onConfettiComplete={() => setShowConfetti(false)} />}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">Rastreador de Hábitos</h1>
+          <h1 className="text-xl font-bold text-gray-900">Meu Painel de Controle</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600 hidden sm:block">{user?.email}</span>
             <Button asChild variant="outline" size="sm">
