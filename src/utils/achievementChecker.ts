@@ -4,6 +4,13 @@ import { showSuccess } from './toast';
 
 export const checkAndAwardAchievements = async (userId: string) => {
   try {
+    // Get all achievements
+    const { data: achievements } = await supabase
+      .from('achievements')
+      .select('*');
+
+    if (!achievements) return;
+
     // Check for streak achievements
     const { data: streakData } = await supabase
       .from('habit_completions')
@@ -15,12 +22,22 @@ export const checkAndAwardAchievements = async (userId: string) => {
     if (streakData) {
       const currentStreak = calculateCurrentStreak(streakData.map(s => new Date(s.completed_at)));
       
-      if (currentStreak >= 7) {
-        await unlockAchievement(userId, 'week-warrior-achievement-id'); // You'll need to get actual IDs
+      // Find streak achievements
+      const weekWarrior = achievements.find(a => a.name === 'Week Warrior');
+      const habitMaster = achievements.find(a => a.name === 'Habit Master');
+      
+      if (weekWarrior && currentStreak >= weekWarrior.threshold) {
+        const unlocked = await unlockAchievement(userId, weekWarrior.id);
+        if (unlocked) {
+          showSuccess(`🏆 Conquista desbloqueada: ${weekWarrior.name}!`);
+        }
       }
       
-      if (currentStreak >= 30) {
-        await unlockAchievement(userId, 'habit-master-achievement-id');
+      if (habitMaster && currentStreak >= habitMaster.threshold) {
+        const unlocked = await unlockAchievement(userId, habitMaster.id);
+        if (unlocked) {
+          showSuccess(`🏆 Conquista desbloqueada: ${habitMaster.name}!`);
+        }
       }
     }
 
@@ -30,11 +47,56 @@ export const checkAndAwardAchievements = async (userId: string) => {
       .select('*', { count: 'exact' })
       .eq('user_id', userId);
 
-    if (totalCompletions && totalCompletions >= 100) {
-      await unlockAchievement(userId, 'consistency-king-achievement-id');
+    if (totalCompletions) {
+      const consistencyKing = achievements.find(a => a.name === 'Consistency King');
+      const firstSteps = achievements.find(a => a.name === 'First Steps');
+      
+      if (firstSteps && totalCompletions >= firstSteps.threshold) {
+        const unlocked = await unlockAchievement(userId, firstSteps.id);
+        if (unlocked) {
+          showSuccess(`🏆 Conquista desbloqueada: ${firstSteps.name}!`);
+        }
+      }
+      
+      if (consistencyKing && totalCompletions >= consistencyKing.threshold) {
+        const unlocked = await unlockAchievement(userId, consistencyKing.id);
+        if (unlocked) {
+          showSuccess(`🏆 Conquista desbloqueada: ${consistencyKing.name}!`);
+        }
+      }
     }
 
-    // You can add more checks for category-specific achievements here
+    // Check for category-specific achievements
+    const { data: categoryData } = await supabase
+      .from('habit_completions')
+      .select(`
+        habits!inner(category)
+      `)
+      .eq('user_id', userId);
+
+    if (categoryData) {
+      const categoryCounts: { [key: string]: number } = {};
+      
+      categoryData.forEach(completion => {
+        const category = completion.habits.category;
+        if (category) {
+          categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+        }
+      });
+
+      // Check each category achievement
+      const categoryAchievements = achievements.filter(a => a.type === 'CATEGORY_COMPLETIONS');
+      
+      for (const achievement of categoryAchievements) {
+        const category = achievement.meta?.category;
+        if (category && categoryCounts[category] >= achievement.threshold) {
+          const unlocked = await unlockAchievement(userId, achievement.id);
+          if (unlocked) {
+            showSuccess(`🏆 Conquista desbloqueada: ${achievement.name}!`);
+          }
+        }
+      }
+    }
 
   } catch (error) {
     console.error('Error checking achievements:', error);
