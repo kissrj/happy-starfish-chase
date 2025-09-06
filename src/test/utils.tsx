@@ -77,6 +77,7 @@ export const mockSupabaseResponse = (data: any, error = null) => ({
   error,
 });
 
-// Explicitly re-export these from @testing-library/react
+// Re-export everything needed for tests
 export { screen, fireEvent, waitFor };
+// Override the render method with our custom one
 export { customRender as render };
