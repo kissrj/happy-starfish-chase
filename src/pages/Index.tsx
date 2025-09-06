@@ -314,6 +314,9 @@ const Index = () => {
           <h1 className="text-xl font-bold text-gray-900">Rastreador de Hábitos</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600 hidden sm:block">{user?.email}</span>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/profile">Perfil</Link>
+            </Button>
             <Button onClick={handleLogout} variant="outline" size="sm">Sair</Button>
           </div>
         </div>
