@@ -38,12 +38,12 @@ const CalendarGrid = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Calendário de Progresso</CardTitle>
+        <CardTitle>Progress Calendar</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-7 gap-2">
           {/* Day headers */}
-          {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
             <div key={day} className="p-2 text-center font-semibold text-sm text-muted-foreground">
               {day}
             </div>

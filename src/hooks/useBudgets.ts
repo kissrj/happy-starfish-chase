@@ -26,7 +26,7 @@ export const useBudgets = () => {
       .select('*');
 
     if (budgetsError) {
-      showError('Falha ao carregar os orçamentos.');
+      showError('Failed to load budgets.');
       console.error(budgetsError);
       setLoading(false);
       return;
@@ -66,7 +66,7 @@ export const useBudgets = () => {
 
   const addBudget = async (budgetData: Omit<Budget, 'id' | 'spent'>) => {
     if (!user) {
-      showError("Você precisa estar logado para adicionar um orçamento.");
+      showError("You must be logged in to add a budget.");
       return;
     }
 
@@ -75,11 +75,11 @@ export const useBudgets = () => {
       .insert([{ ...budgetData, user_id: user.id }]);
 
     if (error) {
-      showError("Falha ao adicionar o orçamento.");
+      showError("Failed to add budget.");
       console.error(error);
       return false;
     } else {
-      showSuccess("Orçamento adicionado com sucesso!");
+      showSuccess("Budget added successfully!");
       fetchBudgets();
       return true;
     }
@@ -92,11 +92,11 @@ export const useBudgets = () => {
       .eq("id", id);
 
     if (error) {
-      showError("Falha ao atualizar o orçamento.");
+      showError("Failed to update budget.");
       console.error(error);
       return false;
     } else {
-      showSuccess("Orçamento atualizado com sucesso!");
+      showSuccess("Budget updated successfully!");
       fetchBudgets();
       return true;
     }
@@ -106,10 +106,10 @@ export const useBudgets = () => {
     const { error } = await supabase.from('budgets').delete().match({ id });
 
     if (error) {
-      showError("Falha ao excluir o orçamento.");
+      showError("Failed to delete budget.");
       return false;
     } else {
-      showSuccess("Orçamento excluído com sucesso.");
+      showSuccess("Budget deleted successfully.");
       fetchBudgets();
       return true;
     }

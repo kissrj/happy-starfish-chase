@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { format, subDays, eachDayOfInterval } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 
 export interface TrendData {
   day: string;
@@ -60,7 +60,7 @@ export const useHabitTrends = () => {
       const completedCount = completionsData?.filter(c => c.completed_at === formattedDate).length || 0;
 
       return {
-        day: format(date, 'EEE', { locale: ptBR }), // e.g., 'Seg'
+        day: format(date, 'EEE', { locale: enUS }), // e.g., 'Mon'
         completed: completedCount,
         total: totalHabitsOnDay,
       };

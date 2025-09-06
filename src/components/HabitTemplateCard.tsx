@@ -24,10 +24,10 @@ const HabitTemplateCard = ({ template, onSelect, isSelected }: HabitTemplateCard
 
   const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'Fácil';
-      case 'medium': return 'Médio';
-      case 'hard': return 'Difícil';
-      default: return 'Desconhecido';
+      case 'easy': return 'Easy';
+      case 'medium': return 'Medium';
+      case 'hard': return 'Hard';
+      default: return 'Unknown';
     }
   };
 
@@ -56,7 +56,7 @@ const HabitTemplateCard = ({ template, onSelect, isSelected }: HabitTemplateCard
           </div>
           <div className="text-right">
             <div className="text-sm font-medium text-green-600">
-              {template.success_rate}% sucesso
+              {template.success_rate}% success
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
               <Clock className="h-3 w-3" />
@@ -73,14 +73,14 @@ const HabitTemplateCard = ({ template, onSelect, isSelected }: HabitTemplateCard
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs">
             <Target className="h-3 w-3 text-primary" />
-            <span>Meta: {template.goal_target} {template.goal_type === 'daily' ? 'vezes/dia' :
-              template.goal_type === 'weekly' ? 'vezes/semana' : 'vezes/mês'}</span>
+            <span>Goal: {template.goal_target} {template.goal_type === 'daily' ? 'times/day' :
+              template.goal_type === 'weekly' ? 'times/week' : 'times/month'}</span>
           </div>
 
           {template.reminder_time && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />
-              <span>Lembrete: {template.reminder_time}</span>
+              <span>Reminder: {template.reminder_time}</span>
             </div>
           )}
 
@@ -96,7 +96,7 @@ const HabitTemplateCard = ({ template, onSelect, isSelected }: HabitTemplateCard
         <div className="mt-4 pt-3 border-t">
           <h4 className="text-xs font-medium mb-2 flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            Benefícios:
+            Benefits:
           </h4>
           <ul className="text-xs text-muted-foreground space-y-1">
             {template.benefits.slice(0, 2).map((benefit, index) => (
@@ -116,7 +116,7 @@ const HabitTemplateCard = ({ template, onSelect, isSelected }: HabitTemplateCard
           disabled={isSelected}
         >
           <Plus className="mr-2 h-4 w-4" />
-          {isSelected ? 'Selecionado' : 'Usar Este Modelo'}
+          {isSelected ? 'Selected' : 'Use This Template'}
         </Button>
       </div>
     </Card>

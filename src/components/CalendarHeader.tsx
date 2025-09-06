@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 
 interface CalendarHeaderProps {
   currentMonth: Date;
@@ -19,12 +19,12 @@ const CalendarHeader = ({ currentMonth, onNavigateMonth }: CalendarHeaderProps) 
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Link>
           </Button>
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <CalendarIcon className="h-5 w-5" />
-            Calendário de Hábitos
+            Habit Calendar
           </h1>
           <div></div> {/* Spacer for flex layout */}
         </div>
@@ -33,13 +33,13 @@ const CalendarHeader = ({ currentMonth, onNavigateMonth }: CalendarHeaderProps) 
       {/* Month Navigation */}
       <div className="flex items-center justify-between mb-6">
         <Button variant="outline" onClick={() => onNavigateMonth('prev')}>
-          ← Mês Anterior
+          ← Previous Month
         </Button>
         <h2 className="text-2xl font-bold text-center">
-          {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
+          {format(currentMonth, 'MMMM yyyy', { locale: enUS })}
         </h2>
         <Button variant="outline" onClick={() => onNavigateMonth('next')}>
-          Próximo Mês →
+          Next Month →
         </Button>
       </div>
     </>

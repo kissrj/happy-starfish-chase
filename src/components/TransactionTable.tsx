@@ -24,9 +24,9 @@ const TransactionTable = ({ transactions, loading }: TransactionTableProps) => {
   if (transactions.length === 0) {
     return (
       <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhuma transação encontrada</h2>
+        <h2 className="text-xl font-semibold mb-2 text-gray-800">No transactions found</h2>
         <p className="text-gray-600">
-          Adicione algumas transações para começar.
+          Add some transactions to get started.
         </p>
       </div>
     );
@@ -36,10 +36,10 @@ const TransactionTable = ({ transactions, loading }: TransactionTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Descrição</TableHead>
-          <TableHead>Categoria</TableHead>
-          <TableHead className="text-right">Valor</TableHead>
-          <TableHead className="text-right">Data</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+          <TableHead className="text-right">Date</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -49,10 +49,10 @@ const TransactionTable = ({ transactions, loading }: TransactionTableProps) => {
             <TableCell>{transaction.category}</TableCell>
             <TableCell className="text-right">
               <Badge variant={transaction.type === 'income' ? 'default' : 'destructive'} className={transaction.type === 'income' ? 'bg-green-600 hover:bg-green-700' : ''}>
-                {transaction.type === 'income' ? '+' : '-'} R$ {transaction.amount.toFixed(2)}
+                {transaction.type === 'income' ? '+' : '-'} $ {transaction.amount.toFixed(2)}
               </Badge>
             </TableCell>
-            <TableCell className="text-right">{format(new Date(transaction.created_at), 'dd/MM/yyyy')}</TableCell>
+            <TableCell className="text-right">{format(new Date(transaction.created_at), 'MM/dd/yyyy')}</TableCell>
           </TableRow>
         ))}
       </TableBody>

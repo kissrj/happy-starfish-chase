@@ -49,7 +49,7 @@ const HabitInsightsCard = ({ insight }: HabitInsightsCardProps) => {
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center gap-2">
               <Target className="h-4 w-4" />
-              Taxa de Conclusão
+              Completion Rate
             </span>
             <span className="font-medium">{insight.completionRate}%</span>
           </div>
@@ -61,14 +61,14 @@ const HabitInsightsCard = ({ insight }: HabitInsightsCardProps) => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
               <Flame className="h-4 w-4 text-orange-600" />
-              <span className="text-sm font-medium">Sequência Atual</span>
+              <span className="text-sm font-medium">Current Streak</span>
             </div>
             <p className="text-2xl font-bold text-orange-600">{insight.currentStreak}</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
               <Award className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium">Maior Sequência</span>
+              <span className="text-sm font-medium">Longest Streak</span>
             </div>
             <p className="text-2xl font-bold text-purple-600">{insight.longestStreak}</p>
           </div>
@@ -77,22 +77,22 @@ const HabitInsightsCard = ({ insight }: HabitInsightsCardProps) => {
         {/* Trends */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm">Tendência Semanal</span>
+            <span className="text-sm">Weekly Trend</span>
             <div className="flex items-center gap-1">
               {getTrendIcon(insight.weeklyTrend)}
               <span className={`text-sm font-medium ${getTrendColor(insight.weeklyTrend)}`}>
-                {insight.weeklyTrend === 'up' ? 'Melhorando' :
-                 insight.weeklyTrend === 'down' ? 'Diminuindo' : 'Estável'}
+                {insight.weeklyTrend === 'up' ? 'Improving' :
+                 insight.weeklyTrend === 'down' ? 'Declining' : 'Stable'}
               </span>
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm">Tendência Mensal</span>
+            <span className="text-sm">Monthly Trend</span>
             <div className="flex items-center gap-1">
               {getTrendIcon(insight.monthlyTrend)}
               <span className={`text-sm font-medium ${getTrendColor(insight.monthlyTrend)}`}>
-                {insight.monthlyTrend === 'up' ? 'Melhorando' :
-                 insight.monthlyTrend === 'down' ? 'Diminuindo' : 'Estável'}
+                {insight.monthlyTrend === 'up' ? 'Improving' :
+                 insight.monthlyTrend === 'down' ? 'Declining' : 'Stable'}
               </span>
             </div>
           </div>
@@ -101,11 +101,11 @@ const HabitInsightsCard = ({ insight }: HabitInsightsCardProps) => {
         {/* Best/Worst Days */}
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="text-muted-foreground">Melhor dia:</span>
+            <span className="text-muted-foreground">Best day:</span>
             <p className="font-medium text-green-600">{insight.bestDay}</p>
           </div>
           <div>
-            <span className="text-muted-foreground">Pior dia:</span>
+            <span className="text-muted-foreground">Worst day:</span>
             <p className="font-medium text-red-600">{insight.worstDay}</p>
           </div>
         </div>
@@ -114,7 +114,7 @@ const HabitInsightsCard = ({ insight }: HabitInsightsCardProps) => {
         <div className="flex items-center justify-between pt-2 border-t">
           <span className="text-sm flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            Total de Conclusões
+            Total Completions
           </span>
           <span className="font-medium">{insight.totalCompletions}</span>
         </div>

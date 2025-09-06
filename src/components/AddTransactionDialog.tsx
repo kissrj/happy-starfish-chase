@@ -32,16 +32,16 @@ import { useAuth } from "@/context/AuthProvider";
 import { showError, showSuccess } from "@/utils/toast";
 
 const transactionSchema = z.object({
-  description: z.string().min(1, "A descrição é obrigatória."),
-  amount: z.coerce.number().positive("O valor deve ser positivo."),
-  type: z.enum(["income", "expense"], { required_error: "O tipo é obrigatório." }),
-  category: z.string().min(1, "A categoria é obrigatória."),
+  description: z.string().min(1, "Description is required."),
+  amount: z.coerce.number().positive("Amount must be positive."),
+  type: z.enum(["income", "expense"], { required_error: "Type is required." }),
+  category: z.string().min(1, "Category is required."),
   newCategoryName: z.string().optional(),
 }).superRefine((data, ctx) => {
-  if (data.category === "Outra" && (!data.newCategoryName || data.newCategoryName.trim() === "")) {
+  if (data.category === "Other" && (!data.newCategoryName || data.newCategoryName.trim() === "")) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Por favor, insira o nome da nova categoria.",
+      message: "Please enter the new category name.",
       path: ["newCategoryName"],
     });
   }
@@ -69,20 +69,20 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
 
   const onSubmit = async (data: TransactionFormValues) => {
     if (!user) {
-      showError("Você precisa estar logado para adicionar uma transação.");
+      showError("You must be logged in to add a transaction.");
       return;
     }
 
     let finalCategory = data.category;
-    if (data.category === "Outra") {
+    if (data.category === "Other") {
       finalCategory = data.newCategoryName!; // Use the new category name
       // Add the new category to the budgets table
       const { error: budgetInsertError } = await supabase
         .from("budgets")
         .insert([{ user_id: user.id, category: finalCategory, amount: 0 }]); // amount can be 0 or some default
       if (budgetInsertError) {
-        console.error("Erro ao adicionar nova categoria aos orçamentos:", budgetInsertError);
-        showError("Ocorreu um erro ao adicionar a nova categoria.");
+        console.error("Error adding new category to budgets:", budgetInsertError);
+        showError("An error occurred while adding the new category.");
         return; // Prevent transaction from being added if category fails
       }
     }
@@ -96,10 +96,10 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
     });
 
     if (error) {
-      showError("Falha ao adicionar a transação.");
+      showError("Failed to add transaction.");
       console.error(error);
     } else {
-      showSuccess("Transação adicionada com sucesso!");
+      showSuccess("Transaction added successfully!");
       onTransactionAdded();
       form.reset();
       setOpen(false);
@@ -111,14 +111,14 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
-          Adicionar Transação
+          Add Transaction
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Adicionar Nova Transação</DialogTitle>
+          <DialogTitle>Add New Transaction</DialogTitle>
           <DialogDescription>
-            Preencha os detalhes da sua nova transação.
+            Fill in the details of your new transaction.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -128,9 +128,9 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: Café da manhã, Salário" {...field} />
+                    <Input placeholder="E.g., Breakfast, Salary" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,9 +141,9 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valor</FormLabel>
+                  <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" step="0.01" placeholder="Ex: 15.50" {...field} />
+                    <Input type="number" step="0.01" placeholder="E.g., 15.50" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +154,7 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
               name="type"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Tipo</FormLabel>
+                  <FormLabel>Type</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -165,13 +165,13 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
                         <FormControl>
                           <RadioGroupItem value="expense" />
                         </FormControl>
-                        <FormLabel className="font-normal">Despesa</FormLabel>
+                        <FormLabel className="font-normal">Expense</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
                           <RadioGroupItem value="income" />
                         </FormControl>
-                        <FormLabel className="font-normal">Receita</FormLabel>
+                        <FormLabel className="font-normal">Income</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -184,41 +184,41 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Categoria</FormLabel>
+                  <FormLabel>Category</FormLabel>
                   <Select onValueChange={(value) => {
                     field.onChange(value);
-                    if (value !== "Outra") {
-                      form.setValue("newCategoryName", ""); // Clear newCategoryName if not "Outra"
+                    if (value !== "Other") {
+                      form.setValue("newCategoryName", ""); // Clear newCategoryName if not "Other"
                     }
                   }} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecione uma categoria" />
+                        <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {budgets.map(budget => (
                         <SelectItem key={budget.category} value={budget.category}>{budget.category}</SelectItem>
                       ))}
-                      <SelectItem value="Outra">Outra</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {form.watch("category") === "Outra" && (
+            {form.watch("category") === "Other" && (
               <FormField
                 control={form.control}
                 name="newCategoryName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome da Nova Categoria</FormLabel>
+                    <FormLabel>New Category Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Lazer, Educação" {...field} />
+                      <Input placeholder="E.g., Leisure, Education" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Esta categoria será adicionada para uso futuro.
+                      This category will be added for future use.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -227,7 +227,7 @@ export const AddTransactionDialog = ({ onTransactionAdded, budgets }: AddTransac
             )}
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
+                {form.formState.isSubmitting ? "Saving..." : "Save"}
               </Button>
             </DialogFooter>
           </form>

@@ -16,18 +16,18 @@ const NotificationSettings = ({ notificationsEnabled, onNotificationToggle }: No
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
-          Notificações
+          Notifications
         </CardTitle>
         <CardDescription>
-          Configure como você deseja receber lembretes de hábitos.
+          Configure how you want to receive habit reminders.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label htmlFor="notifications">Notificações do navegador</Label>
+            <Label htmlFor="notifications">Browser notifications</Label>
             <p className="text-sm text-muted-foreground">
-              Receba lembretes no navegador para seus hábitos.
+              Receive reminders in your browser for your habits.
             </p>
           </div>
           <Switch

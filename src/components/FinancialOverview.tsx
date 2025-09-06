@@ -40,7 +40,7 @@ const FinancialOverview = () => {
       .lte('created_at', lastDayOfMonth);
 
     if (incomeError) {
-      showError('Falha ao carregar receitas.');
+      showError('Failed to load income.');
       console.error(incomeError);
       setLoading(false);
       return;
@@ -58,7 +58,7 @@ const FinancialOverview = () => {
       .lte('created_at', lastDayOfMonth);
 
     if (expenseError) {
-      showError('Falha ao carregar despesas.');
+      showError('Failed to load expenses.');
       console.error(expenseError);
       setLoading(false);
       return;
@@ -80,7 +80,7 @@ const FinancialOverview = () => {
     return (
       <Card className="col-span-full md:col-span-1">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Visão Geral Financeira</CardTitle>
+          <CardTitle className="text-sm font-medium">Financial Overview</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Skeleton className="h-4 w-full" />
@@ -94,30 +94,30 @@ const FinancialOverview = () => {
   return (
     <Card className="col-span-full md:col-span-1">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">Visão Geral Financeira</CardTitle>
+        <CardTitle className="text-sm font-medium">Financial Overview</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <TrendingUp className="h-4 w-4 text-green-600" />
-            <span className="text-sm">Receita</span>
+            <span className="text-sm">Income</span>
           </div>
-          <span className="text-sm font-medium text-green-600">R$ {summary?.totalIncome.toFixed(2) || '0.00'}</span>
+          <span className="text-sm font-medium text-green-600">$ {summary?.totalIncome.toFixed(2) || '0.00'}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <TrendingDown className="h-4 w-4 text-red-600" />
-            <span className="text-sm">Despesas</span>
+            <span className="text-sm">Expenses</span>
           </div>
-          <span className="text-sm font-medium text-red-600">R$ {summary?.totalExpenses.toFixed(2) || '0.00'}</span>
+          <span className="text-sm font-medium text-red-600">$ {summary?.totalExpenses.toFixed(2) || '0.00'}</span>
         </div>
         <div className="flex items-center justify-between pt-2 border-t">
           <div className="flex items-center space-x-2">
             <DollarSign className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium">Saldo</span>
+            <span className="text-sm font-medium">Balance</span>
           </div>
           <span className={`text-sm font-bold ${summary && summary.netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            R$ {summary?.netBalance.toFixed(2) || '0.00'}
+            $ {summary?.netBalance.toFixed(2) || '0.00'}
           </span>
         </div>
       </CardContent>

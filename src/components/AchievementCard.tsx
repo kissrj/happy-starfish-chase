@@ -22,7 +22,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, isUnlock
               <CardDescription>{achievement.description}</CardDescription>
             </div>
           </div>
-          {isUnlocked && <Badge variant="secondary">Desbloqueado</Badge>}
+          {isUnlocked && <Badge variant="secondary">Unlocked</Badge>}
         </div>
       </CardHeader>
     </Card>

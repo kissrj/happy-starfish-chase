@@ -26,8 +26,8 @@ const ExpenseChart = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Despesas por Categoria</CardTitle>
-          <CardDescription>Visualização das suas despesas no mês atual.</CardDescription>
+          <CardTitle>Expenses by Category</CardTitle>
+          <CardDescription>Visualization of your expenses in the current month.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-[300px] bg-gray-100 rounded animate-pulse"></div>
@@ -40,14 +40,14 @@ const ExpenseChart = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Despesas por Categoria</CardTitle>
-          <CardDescription>Visualização das suas despesas no mês atual.</CardDescription>
+          <CardTitle>Expenses by Category</CardTitle>
+          <CardDescription>Visualization of your expenses in the current month.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhuma despesa encontrada</h2>
+            <h2 className="text-xl font-semibold mb-2 text-gray-800">No expenses found</h2>
             <p className="text-gray-600">
-              Adicione algumas transações de despesa para ver o gráfico.
+              Add some expense transactions to see the chart.
             </p>
           </div>
         </CardContent>
@@ -58,8 +58,8 @@ const ExpenseChart = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Despesas por Categoria</CardTitle>
-        <CardDescription>Visualização das suas despesas no mês atual.</CardDescription>
+        <CardTitle>Expenses by Category</CardTitle>
+        <CardDescription>Visualization of your expenses in the current month.</CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -78,7 +78,7 @@ const ExpenseChart = () => {
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value: number) => [`R$ ${value.toFixed(2)}`, 'Valor']} />
+            <Tooltip formatter={(value: number) => [`$ ${value.toFixed(2)}`, 'Amount']} />
             <Legend />
           </PieChart>
         </ResponsiveContainer>

@@ -25,11 +25,11 @@ const Notifications = () => {
   const handleTestNotification = async () => {
     await sendNotification(
       'reminder',
-      'Notificação de Teste',
-      'Esta é uma notificação de teste para verificar suas configurações.',
-      'Teste'
+      'Test Notification',
+      'This is a test notification to check your settings.',
+      'Test'
     );
-    showSuccess('Notificação de teste enviada!');
+    showSuccess('Test notification sent!');
   };
 
   const unreadCount = history.filter(n => !n.read).length;
@@ -42,12 +42,12 @@ const Notifications = () => {
             <Button asChild variant="outline" size="sm">
               <Link to="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar
+                Back
               </Link>
             </Button>
             <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Notificações
+              Notifications
             </h1>
             <div></div>
           </div>
@@ -69,12 +69,12 @@ const Notifications = () => {
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Link>
           </Button>
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Notificações
+            Notifications
           </h1>
           <div></div>
         </div>
@@ -82,16 +82,16 @@ const Notifications = () => {
 
       <main className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Centro de Notificações</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Notification Center</h2>
           <p className="text-gray-600">
-            Gerencie suas notificações e personalize como você deseja ser lembrado dos seus hábitos.
+            Manage your notifications and customize how you want to be reminded of your habits.
           </p>
         </div>
 
         <Tabs defaultValue="center" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="center">Centro de Notificações</TabsTrigger>
-            <TabsTrigger value="settings">Configurações</TabsTrigger>
+            <TabsTrigger value="center">Notification Center</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="center" className="space-y-6">

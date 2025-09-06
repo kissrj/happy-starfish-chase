@@ -35,18 +35,18 @@ const AdvancedNotificationSettings = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Configurações Gerais
+            General Settings
           </CardTitle>
           <CardDescription>
-            Configure quando e como você deseja receber notificações.
+            Configure when and how you want to receive notifications.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="notifications-enabled">Notificações ativadas</Label>
+              <Label htmlFor="notifications-enabled">Notifications enabled</Label>
               <p className="text-sm text-muted-foreground">
-                Ative para receber notificações no navegador.
+                Enable to receive browser notifications.
               </p>
             </div>
             <Switch
@@ -58,9 +58,9 @@ const AdvancedNotificationSettings = ({
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="habit-reminders">Lembretes de hábitos</Label>
+              <Label htmlFor="habit-reminders">Habit reminders</Label>
               <p className="text-sm text-muted-foreground">
-                Receba lembretes para completar seus hábitos.
+                Receive reminders to complete your habits.
               </p>
             </div>
             <Switch
@@ -73,9 +73,9 @@ const AdvancedNotificationSettings = ({
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="streak-reminders">Lembretes de sequência</Label>
+              <Label htmlFor="streak-reminders">Streak reminders</Label>
               <p className="text-sm text-muted-foreground">
-                Receba alertas sobre suas sequências de hábitos.
+                Receive alerts about your habit streaks.
               </p>
             </div>
             <Switch
@@ -88,9 +88,9 @@ const AdvancedNotificationSettings = ({
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="weekly-summary">Resumo semanal</Label>
+              <Label htmlFor="weekly-summary">Weekly summary</Label>
               <p className="text-sm text-muted-foreground">
-                Receba um resumo semanal do seu progresso.
+                Receive a weekly summary of your progress.
               </p>
             </div>
             <Switch
@@ -103,9 +103,9 @@ const AdvancedNotificationSettings = ({
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="achievement-alerts">Alertas de conquistas</Label>
+              <Label htmlFor="achievement-alerts">Achievement alerts</Label>
               <p className="text-sm text-muted-foreground">
-                Receba notificações quando alcançar metas importantes.
+                Receive notifications when you reach important goals.
               </p>
             </div>
             <Switch
@@ -122,18 +122,18 @@ const AdvancedNotificationSettings = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
-            Horário de Silêncio
+            Quiet Hours
           </CardTitle>
           <CardDescription>
-            Configure um período do dia para não receber notificações.
+            Set a period of the day to not receive notifications.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="quiet-hours-enabled">Ativar horário de silêncio</Label>
+              <Label htmlFor="quiet-hours-enabled">Enable quiet hours</Label>
               <p className="text-sm text-muted-foreground">
-                Pause as notificações durante certas horas.
+                Pause notifications during certain hours.
               </p>
             </div>
             <Switch
@@ -147,7 +147,7 @@ const AdvancedNotificationSettings = ({
           {settings.quietHours.enabled && (
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="quiet-start">Horário de início</Label>
+                <Label htmlFor="quiet-start">Start time</Label>
                 <Input
                   id="quiet-start"
                   type="time"
@@ -156,7 +156,7 @@ const AdvancedNotificationSettings = ({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="quiet-end">Horário de fim</Label>
+                <Label htmlFor="quiet-end">End time</Label>
                 <Input
                   id="quiet-end"
                   type="time"
@@ -173,10 +173,10 @@ const AdvancedNotificationSettings = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TestTube className="h-5 w-5" />
-            Teste de Notificações
+            Test Notifications
           </CardTitle>
           <CardDescription>
-            Teste suas configurações de notificação.
+            Test your notification settings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -186,7 +186,7 @@ const AdvancedNotificationSettings = ({
             className="w-full sm:w-auto"
           >
             <Bell className="h-4 w-4 mr-2" />
-            Enviar Notificação de Teste
+            Send Test Notification
           </Button>
         </CardContent>
       </Card>

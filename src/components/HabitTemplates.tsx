@@ -24,137 +24,137 @@ const habitTemplates: HabitTemplate[] = [
   // Health Category
   {
     id: 'drink-water',
-    name: 'Beber 8 copos de água',
-    description: 'Manter-se hidratado é essencial para a saúde e energia.',
-    category: 'Saúde',
+    name: 'Drink 8 glasses of water',
+    description: 'Staying hydrated is essential for health and energy.',
+    category: 'Health',
     goal_type: 'daily',
     goal_target: 8,
     difficulty: 'easy',
-    benefits: ['Melhora a energia', 'Ajuda na digestão', 'Reduz dores de cabeça']
+    benefits: ['Improves energy', 'Aids digestion', 'Reduces headaches']
   },
   {
     id: 'morning-walk',
-    name: 'Caminhada matinal',
-    description: 'Uma caminhada de 30 minutos pela manhã para começar o dia bem.',
-    category: 'Saúde',
+    name: 'Morning walk',
+    description: 'A 30-minute walk in the morning to start the day right.',
+    category: 'Health',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '07:00',
     difficulty: 'easy',
-    benefits: ['Melhora o humor', 'Aumenta a energia', 'Reduz o estresse']
+    benefits: ['Improves mood', 'Increases energy', 'Reduces stress']
   },
   {
     id: 'meditation',
-    name: 'Meditação diária',
-    description: '10 minutos de meditação para clareza mental e redução do estresse.',
-    category: 'Bem-estar',
+    name: 'Daily meditation',
+    description: '10 minutes of meditation for mental clarity and stress reduction.',
+    category: 'Wellness',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '08:00',
     difficulty: 'medium',
-    benefits: ['Reduz ansiedade', 'Melhora foco', 'Aumenta bem-estar']
+    benefits: ['Reduces anxiety', 'Improves focus', 'Increases well-being']
   },
 
   // Productivity Category
   {
     id: 'read-30-min',
-    name: 'Ler por 30 minutos',
-    description: 'Dedicar tempo diário para leitura e aprendizado contínuo.',
-    category: 'Aprendizado',
+    name: 'Read for 30 minutes',
+    description: 'Dedicate daily time for reading and continuous learning.',
+    category: 'Learning',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '20:00',
     difficulty: 'medium',
-    benefits: ['Expande conhecimento', 'Melhora vocabulário', 'Reduz estresse']
+    benefits: ['Expands knowledge', 'Improves vocabulary', 'Reduces stress']
   },
   {
     id: 'plan-day',
-    name: 'Planejar o dia',
-    description: 'Criar uma lista de tarefas e prioridades para o dia.',
-    category: 'Produtividade',
+    name: 'Plan the day',
+    description: 'Create a to-do list and priorities for the day.',
+    category: 'Productivity',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '06:30',
     difficulty: 'easy',
-    benefits: ['Melhora organização', 'Reduz procrastinação', 'Aumenta produtividade']
+    benefits: ['Improves organization', 'Reduces procrastination', 'Increases productivity']
   },
   {
     id: 'no-phone-hour',
-    name: '1 hora sem celular',
-    description: 'Tempo dedicado sem distrações digitais para foco e criatividade.',
-    category: 'Produtividade',
+    name: '1 hour without phone',
+    description: 'Dedicated time without digital distractions for focus and creativity.',
+    category: 'Productivity',
     goal_type: 'daily',
     goal_target: 1,
     difficulty: 'medium',
-    benefits: ['Melhora concentração', 'Reduz ansiedade', 'Aumenta criatividade']
+    benefits: ['Improves concentration', 'Reduces anxiety', 'Increases creativity']
   },
 
   // Finance Category
   {
     id: 'track-expenses',
-    name: 'Acompanhar gastos',
-    description: 'Registrar todas as despesas do dia para controle financeiro.',
-    category: 'Finanças',
+    name: 'Track expenses',
+    description: 'Record all daily expenses for financial control.',
+    category: 'Finances',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '22:00',
     difficulty: 'easy',
-    benefits: ['Melhora controle financeiro', 'Identifica gastos desnecessários', 'Ajuda a economizar']
+    benefits: ['Improves financial control', 'Identifies unnecessary spending', 'Helps save money']
   },
   {
     id: 'save-money',
-    name: 'Guardar dinheiro',
-    description: 'Separar uma quantia diária para poupança ou investimento.',
-    category: 'Finanças',
+    name: 'Save money',
+    description: 'Set aside a daily amount for savings or investment.',
+    category: 'Finances',
     goal_type: 'daily',
     goal_target: 1,
     difficulty: 'medium',
-    benefits: ['Constrói patrimônio', 'Cria segurança financeira', 'Desenvolve disciplina']
+    benefits: ['Builds wealth', 'Creates financial security', 'Develops discipline']
   },
 
   // Relationships Category
   {
     id: 'call-family',
-    name: 'Ligar para um familiar',
-    description: 'Manter contato com familiares próximos regularmente.',
-    category: 'Relacionamentos',
+    name: 'Call a family member',
+    description: 'Keep in touch with close family members regularly.',
+    category: 'Relationships',
     goal_type: 'weekly',
     goal_target: 2,
     difficulty: 'easy',
-    benefits: ['Fortalece laços familiares', 'Reduz solidão', 'Melhora comunicação']
+    benefits: ['Strengthens family bonds', 'Reduces loneliness', 'Improves communication']
   },
   {
     id: 'gratitude-note',
-    name: 'Nota de gratidão',
-    description: 'Escrever uma nota de gratidão para alguém especial.',
-    category: 'Relacionamentos',
+    name: 'Gratitude note',
+    description: 'Write a gratitude note to someone special.',
+    category: 'Relationships',
     goal_type: 'weekly',
     goal_target: 1,
     difficulty: 'easy',
-    benefits: ['Aumenta empatia', 'Melhora relacionamentos', 'Promove positividade']
+    benefits: ['Increases empathy', 'Improves relationships', 'Promotes positivity']
   },
 
   // Creativity Category
   {
     id: 'write-journal',
-    name: 'Escrever no diário',
-    description: 'Registrar pensamentos, experiências e reflexões diárias.',
-    category: 'Criatividade',
+    name: 'Write in a journal',
+    description: 'Record daily thoughts, experiences, and reflections.',
+    category: 'Creativity',
     goal_type: 'daily',
     goal_target: 1,
     reminder_time: '21:00',
     difficulty: 'easy',
-    benefits: ['Melhora auto-conhecimento', 'Processa emoções', 'Desenvolve escrita']
+    benefits: ['Improves self-awareness', 'Processes emotions', 'Develops writing']
   },
   {
     id: 'learn-new-skill',
-    name: 'Aprender nova habilidade',
-    description: 'Dedicar tempo para aprender algo novo, como um idioma ou instrumento.',
-    category: 'Aprendizado',
+    name: 'Learn a new skill',
+    description: 'Dedicate time to learn something new, like a language or instrument.',
+    category: 'Learning',
     goal_type: 'weekly',
     goal_target: 3,
     difficulty: 'medium',
-    benefits: ['Expande habilidades', 'Mantém mente ativa', 'Aumenta confiança']
+    benefits: ['Expands skills', 'Keeps mind active', 'Increases confidence']
   }
 ];
 
@@ -186,23 +186,23 @@ const HabitTemplates = ({ onSelectTemplate }: HabitTemplatesProps) => {
       <DialogTrigger asChild>
         <Button variant="outline">
           <Target className="mr-2 h-4 w-4" />
-          Modelos de Hábitos
+          Habit Templates
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Target className="h-5 w-5" />
-            Modelos de Hábitos
+            Habit Templates
           </DialogTitle>
           <DialogDescription>
-            Escolha entre nossos modelos pré-configurados para começar rapidamente.
+            Choose from our pre-configured templates to get started quickly.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-            <TabsTrigger value="all">Todos</TabsTrigger>
+            <TabsTrigger value="all">All</TabsTrigger>
             {categories.filter(cat => cat !== 'all').map(category => (
               <TabsTrigger key={category} value={category} className="text-xs">
                 {category}
@@ -218,8 +218,8 @@ const HabitTemplates = ({ onSelectTemplate }: HabitTemplatesProps) => {
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-lg leading-tight">{template.name}</CardTitle>
                       <Badge className={`text-xs ${getDifficultyColor(template.difficulty)}`}>
-                        {template.difficulty === 'easy' ? 'Fácil' :
-                         template.difficulty === 'medium' ? 'Médio' : 'Difícil'}
+                        {template.difficulty === 'easy' ? 'Easy' :
+                         template.difficulty === 'medium' ? 'Medium' : 'Hard'}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 mt-2">
@@ -228,8 +228,8 @@ const HabitTemplates = ({ onSelectTemplate }: HabitTemplatesProps) => {
                       </Badge>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        {template.goal_type === 'daily' ? 'Diário' :
-                         template.goal_type === 'weekly' ? 'Semanal' : 'Mensal'}
+                        {template.goal_type === 'daily' ? 'Daily' :
+                         template.goal_type === 'weekly' ? 'Weekly' : 'Monthly'}
                       </div>
                     </div>
                   </CardHeader>
@@ -240,20 +240,20 @@ const HabitTemplates = ({ onSelectTemplate }: HabitTemplatesProps) => {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-xs">
                         <Target className="h-3 w-3 text-primary" />
-                        <span>Meta: {template.goal_target} {template.goal_type === 'daily' ? 'vezes/dia' :
-                          template.goal_type === 'weekly' ? 'vezes/semana' : 'vezes/mês'}</span>
+                        <span>Goal: {template.goal_target} {template.goal_type === 'daily' ? 'times/day' :
+                          template.goal_type === 'weekly' ? 'times/week' : 'times/month'}</span>
                       </div>
                       {template.reminder_time && (
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>Lembrete: {template.reminder_time}</span>
+                          <span>Reminder: {template.reminder_time}</span>
                         </div>
                       )}
                     </div>
                     <div className="mt-3">
                       <h4 className="text-xs font-medium mb-2 flex items-center gap-1">
                         <TrendingUp className="h-3 w-3" />
-                        Benefícios:
+                        Benefits:
                       </h4>
                       <ul className="text-xs text-muted-foreground space-y-1">
                         {template.benefits.slice(0, 2).map((benefit, index) => (
@@ -275,7 +275,7 @@ const HabitTemplates = ({ onSelectTemplate }: HabitTemplatesProps) => {
                       size="sm"
                     >
                       <PlusCircle className="mr-2 h-4 w-4" />
-                      Usar Este Modelo
+                      Use This Template
                     </Button>
                   </div>
                 </Card>

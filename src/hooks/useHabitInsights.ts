@@ -158,7 +158,7 @@ export const useHabitInsights = () => {
 
   const findBestWorstDays = (dates: Date[]) => {
     const dayCounts: { [key: string]: number } = {};
-    const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     dates.forEach(date => {
       const dayName = dayNames[date.getDay()];
@@ -174,15 +174,15 @@ export const useHabitInsights = () => {
 
   const generateRecommendation = (habit: any, completionRate: number, currentStreak: number, trend: string): string => {
     if (completionRate >= 80) {
-      return `Excelente! Você está mantendo ${habit.name} consistentemente. Continue assim!`;
+      return `Excellent! You are maintaining ${habit.name} consistently. Keep it up!`;
     } else if (currentStreak >= 7) {
-      return `Você está em uma boa sequência com ${habit.name}. Tente manter o ritmo!`;
+      return `You are on a good streak with ${habit.name}. Try to keep the momentum!`;
     } else if (trend === 'up') {
-      return `Sua tendência com ${habit.name} está melhorando. Continue o bom trabalho!`;
+      return `Your trend with ${habit.name} is improving. Keep up the good work!`;
     } else if (trend === 'down') {
-      return `Sua frequência com ${habit.name} diminuiu. Que tal estabelecer um lembrete diário?`;
+      return `Your frequency with ${habit.name} has decreased. How about setting a daily reminder?`;
     } else {
-      return `Para melhorar com ${habit.name}, tente estabelecer uma rotina consistente.`;
+      return `To improve with ${habit.name}, try to establish a consistent routine.`;
     }
   };
 
@@ -198,7 +198,7 @@ export const useHabitInsights = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      showError('Falha ao carregar hábitos para análise.');
+      showError('Failed to load habits for analysis.');
       console.error(error);
       setLoading(false);
       return;

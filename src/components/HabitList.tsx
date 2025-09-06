@@ -57,9 +57,9 @@ const HabitList = ({
     if (filteredHabits.length === 0 && searchTerm === '' && selectedCategory === 'all') {
       return (
         <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito encontrado</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">No habits found</h2>
           <p className="text-gray-600">
-            Clique em "Adicionar Hábito" para começar a rastrear.
+            Click "Add Habit" to start tracking.
           </p>
         </div>
       );
@@ -68,9 +68,9 @@ const HabitList = ({
     if (filteredHabits.length === 0) {
       return (
         <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum hábito corresponde aos filtros.</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">No habits match the filters.</h2>
           <p className="text-gray-600">
-            Tente ajustar sua busca ou categoria.
+            Try adjusting your search or category.
           </p>
         </div>
       );
@@ -92,7 +92,7 @@ const HabitList = ({
                     e.stopPropagation();
                     onDeleteHabit(habit);
                   }}
-                  aria-label={`Excluir hábito ${habit.name}`}
+                  aria-label={`Delete habit ${habit.name}`}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
@@ -106,21 +106,21 @@ const HabitList = ({
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {habit.description || "Nenhuma descrição fornecida."}
+                  {habit.description || "No description provided."}
                 </p>
                 {habit.reminder_time && (
                   <p className="text-xs text-muted-foreground mt-2">
-                    🔔 Lembrete: {habit.reminder_time}
+                    🔔 Reminder: {habit.reminder_time}
                   </p>
                 )}
                 {habit.goal_type && habit.goal_type !== 'none' && habit.goal_target && (
                   <div className="mt-3 pt-3 border-t">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">
-                        Meta {habit.goal_type === 'daily' ? 'diária' : habit.goal_type === 'weekly' ? 'semanal' : 'mensal'}
+                        Goal {habit.goal_type === 'daily' ? 'daily' : habit.goal_type === 'weekly' ? 'weekly' : 'monthly'}
                       </span>
                       <span className="font-medium">
-                        {habit.goal_target} {habit.goal_type === 'daily' ? 'vezes/dia' : habit.goal_type === 'weekly' ? 'vezes/semana' : 'vezes/mês'}
+                        {habit.goal_target} {habit.goal_type === 'daily' ? 'times/day' : habit.goal_type === 'weekly' ? 'times/week' : 'times/month'}
                       </span>
                     </div>
                   </div>
@@ -138,13 +138,13 @@ const HabitList = ({
                     id={`habit-${habit.id}`}
                     checked={habit.completed_today}
                     onCheckedChange={() => onToggleCompletion(habit)}
-                    aria-label={`Marcar ${habit.name} como feito hoje`}
+                    aria-label={`Mark ${habit.name} as done today`}
                   />
                   <label
                     htmlFor={`habit-${habit.id}`}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Feito hoje
+                    Done today
                   </label>
                 </div>
               </CardFooter>

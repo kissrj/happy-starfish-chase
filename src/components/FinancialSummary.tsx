@@ -40,7 +40,7 @@ const FinancialSummary = () => {
       .lte('created_at', lastDayOfMonth);
 
     if (incomeError) {
-      showError('Falha ao carregar receitas.');
+      showError('Failed to load income.');
       console.error(incomeError);
       setLoading(false);
       return;
@@ -58,7 +58,7 @@ const FinancialSummary = () => {
       .lte('created_at', lastDayOfMonth);
 
     if (expenseError) {
-      showError('Falha ao carregar despesas.');
+      showError('Failed to load expenses.');
       console.error(expenseError);
       setLoading(false);
       return;
@@ -81,7 +81,7 @@ const FinancialSummary = () => {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Receita Total</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -90,7 +90,7 @@ const FinancialSummary = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Despesas Totais</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
             <TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -99,7 +99,7 @@ const FinancialSummary = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Balanço Líquido</CardTitle>
+            <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -114,34 +114,34 @@ const FinancialSummary = () => {
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Receita Total</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Income</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-600">R$ {summary?.totalIncome.toFixed(2) || '0.00'}</div>
-          <p className="text-xs text-muted-foreground">No mês atual</p>
+          <div className="text-2xl font-bold text-green-600">$ {summary?.totalIncome.toFixed(2) || '0.00'}</div>
+          <p className="text-xs text-muted-foreground">In the current month</p>
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Despesas Totais</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
           <TrendingDown className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-red-600">R$ {summary?.totalExpenses.toFixed(2) || '0.00'}</div>
-          <p className="text-xs text-muted-foreground">No mês atual</p>
+          <div className="text-2xl font-bold text-red-600">$ {summary?.totalExpenses.toFixed(2) || '0.00'}</div>
+          <p className="text-xs text-muted-foreground">In the current month</p>
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Balanço Líquido</CardTitle>
+          <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className={`text-2xl font-bold ${summary && summary.netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            R$ {summary?.netBalance.toFixed(2) || '0.00'}
+            $ {summary?.netBalance.toFixed(2) || '0.00'}
           </div>
-          <p className="text-xs text-muted-foreground">No mês atual</p>
+          <p className="text-xs text-muted-foreground">In the current month</p>
         </CardContent>
       </Card>
     </div>

@@ -14,10 +14,10 @@ const HabitInsightsSummary = ({ insights }: HabitInsightsSummaryProps) => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Resumo dos Insights</CardTitle>
+          <CardTitle>Insights Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Nenhum insight disponível.</p>
+          <p className="text-muted-foreground">No insights available.</p>
         </CardContent>
       </Card>
     );
@@ -41,46 +41,46 @@ const HabitInsightsSummary = ({ insights }: HabitInsightsSummaryProps) => {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Taxa Média de Conclusão</CardTitle>
+          <CardTitle className="text-sm font-medium">Average Completion Rate</CardTitle>
           <Target className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{avgCompletionRate}%</div>
           <p className="text-xs text-muted-foreground">
-            Média de todos os hábitos
+            Average of all habits
           </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Sequência Média Atual</CardTitle>
+          <CardTitle className="text-sm font-medium">Average Current Streak</CardTitle>
           <Flame className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{avgCurrentStreak}</div>
           <p className="text-xs text-muted-foreground">
-            Dias consecutivos
+            Consecutive days
           </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Hábitos Melhorando</CardTitle>
+          <CardTitle className="text-sm font-medium">Improving Habits</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-green-600">{improvingHabits}</div>
           <p className="text-xs text-muted-foreground">
-            Tendência semanal positiva
+            Positive weekly trend
           </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Melhor Desempenho</CardTitle>
+          <CardTitle className="text-sm font-medium">Best Performance</CardTitle>
           <Award className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>

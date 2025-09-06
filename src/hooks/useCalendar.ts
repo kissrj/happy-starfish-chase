@@ -38,7 +38,7 @@ export const useCalendar = () => {
       .order('created_at', { ascending: false });
 
     if (habitsError) {
-      showError('Falha ao carregar os hábitos.');
+      showError('Failed to load habits.');
       console.error(habitsError);
       setLoading(false);
       return;
@@ -58,7 +58,7 @@ export const useCalendar = () => {
       .lte('completed_at', format(endDate, 'yyyy-MM-dd'));
 
     if (completionsError) {
-      showError('Falha ao carregar dados de conclusão.');
+      showError('Failed to load completion data.');
       console.error(completionsError);
     } else {
       // Organize completion data by habit and date

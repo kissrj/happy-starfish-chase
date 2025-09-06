@@ -54,8 +54,8 @@ const BudgetManager = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Orçamentos do Mês</CardTitle>
-            <CardDescription>Acompanhe seus gastos em relação aos seus orçamentos.</CardDescription>
+            <CardTitle>Monthly Budgets</CardTitle>
+            <CardDescription>Track your spending against your budgets.</CardDescription>
           </div>
           <AddBudgetDialog onBudgetAdded={() => {}} />
         </CardHeader>
@@ -79,15 +79,15 @@ const BudgetManager = () => {
       <AlertDialog open={!!budgetToDelete} onOpenChange={() => setBudgetToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. Isso excluirá permanentemente o orçamento para "{budgetToDelete?.category}".
+              This action cannot be undone. This will permanently delete the budget for "{budgetToDelete?.category}".
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteBudget} className="bg-destructive hover:bg-destructive/90">
-              Excluir
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

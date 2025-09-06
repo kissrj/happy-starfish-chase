@@ -23,16 +23,16 @@ const DeleteHabitDialog = ({ habitToDelete, onClose, onConfirm }: DeleteHabitDia
     <AlertDialog open={!!habitToDelete} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o hábito
-            "{habitToDelete?.name}" e todos os seus dados.
+            This action cannot be undone. This will permanently delete the habit
+            "{habitToDelete?.name}" and all of its data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-destructive hover:bg-destructive/90">
-            Excluir
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

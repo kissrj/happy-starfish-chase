@@ -26,8 +26,8 @@ const HabitCalendar = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Calendário de Progresso</CardTitle>
-        <CardDescription>Clique em uma data para marcar/desmarcar a conclusão do hábito.</CardDescription>
+        <CardTitle>Progress Calendar</CardTitle>
+        <CardDescription>Click a date to mark/unmark habit completion.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center">
         <Calendar
@@ -44,14 +44,14 @@ const HabitCalendar = ({
               onClick={() => onMarkDate(selectedCalendarDate)}
               disabled={isSelectedDateCompleted || isSelectedDateFuture}
             >
-              Marcar {format(selectedCalendarDate, 'dd/MM/yyyy')}
+              Mark {format(selectedCalendarDate, 'MM/dd/yyyy')}
             </Button>
             <Button
               variant="outline"
               onClick={() => onUnmarkDate(selectedCalendarDate)}
               disabled={!isSelectedDateCompleted || isSelectedDateFuture}
             >
-              Desmarcar {format(selectedCalendarDate, 'dd/MM/yyyy')}
+              Unmark {format(selectedCalendarDate, 'MM/dd/yyyy')}
             </Button>
           </div>
         )}

@@ -39,8 +39,8 @@ const HabitCompletionChart: React.FC<HabitCompletionChartProps> = ({ completedDa
   return (
     <Card className="mt-6">
       <CardHeader>
-        <CardTitle>Histórico de Conclusão (Últimos 30 Dias)</CardTitle>
-        <CardDescription>Visualização do seu progresso diário.</CardDescription>
+        <CardTitle>Completion History (Last 30 Days)</CardTitle>
+        <CardDescription>A visualization of your daily progress.</CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -58,11 +58,11 @@ const HabitCompletionChart: React.FC<HabitCompletionChartProps> = ({ completedDa
             <YAxis
               domain={[0, 1]}
               ticks={[0, 1]}
-              tickFormatter={(value: number) => (value === 1 ? 'Feito' : 'Não Feito')}
+              tickFormatter={(value: number) => (value === 1 ? 'Done' : 'Not Done')}
             />
             <Tooltip
-              formatter={(value: number) => (value === 1 ? 'Feito' : 'Não Feito')}
-              labelFormatter={(label: string) => `Data: ${label}`}
+              formatter={(value: number) => (value === 1 ? 'Done' : 'Not Done')}
+              labelFormatter={(label: string) => `Date: ${label}`}
             />
             <Line
               type="stepAfter" // Use stepAfter to show clear daily states

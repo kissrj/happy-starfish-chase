@@ -76,7 +76,7 @@ const HabitGoalProgress = ({ habit }: HabitGoalProgressProps) => {
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Target className="h-4 w-4" />
-        <span>Carregando progresso...</span>
+        <span>Loading progress...</span>
       </div>
     );
   }
@@ -86,19 +86,19 @@ const HabitGoalProgress = ({ habit }: HabitGoalProgressProps) => {
   }
 
   const isCompleted = currentCount >= habit.goal_target;
-  const goalTypeText = habit.goal_type === 'daily' ? 'hoje' : habit.goal_type === 'weekly' ? 'esta semana' : 'este mês';
+  const goalTypeText = habit.goal_type === 'daily' ? 'today' : habit.goal_type === 'weekly' ? 'this week' : 'this month';
 
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-lg">Progresso da Meta</CardTitle>
+        <CardTitle className="text-lg">Goal Progress</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
-              <span className="font-medium">Meta {goalTypeText}</span>
+              <span className="font-medium">Goal {goalTypeText}</span>
             </div>
             <Badge variant={isCompleted ? "default" : "secondary"} className={isCompleted ? "bg-green-600" : ""}>
               {isCompleted ? (
@@ -112,7 +112,7 @@ const HabitGoalProgress = ({ habit }: HabitGoalProgressProps) => {
           <Progress value={progress} className="h-2" />
           {isCompleted && (
             <p className="text-xs text-green-600 font-medium">
-              🎉 Meta atingida! Parabéns!
+              🎉 Goal achieved! Congratulations!
             </p>
           )}
         </div>

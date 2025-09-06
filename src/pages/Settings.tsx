@@ -29,7 +29,7 @@ const Settings = () => {
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Link>
           </Button>
         </div>
@@ -37,9 +37,9 @@ const Settings = () => {
       <main className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-2xl">
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Configurações</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Personalize sua experiência no Rastreador de Hábitos.
+              Customize your Habit Tracker experience.
             </p>
           </div>
 

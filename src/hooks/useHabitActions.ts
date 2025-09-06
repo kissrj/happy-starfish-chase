@@ -39,7 +39,7 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
         completed_at: today,
       });
       if (error) {
-        showError("Erro ao marcar o hábito.");
+        showError("Error marking habit.");
         // Revert optimistic update
         updateHabits(habits);
       } else {
@@ -53,7 +53,7 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
         .delete()
         .match({ habit_id: habit.id, completed_at: today });
       if (error) {
-        showError("Erro ao desmarcar o hábito.");
+        showError("Error unmarking habit.");
         // Revert optimistic update
         updateHabits(habits);
       }
@@ -66,9 +66,9 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
     const { error } = await supabase.from('habits').delete().match({ id: habitToDelete.id });
 
     if (error) {
-      showError("Falha ao excluir o hábito.");
+      showError("Failed to delete habit.");
     } else {
-      showSuccess("Hábito excluído com sucesso.");
+      showSuccess("Habit deleted successfully.");
       const updatedHabits = habits.filter(h => h.id !== habitToDelete.id);
       updateHabits(updatedHabits);
     }

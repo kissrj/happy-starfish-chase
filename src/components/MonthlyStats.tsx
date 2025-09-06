@@ -16,7 +16,7 @@ const MonthlyStats = ({ stats }: MonthlyStatsProps) => {
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <Card className="text-center">
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Total de Conclusões</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Completions</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold text-primary">{stats.totalCompletions}</p>
@@ -24,7 +24,7 @@ const MonthlyStats = ({ stats }: MonthlyStatsProps) => {
       </Card>
       <Card className="text-center">
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Dias Ativos</CardTitle>
+          <CardTitle className="text-sm font-medium">Active Days</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold text-green-600">{stats.completedDays}</p>
@@ -32,7 +32,7 @@ const MonthlyStats = ({ stats }: MonthlyStatsProps) => {
       </Card>
       <Card className="text-center">
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Taxa de Conclusão</CardTitle>
+          <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold text-blue-600">{stats.completionRate}%</p>
@@ -40,7 +40,7 @@ const MonthlyStats = ({ stats }: MonthlyStatsProps) => {
       </Card>
       <Card className="text-center">
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Hábitos Rastreados</CardTitle>
+          <CardTitle className="text-sm font-medium">Tracked Habits</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold text-purple-600">1</p>

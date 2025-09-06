@@ -19,7 +19,7 @@ const HabitHeader = ({ habit, onHabitUpdated }: HabitHeaderProps) => {
         <Button asChild variant="outline" size="sm">
           <Link to="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Voltar
+            Back
           </Link>
         </Button>
         <div className="flex items-center gap-3">

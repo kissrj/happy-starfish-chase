@@ -35,7 +35,7 @@ export const useHabits = () => {
       .order('created_at', { ascending: false });
 
     if (habitsError) {
-      showError('Falha ao carregar os hábitos.');
+      showError('Failed to load habits.');
       console.error(habitsError);
       setLoading(false);
       return;
@@ -47,7 +47,7 @@ export const useHabits = () => {
       .eq('completed_at', today);
 
     if (completionsError) {
-      showError('Falha ao carregar o status dos hábitos.');
+      showError('Failed to load habit status.');
       console.error(completionsError);
     }
 

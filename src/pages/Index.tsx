@@ -30,7 +30,7 @@ const Index = () => {
   const { dailySummary } = useDailySummary(habits);
   const { habitToDelete, setHabitToDelete, showConfetti, handleToggleCompletion, handleDeleteHabit } = useHabitActions(habits, updateHabits);
   const { currentStreak, longestStreak } = useStreak();
-  const { allAchievements, unlockedAchievements } = useAchievements();
+  const { achievements, userAchievements } = useAchievements();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -90,8 +90,8 @@ const Index = () => {
           longestStreak={longestStreak}
           totalHabits={totalHabits}
           completedToday={completedToday}
-          unlockedAchievementsCount={unlockedAchievements.length}
-          totalAchievementsCount={allAchievements.length}
+          unlockedAchievementsCount={userAchievements.length}
+          totalAchievementsCount={achievements.length}
         />
         
         <AchievementsPanel />

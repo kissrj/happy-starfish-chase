@@ -53,8 +53,8 @@ const ProfileForm = ({
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Seu Perfil</CardTitle>
-        <CardDescription>Atualize suas informações pessoais.</CardDescription>
+        <CardTitle className="text-2xl font-bold">Your Profile</CardTitle>
+        <CardDescription>Update your personal information.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
@@ -63,27 +63,27 @@ const ProfileForm = ({
             <Input id="email" type="email" value={user?.email} disabled />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="firstName">Primeiro Nome</Label>
+            <Label htmlFor="firstName">First Name</Label>
             <Input
               id="firstName"
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Seu primeiro nome"
+              placeholder="Your first name"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="lastName">Sobrenome</Label>
+            <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              placeholder="Seu sobrenome"
+              placeholder="Your last name"
             />
           </div>
           <Button type="submit" className="w-full" disabled={isUpdating}>
-            {isUpdating ? 'Atualizando...' : 'Salvar Alterações'}
+            {isUpdating ? 'Updating...' : 'Save Changes'}
           </Button>
         </form>
       </CardContent>

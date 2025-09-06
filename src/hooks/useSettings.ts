@@ -31,14 +31,14 @@ export const useSettings = () => {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
         setNotificationsEnabled(true);
-        showSuccess('Notificações ativadas!');
+        showSuccess('Notifications enabled!');
       } else {
-        showError('Permissão para notificações negada.');
+        showError('Notification permission denied.');
         setNotificationsEnabled(false);
       }
     } else {
       setNotificationsEnabled(false);
-      showSuccess('Notificações desativadas.');
+      showSuccess('Notifications disabled.');
     }
   };
 
@@ -64,7 +64,7 @@ export const useSettings = () => {
         .eq('user_id', user.id);
 
       if (habitsError) {
-        showError('Erro ao exportar hábitos.');
+        showError('Error exporting habits.');
         return;
       }
 
@@ -74,7 +74,7 @@ export const useSettings = () => {
         .eq('user_id', user.id);
 
       if (completionsError) {
-        showError('Erro ao exportar conclusões de hábitos.');
+        showError('Error exporting habit completions.');
         return;
       }
 
@@ -85,7 +85,7 @@ export const useSettings = () => {
         .eq('user_id', user.id);
 
       if (transactionsError) {
-        showError('Erro ao exportar transações.');
+        showError('Error exporting transactions.');
         return;
       }
 
@@ -96,7 +96,7 @@ export const useSettings = () => {
         .eq('user_id', user.id);
 
       if (budgetsError) {
-        showError('Erro ao exportar orçamentos.');
+        showError('Error exporting budgets.');
         return;
       }
 
@@ -109,10 +109,10 @@ export const useSettings = () => {
         ['Budgets', JSON.stringify(budgetsData)],
       ];
 
-      exportToCSV(exportData, `dados_completos_${format(new Date(), 'yyyy-MM-dd')}`);
-      showSuccess('Dados exportados com sucesso!');
+      exportToCSV(exportData, `full_data_${format(new Date(), 'yyyy-MM-dd')}`);
+      showSuccess('Data exported successfully!');
     } catch (error) {
-      showError('Erro ao exportar dados.');
+      showError('Error exporting data.');
       console.error(error);
     }
   };
@@ -127,9 +127,9 @@ export const useSettings = () => {
       await supabase.from('budgets').delete().eq('user_id', user.id);
       await supabase.from('habits').delete().eq('user_id', user.id);
 
-      showSuccess('Todos os dados foram excluídos.');
+      showSuccess('All data has been deleted.');
     } catch (error) {
-      showError('Erro ao excluir dados.');
+      showError('Error deleting data.');
       console.error(error);
     }
   };

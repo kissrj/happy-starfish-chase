@@ -13,7 +13,7 @@ export const useAchievements = () => {
       try {
         return await getAchievements();
       } catch (error) {
-        showError('Não foi possível carregar as conquistas.');
+        showError('Could not load achievements.');
         return [];
       }
     },
@@ -26,7 +26,7 @@ export const useAchievements = () => {
       try {
         return await getUserAchievements(user.id);
       } catch (error) {
-        showError('Não foi possível carregar suas conquistas desbloqueadas.');
+        showError('Could not load your unlocked achievements.');
         return [];
       }
     },

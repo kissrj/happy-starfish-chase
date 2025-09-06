@@ -31,31 +31,31 @@ const DataManagementSettings = ({ onExportAllData, onDeleteAllData }: DataManage
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Download className="h-5 w-5" />
-            Gerenciamento de Dados
+            Data Management
           </CardTitle>
           <CardDescription>
-            Exporte ou exclua seus dados pessoais.
+            Export or delete your personal data.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label>Exportar todos os dados</Label>
+              <Label>Export all data</Label>
               <p className="text-sm text-muted-foreground">
-                Baixe uma cópia de todos os seus dados em formato CSV.
+                Download a copy of all your data in CSV format.
               </p>
             </div>
             <Button variant="outline" onClick={onExportAllData}>
               <Download className="mr-2 h-4 w-4" />
-              Exportar
+              Export
             </Button>
           </div>
           <Separator />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label className="text-destructive">Excluir todos os dados</Label>
+              <Label className="text-destructive">Delete all data</Label>
               <p className="text-sm text-muted-foreground">
-                Exclua permanentemente todos os seus hábitos, transações e orçamentos.
+                Permanently delete all your habits, transactions, and budgets.
               </p>
             </div>
             <Button
@@ -63,7 +63,7 @@ const DataManagementSettings = ({ onExportAllData, onDeleteAllData }: DataManage
               onClick={() => setShowDeleteDialog(true)}
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Excluir Tudo
+              Delete All
             </Button>
           </div>
         </CardContent>
@@ -72,14 +72,14 @@ const DataManagementSettings = ({ onExportAllData, onDeleteAllData }: DataManage
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir Todos os Dados</AlertDialogTitle>
+            <AlertDialogTitle>Delete All Data</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. Isso excluirá permanentemente todos os seus hábitos,
-              transações, orçamentos e dados relacionados. Você tem certeza?
+              This action cannot be undone. This will permanently delete all your habits,
+              transactions, budgets, and related data. Are you sure?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 onDeleteAllData();
@@ -87,7 +87,7 @@ const DataManagementSettings = ({ onExportAllData, onDeleteAllData }: DataManage
               }}
               className="bg-destructive hover:bg-destructive/90"
             >
-              Excluir Tudo
+              Delete All
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

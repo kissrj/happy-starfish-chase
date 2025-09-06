@@ -29,7 +29,7 @@ export const useTransactions = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      showError('Falha ao carregar as transações.');
+      showError('Failed to load transactions.');
       console.error(error);
     } else {
       setTransactions(data || []);
@@ -44,7 +44,7 @@ export const useTransactions = () => {
 
   const addTransaction = async (transactionData: Omit<Transaction, 'id' | 'created_at'>) => {
     if (!user) {
-      showError("Você precisa estar logado para adicionar uma transação.");
+      showError("You must be logged in to add a transaction.");
       return;
     }
 
@@ -54,11 +54,11 @@ export const useTransactions = () => {
     });
 
     if (error) {
-      showError("Falha ao adicionar a transação.");
+      showError("Failed to add transaction.");
       console.error(error);
       return false;
     } else {
-      showSuccess("Transação adicionada com sucesso!");
+      showSuccess("Transaction added successfully!");
       fetchTransactions();
       return true;
     }

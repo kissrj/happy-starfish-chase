@@ -40,8 +40,8 @@ export const scheduleHabitReminder = (habitName: string, reminderTime: string) =
 
 export const showHabitReminder = (habitName: string) => {
   if (Notification.permission === 'granted') {
-    const notification = new Notification(`Lembrete de Hábito: ${habitName}`, {
-      body: 'Não esqueça de completar seu hábito hoje!',
+    const notification = new Notification(`Habit Reminder: ${habitName}`, {
+      body: 'Don\'t forget to complete your habit today!',
       icon: '/favicon.ico',
       badge: '/favicon.ico',
     });

@@ -24,7 +24,7 @@ const HabitFilters = ({
     <div className="flex gap-4 w-full sm:w-auto">
       <Input
         type="text"
-        placeholder="Buscar hábitos..."
+        placeholder="Search habits..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="max-w-sm"
@@ -34,7 +34,7 @@ const HabitFilters = ({
         onChange={(e) => setSelectedCategory(e.target.value)}
         className="px-3 py-2 border rounded-md bg-white"
       >
-        <option value="all">Todas as Categorias</option>
+        <option value="all">All Categories</option>
         {categories.filter(cat => cat !== 'all').map(category => (
           <option key={category} value={category}>{category}</option>
         ))}

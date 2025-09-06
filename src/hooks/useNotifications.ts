@@ -106,16 +106,16 @@ export const useNotifications = () => {
         });
 
       if (error) {
-        showError('Erro ao salvar configurações de notificação.');
+        showError('Error saving notification settings.');
         console.error(error);
         return false;
       }
 
       setSettings(newSettings);
-      showSuccess('Configurações de notificação salvas!');
+      showSuccess('Notification settings saved!');
       return true;
     } catch (error) {
-      showError('Erro ao salvar configurações de notificação.');
+      showError('Error saving notification settings.');
       console.error(error);
       return false;
     }
@@ -124,7 +124,7 @@ export const useNotifications = () => {
   // Request notification permission
   const requestPermission = useCallback(async () => {
     if (!('Notification' in window)) {
-      showError('Este navegador não suporta notificações.');
+      showError('This browser does not support notifications.');
       return false;
     }
 
@@ -254,16 +254,16 @@ export const useNotifications = () => {
         .eq('user_id', user.id);
 
       if (error) {
-        showError('Erro ao limpar notificações.');
+        showError('Error clearing notifications.');
         console.error(error);
         return false;
       }
 
       setHistory([]);
-      showSuccess('Todas as notificações foram limpas!');
+      showSuccess('All notifications cleared!');
       return true;
     } catch (error) {
-      showError('Erro ao limpar notificações.');
+      showError('Error clearing notifications.');
       console.error(error);
       return false;
     }
@@ -292,8 +292,8 @@ export const useNotifications = () => {
         setTimeout(() => {
           sendNotification(
             'reminder',
-            `Lembrete de Hábito: ${habit.name}`,
-            'Não esqueça de completar seu hábito hoje!',
+            `Habit Reminder: ${habit.name}`,
+            'Don\'t forget to complete your habit today!',
             habit.name
           );
           // Schedule the next reminder for the same time tomorrow

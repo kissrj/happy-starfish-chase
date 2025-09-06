@@ -20,12 +20,12 @@ const HabitInsights = () => {
             <Button asChild variant="outline" size="sm">
               <Link to="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar
+                Back
               </Link>
             </Button>
             <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <BarChart3 className="h-5 w-5" />
-              Insights dos Hábitos
+              Habit Insights
             </h1>
             <div></div>
           </div>
@@ -53,12 +53,12 @@ const HabitInsights = () => {
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              Back
             </Link>
           </Button>
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <BarChart3 className="h-5 w-5" />
-            Insights dos Hábitos
+            Habit Insights
           </h1>
           <div></div>
         </div>
@@ -66,25 +66,25 @@ const HabitInsights = () => {
 
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Análise de Performance</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Performance Analysis</h2>
           <p className="text-gray-600">
-            Insights detalhados sobre seus hábitos, tendências e recomendações personalizadas.
+            Detailed insights into your habits, trends, and personalized recommendations.
           </p>
         </div>
 
         <HabitInsightsSummary insights={insights} />
 
         <div className="space-y-6">
-          <h3 className="text-xl font-semibold">Análise Individual</h3>
+          <h3 className="text-xl font-semibold">Individual Analysis</h3>
           {insights.length === 0 ? (
             <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
               <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Nenhum insight disponível</h3>
+              <h3 className="text-lg font-semibold mb-2">No insights available</h3>
               <p className="text-gray-600 mb-4">
-                Adicione alguns hábitos e comece a rastrear para ver insights detalhados.
+                Add some habits and start tracking to see detailed insights.
               </p>
               <Button asChild>
-                <Link to="/">Adicionar Hábitos</Link>
+                <Link to="/">Add Habits</Link>
               </Button>
             </div>
           ) : (

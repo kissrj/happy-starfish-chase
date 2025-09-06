@@ -20,26 +20,26 @@ const TransactionManager = () => {
 
   const handleExportTransactions = () => {
     const exportData = transactions.map(t => ({
-      Data: format(new Date(t.created_at), 'dd/MM/yyyy'),
-      Descrição: t.description,
-      Categoria: t.category,
-      Tipo: t.type === 'income' ? 'Receita' : 'Despesa',
-      Valor: t.amount.toFixed(2),
+      Date: format(new Date(t.created_at), 'MM/dd/yyyy'),
+      Description: t.description,
+      Category: t.category,
+      Type: t.type === 'income' ? 'Income' : 'Expense',
+      Amount: t.amount.toFixed(2),
     }));
-    exportToCSV(exportData, `transacoes_${format(new Date(), 'yyyy-MM-dd')}`);
+    exportToCSV(exportData, `transactions_${format(new Date(), 'yyyy-MM-dd')}`);
   };
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle>Transações Recentes</CardTitle>
-          <CardDescription>Acompanhe suas receitas e despesas.</CardDescription>
+          <CardTitle>Recent Transactions</CardTitle>
+          <CardDescription>Track your income and expenses.</CardDescription>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleExportTransactions} disabled={transactions.length === 0}>
             <Download className="mr-2 h-4 w-4" />
-            Exportar CSV
+            Export CSV
           </Button>
           <AddTransactionDialog onTransactionAdded={fetchTransactions} budgets={budgets} />
         </div>

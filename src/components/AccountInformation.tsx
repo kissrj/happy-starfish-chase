@@ -12,9 +12,9 @@ const AccountInformation = ({ user }: AccountInformationProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Informações da Conta</CardTitle>
+        <CardTitle>Account Information</CardTitle>
         <CardDescription>
-          Detalhes da sua conta atual.
+          Details of your current account.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -23,7 +23,7 @@ const AccountInformation = ({ user }: AccountInformationProps) => {
           <p className="text-sm text-muted-foreground mt-1">{user?.email}</p>
         </div>
         <div>
-          <Label>ID do Usuário</Label>
+          <Label>User ID</Label>
           <p className="text-sm text-muted-foreground mt-1 font-mono">{user?.id}</p>
         </div>
       </CardContent>

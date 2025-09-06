@@ -13,11 +13,11 @@ const FinanceTracker = () => {
     <div className="min-h-screen bg-background">
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">Controle Financeiro</h1>
+          <h1 className="text-xl font-bold text-gray-900">Finance Tracker</h1>
           <Button asChild variant="outline" size="sm">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar aos Hábitos
+              Back to Habits
             </Link>
           </Button>
         </div>

@@ -36,17 +36,17 @@ import HabitTemplatesGrid from "@/components/HabitTemplatesGrid";
 import { HabitTemplate } from "@/hooks/useHabitTemplates";
 
 const habitSchema = z.object({
-  name: z.string().min(1, "O nome é obrigatório."),
+  name: z.string().min(1, "Name is required."),
   description: z.string().optional(),
   reminder_time: z.string().optional(),
-  goal_type: z.enum(["none", "daily", "weekly", "monthly"], { required_error: "Selecione um tipo de meta." }),
+  goal_type: z.enum(["none", "daily", "weekly", "monthly"], { required_error: "Please select a goal type." }),
   goal_target: z.coerce.number().optional(),
-  category: z.string().min(1, "A categoria é obrigatória."),
+  category: z.string().min(1, "Category is required."),
 }).superRefine((data, ctx) => {
   if (data.goal_type !== "none" && (!data.goal_target || data.goal_target <= 0)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Defina um alvo válido para a meta.",
+      message: "Please set a valid goal target.",
       path: ["goal_target"],
     });
   }
@@ -78,7 +78,7 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
 
   const onSubmit = async (data: HabitFormValues) => {
     if (!user) {
-      showError("Você precisa estar logado para adicionar um hábito.");
+      showError("You must be logged in to add a habit.");
       return;
     }
 
@@ -86,7 +86,7 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
     if (data.reminder_time) {
       const hasPermission = await requestNotificationPermission();
       if (!hasPermission) {
-        showError("Permissão para notificações negada. O lembrete não será configurado.");
+        showError("Notification permission denied. The reminder will not be set.");
         // Continue without reminder
         data.reminder_time = undefined;
       }
@@ -97,10 +97,10 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
       .insert([{ ...data, user_id: user.id }]);
 
     if (error) {
-      showError("Ocorreu um erro ao adicionar o hábito.");
+      showError("An error occurred while adding the habit.");
       console.error(error);
     } else {
-      showSuccess("Hábito adicionado com sucesso!");
+      showSuccess("Habit added successfully!");
       form.reset();
       setSelectedTemplate(null);
       onHabitAdded();
@@ -136,21 +136,21 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
-          Adicionar Hábito
+          Add Habit
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Adicionar Novo Hábito</DialogTitle>
+          <DialogTitle>Add New Habit</DialogTitle>
           <DialogDescription>
-            Escolha um modelo pré-configurado ou crie seu próprio hábito personalizado.
+            Choose a pre-configured template or create your own custom habit.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="templates" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="templates">Modelos</TabsTrigger>
-            <TabsTrigger value="custom">Personalizado</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
+            <TabsTrigger value="custom">Custom</TabsTrigger>
           </TabsList>
 
           <TabsContent value="templates" className="space-y-4">
@@ -163,10 +163,10 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
             {selectedTemplate && (
               <div className="flex justify-end gap-2 pt-4 border-t">
                 <Button variant="outline" onClick={() => setSelectedTemplate(null)}>
-                  Cancelar
+                  Cancel
                 </Button>
                 <Button onClick={handleCreateFromTemplate}>
-                  Criar Hábito
+                  Create Habit
                 </Button>
               </div>
             )}
@@ -180,9 +180,9 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nome do Hábito</FormLabel>
+                      <FormLabel>Habit Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ex: Ler 10 páginas" {...field} />
+                        <Input placeholder="E.g., Read 10 pages" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -193,10 +193,10 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Descrição (Opcional)</FormLabel>
+                      <FormLabel>Description (Optional)</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Ex: Ler um livro de ficção por 15 minutos."
+                          placeholder="E.g., Read a fiction book for 15 minutes."
                           {...field}
                         />
                       </FormControl>
@@ -209,22 +209,22 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Categoria</FormLabel>
+                      <FormLabel>Category</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione uma categoria" />
+                            <SelectValue placeholder="Select a category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Saúde">Saúde</SelectItem>
-                          <SelectItem value="Produtividade">Produtividade</SelectItem>
-                          <SelectItem value="Aprendizado">Aprendizado</SelectItem>
-                          <SelectItem value="Finanças">Finanças</SelectItem>
-                          <SelectItem value="Relacionamentos">Relacionamentos</SelectItem>
-                          <SelectItem value="Criatividade">Criatividade</SelectItem>
-                          <SelectItem value="Bem-estar">Bem-estar</SelectItem>
-                          <SelectItem value="Outro">Outro</SelectItem>
+                          <SelectItem value="Health">Health</SelectItem>
+                          <SelectItem value="Productivity">Productivity</SelectItem>
+                          <SelectItem value="Learning">Learning</SelectItem>
+                          <SelectItem value="Finances">Finances</SelectItem>
+                          <SelectItem value="Relationships">Relationships</SelectItem>
+                          <SelectItem value="Creativity">Creativity</SelectItem>
+                          <SelectItem value="Wellness">Wellness</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -236,11 +236,11 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   name="reminder_time"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Hora do Lembrete (Opcional)</FormLabel>
+                      <FormLabel>Reminder Time (Optional)</FormLabel>
                       <FormControl>
                         <Input
                           type="time"
-                          placeholder="Ex: 09:00"
+                          placeholder="E.g., 09:00"
                           {...field}
                         />
                       </FormControl>
@@ -253,18 +253,18 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                   name="goal_type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tipo de Meta (Opcional)</FormLabel>
+                      <FormLabel>Goal Type (Optional)</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione um tipo de meta" />
+                            <SelectValue placeholder="Select a goal type" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="none">Nenhuma meta</SelectItem>
-                          <SelectItem value="daily">Diária</SelectItem>
-                          <SelectItem value="weekly">Semanal</SelectItem>
-                          <SelectItem value="monthly">Mensal</SelectItem>
+                          <SelectItem value="none">No goal</SelectItem>
+                          <SelectItem value="daily">Daily</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                          <SelectItem value="monthly">Monthly</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -278,13 +278,13 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Meta de Conclusões ({form.watch("goal_type") === "daily" ? "por dia" : form.watch("goal_type") === "weekly" ? "por semana" : "por mês"})
+                          Completion Goal ({form.watch("goal_type") === "daily" ? "per day" : form.watch("goal_type") === "weekly" ? "per week" : "per month"})
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             min="1"
-                            placeholder="Ex: 5"
+                            placeholder="E.g., 5"
                             {...field}
                           />
                         </FormControl>
@@ -295,7 +295,7 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
                 )}
                 <DialogFooter>
                   <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
+                    {form.formState.isSubmitting ? "Saving..." : "Save"}
                   </Button>
                 </DialogFooter>
               </form>

@@ -15,21 +15,21 @@ export const exportHabitsData = async (habits: Habit[], userId: string) => {
     .order('completed_at', { ascending: false });
 
   if (completionsError) {
-    showError('Falha ao carregar dados de hábitos para exportação.');
+    showError('Failed to load habit data for export.');
     return;
   }
 
   const exportData = habits.map(habit => {
     const completions = completionsData?.filter(c => c.habit_id === habit.id) || [];
     return {
-      Nome: habit.name,
-      Descrição: habit.description || '',
-      Categoria: habit.category || '',
-      'Data de Criação': habit.created_at.split('T')[0],
-      'Total de Conclusões': completions.length,
-      'Última Conclusão': completions.length > 0 ? completions[0].completed_at : '',
+      Name: habit.name,
+      Description: habit.description || '',
+      Category: habit.category || '',
+      'Creation Date': habit.created_at.split('T')[0],
+      'Total Completions': completions.length,
+      'Last Completion': completions.length > 0 ? completions[0].completed_at : '',
     };
   });
 
-  exportToCSV(exportData, `habitos_${format(new Date(), 'yyyy-MM-dd')}`);
+  exportToCSV(exportData, `habits_${format(new Date(), 'yyyy-MM-dd')}`);
 };

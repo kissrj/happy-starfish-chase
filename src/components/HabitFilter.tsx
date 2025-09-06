@@ -13,7 +13,7 @@ const HabitFilter = ({ habits, selectedHabit, onHabitChange }: HabitFilterProps)
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-lg">Filtrar por Hábito</CardTitle>
+        <CardTitle className="text-lg">Filter by Habit</CardTitle>
       </CardHeader>
       <CardContent>
         <select
@@ -21,7 +21,7 @@ const HabitFilter = ({ habits, selectedHabit, onHabitChange }: HabitFilterProps)
           onChange={(e) => onHabitChange(e.target.value)}
           className="w-full p-2 border rounded-md bg-white"
         >
-          <option value="all">Todos os Hábitos</option>
+          <option value="all">All Habits</option>
           {habits.map(habit => (
             <option key={habit.id} value={habit.id}>
               {habit.name} {habit.category ? `(${habit.category})` : ''}

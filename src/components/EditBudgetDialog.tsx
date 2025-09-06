@@ -26,8 +26,8 @@ import { showSuccess, showError } from "@/utils/toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const budgetSchema = z.object({
-  category: z.string().min(1, "A categoria é obrigatória."),
-  amount: z.coerce.number().positive("O valor deve ser positivo."),
+  category: z.string().min(1, "Category is required."),
+  amount: z.coerce.number().positive("Amount must be positive."),
 });
 
 type BudgetFormValues = z.infer<typeof budgetSchema>;
@@ -70,10 +70,10 @@ export const EditBudgetDialog = ({ budget, open, onOpenChange, onBudgetUpdated }
       .eq("id", budget.id);
 
     if (error) {
-      showError("Ocorreu um erro ao atualizar o orçamento.");
+      showError("An error occurred while updating the budget.");
       console.error(error);
     } else {
-      showSuccess("Orçamento atualizado com sucesso!");
+      showSuccess("Budget updated successfully!");
       onBudgetUpdated();
       onOpenChange(false);
     }
@@ -83,9 +83,9 @@ export const EditBudgetDialog = ({ budget, open, onOpenChange, onBudgetUpdated }
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Editar Orçamento</DialogTitle>
+          <DialogTitle>Edit Budget</DialogTitle>
           <DialogDescription>
-            Faça alterações no seu orçamento aqui. Clique em salvar quando terminar.
+            Make changes to your budget here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -94,9 +94,9 @@ export const EditBudgetDialog = ({ budget, open, onOpenChange, onBudgetUpdated }
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Alimentação" {...field} />
+                  <Input placeholder="E.g., Groceries" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -107,9 +107,9 @@ export const EditBudgetDialog = ({ budget, open, onOpenChange, onBudgetUpdated }
             name="amount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Valor do Orçamento</FormLabel>
+                <FormLabel>Budget Amount</FormLabel>
                 <FormControl>
-                  <Input type="number" step="0.01" placeholder="Ex: 500.00" {...field} />
+                  <Input type="number" step="0.01" placeholder="E.g., 500.00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,7 +117,7 @@ export const EditBudgetDialog = ({ budget, open, onOpenChange, onBudgetUpdated }
           />
           <DialogFooter>
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Salvando..." : "Salvar Alterações"}
+              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </form>

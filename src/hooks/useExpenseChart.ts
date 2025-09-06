@@ -35,7 +35,7 @@ export const useExpenseChart = () => {
       .lte('created_at', lastDayOfMonth);
 
     if (error) {
-      showError('Falha ao carregar dados de despesas.');
+      showError('Failed to load expense data.');
       console.error(error);
       setLoading(false);
       return;

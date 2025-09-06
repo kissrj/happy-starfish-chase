@@ -58,11 +58,11 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
           <div className="flex items-center gap-2">
             <CardTitle className="flex items-center gap-2">
               {unreadCount > 0 ? <Bell className="h-5 w-5" /> : <BellOff className="h-5 w-5" />}
-              Notificações
+              Notifications
             </CardTitle>
             {unreadCount > 0 && (
               <Badge variant="destructive" className="text-xs">
-                {unreadCount} não lidas
+                {unreadCount} unread
               </Badge>
             )}
           </div>
@@ -73,7 +73,7 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
                 size="sm"
                 onClick={() => setShowAll(!showAll)}
               >
-                {showAll ? 'Mostrar Menos' : 'Mostrar Todas'}
+                {showAll ? 'Show Less' : 'Show All'}
               </Button>
             )}
             {notifications.length > 0 && (
@@ -83,7 +83,7 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
                 onClick={onClearAll}
               >
                 <Trash2 className="h-4 w-4 mr-1" />
-                Limpar
+                Clear
               </Button>
             )}
           </div>
@@ -93,8 +93,8 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
         {notifications.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <BellOff className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>Nenhuma notificação ainda.</p>
-            <p className="text-sm">Suas notificações aparecerão aqui.</p>
+            <p>No notifications yet.</p>
+            <p className="text-sm">Your notifications will appear here.</p>
           </div>
         ) : (
           <ScrollArea className="h-[400px]">
@@ -119,9 +119,9 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
                             {notification.title}
                           </h4>
                           <Badge className={`text-xs ${getNotificationColor(notification.type)}`}>
-                            {notification.type === 'reminder' ? 'Lembrete' :
-                             notification.type === 'streak' ? 'Sequência' :
-                             notification.type === 'achievement' ? 'Conquista' : 'Resumo'}
+                            {notification.type === 'reminder' ? 'Reminder' :
+                             notification.type === 'streak' ? 'Streak' :
+                             notification.type === 'achievement' ? 'Achievement' : 'Summary'}
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">
@@ -129,11 +129,11 @@ const NotificationCenter = ({ notifications, onMarkAsRead, onClearAll, unreadCou
                         </p>
                         {notification.habit_name && (
                           <p className="text-xs text-muted-foreground">
-                            Hábito: {notification.habit_name}
+                            Habit: {notification.habit_name}
                           </p>
                         )}
                         <p className="text-xs text-muted-foreground">
-                          {format(new Date(notification.created_at), 'dd/MM/yyyy HH:mm')}
+                          {format(new Date(notification.created_at), 'MM/dd/yyyy HH:mm')}
                         </p>
                       </div>
                     </div>

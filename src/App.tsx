@@ -10,12 +10,11 @@ import Profile from "./pages/Profile";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HabitDetail from "./pages/HabitDetail";
-import FinancePage from "./pages/Finance";
+import FinanceTracker from "./pages/FinanceTracker";
 import Settings from "./pages/Settings";
 import Calendar from "./pages/Calendar";
 import HabitInsights from "./pages/HabitInsights";
 import Notifications from "./pages/Notifications";
-import FinancialSummary from './components/FinancialSummary';
 import AchievementsPage from './pages/Achievements';
 
 const queryClient = new QueryClient();
@@ -33,7 +32,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/habit/:id" element={<HabitDetail />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/finance" element={<FinancePage />} />
+              <Route path="/finance" element={<FinanceTracker />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/insights" element={<HabitInsights />} />

@@ -32,9 +32,9 @@ const BudgetList = ({ budgets, loading, onEditBudget, onDeleteBudget }: BudgetLi
   if (budgets.length === 0) {
     return (
       <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Nenhum orçamento encontrado</h2>
+        <h2 className="text-xl font-semibold mb-2 text-gray-800">No budgets found</h2>
         <p className="text-gray-600">
-          Adicione orçamentos para acompanhar seus gastos.
+          Add budgets to track your spending.
         </p>
       </div>
     );
@@ -54,21 +54,21 @@ const BudgetList = ({ budgets, loading, onEditBudget, onDeleteBudget }: BudgetLi
               <h3 className="font-semibold">{budget.category}</h3>
               <div className="flex items-center gap-2">
                 <p className="text-sm text-muted-foreground">
-                  R$ {spentFormatted} / R$ {amountFormatted}
+                  $ {spentFormatted} / $ {amountFormatted}
                 </p>
                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onEditBudget(budget)}>
                   <Pencil className="h-4 w-4" />
-                  <span className="sr-only">Editar Orçamento</span>
+                  <span className="sr-only">Edit Budget</span>
                 </Button>
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => onDeleteBudget(budget)}>
                   <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Excluir Orçamento</span>
+                  <span className="sr-only">Delete Budget</span>
                 </Button>
               </div>
             </div>
             <Progress value={progress} className="h-2" indicatorClassName={progressColor} />
             {progress > 100 && (
-              <p className="text-xs text-red-600 mt-1">Você ultrapassou o orçamento!</p>
+              <p className="text-xs text-red-600 mt-1">You've exceeded the budget!</p>
             )}
           </div>
         );

@@ -16,18 +16,18 @@ const AppearanceSettings = ({ darkMode, onThemeToggle }: AppearanceSettingsProps
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {darkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-          Aparência
+          Appearance
         </CardTitle>
         <CardDescription>
-          Personalize a aparência do aplicativo.
+          Customize the look and feel of the application.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label htmlFor="dark-mode">Modo escuro</Label>
+            <Label htmlFor="dark-mode">Dark mode</Label>
             <p className="text-sm text-muted-foreground">
-              Alterne entre tema claro e escuro.
+              Toggle between light and dark theme.
             </p>
           </div>
           <Switch

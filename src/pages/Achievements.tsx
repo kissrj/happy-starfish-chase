@@ -8,9 +8,9 @@ const AchievementsPage = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-2">Conquistas</h1>
+      <h1 className="text-3xl font-bold mb-2">Achievements</h1>
       <p className="text-muted-foreground mb-8">
-        Desbloqueie conquistas completando seus hábitos e mantendo a consistência.
+        Unlock achievements by completing your habits and staying consistent.
       </p>
 
       {isLoading ? (
