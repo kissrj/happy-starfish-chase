@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { MadeWithDyad } from '@/components/made-with-dyad';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import BudgetManager from '@/components/BudgetManager';
+import TransactionManager from '@/components/TransactionManager';
+import FinancialSummary from '@/components/FinancialSummary';
 
 const FinanceTracker = () => {
   return (
@@ -20,33 +22,14 @@ const FinanceTracker = () => {
           </Button>
         </div>
       </header>
-      <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+        <FinancialSummary />
         <div className="grid gap-8 md:grid-cols-2">
           {/* Budgets Section */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Orçamentos</CardTitle>
-                <CardDescription>Defina e acompanhe seus orçamentos por categoria.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">O gerenciamento de orçamentos estará disponível em breve.</p>
-              </CardContent>
-            </Card>
-          </div>
+          <BudgetManager />
 
           {/* Transactions Section */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Transações</CardTitle>
-                <CardDescription>Registre suas receitas e despesas.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">O gerenciamento de transações estará disponível em breve.</p>
-              </CardContent>
-            </Card>
-          </div>
+          <TransactionManager />
         </div>
       </main>
       <MadeWithDyad />
