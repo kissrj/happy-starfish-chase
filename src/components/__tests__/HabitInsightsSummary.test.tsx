@@ -32,41 +32,6 @@ const mockInsights = [
 ];
 
 describe('HabitInsightsSummary', () => {
-  it('<dyad-write path="src/components/__tests__/HabitInsightsSummary.test.tsx" description="Completing the HabitInsightsSummary test file.">
-import { render, screen } from '@/test/utils';
-import { describe, it, expect } from 'vitest';
-import HabitInsightsSummary from '@/components/HabitInsightsSummary';
-
-const mockInsights = [
-  {
-    id: '1',
-    name: 'Habit 1',
-    completionRate: 80,
-    currentStreak: 5,
-    longestStreak: 10,
-    totalCompletions: 20,
-    weeklyTrend: 'up' as const,
-    monthlyTrend: 'stable' as const,
-    bestDay: 'Monday',
-    worstDay: 'Friday',
-    recommendation: 'Good job!',
-  },
-  {
-    id: '2',
-    name: 'Habit 2',
-    completionRate: 60,
-    currentStreak: 3,
-    longestStreak: 8,
-    totalCompletions: 15,
-    weeklyTrend: 'stable' as const,
-    monthlyTrend: 'up' as const,
-    bestDay: 'Tuesday',
-    worstDay: 'Saturday',
-    recommendation: 'Keep going!',
-  },
-];
-
-describe('HabitInsightsSummary', () => {
   it('renders summary cards with correct data', () => {
     render(<HabitInsightsSummary insights={mockInsights} />);
     
