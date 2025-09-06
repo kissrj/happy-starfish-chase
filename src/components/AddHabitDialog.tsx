@@ -30,6 +30,7 @@ import { showSuccess, showError } from "@/utils/toast";
 import { PlusCircle } from "lucide-react";
 import { requestNotificationPermission } from "@/utils/notifications";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import HabitTemplates from "./HabitTemplates";
 
 const habitSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório."),
@@ -101,6 +102,17 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
     }
   };
 
+  const handleTemplateSelect = (template: any) => {
+    form.reset({
+      name: template.name,
+      description: template.description,
+      reminder_time: template.reminder_time || "",
+      goal_type: template.goal_type,
+      goal_target: template.goal_target,
+      category: template.category,
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -116,6 +128,9 @@ const AddHabitDialog = ({ onHabitAdded }: AddHabitDialogProps) => {
             Preencha os detalhes do seu novo hábito. Clique em salvar quando terminar.
           </DialogDescription>
         </DialogHeader>
+        <div className="mb-4">
+          <HabitTemplates onSelectTemplate={handleTemplateSelect} />
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
