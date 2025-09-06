@@ -1,19 +1,25 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-// Mock data for the chart
-const chartData = [
-  { day: 'Mon', completed: 4, total: 5 },
-  { day: 'Tue', completed: 3, total: 5 },
-  { day: 'Wed', completed: 5, total: 5 },
-  { day: 'Thu', completed: 2, total: 5 },
-  { day: 'Fri', completed: 4, total: 5 },
-  { day: 'Sat', completed: 1, total: 3 },
-  { day: 'Sun', completed: 3, total: 5 },
-];
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useHabitTrends } from '@/hooks/useHabitTrends';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const HabitTrendsChart: React.FC = () => {
+  const { trendData, loading } = useHabitTrends();
+
+  if (loading) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Weekly Completion Trends</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-64 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -23,7 +29,7 @@ const HabitTrendsChart: React.FC = () => {
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={chartData}
+              data={trendData}
               margin={{
                 top: 5,
                 right: 30,
@@ -33,7 +39,7 @@ const HabitTrendsChart: React.FC = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
-              <YAxis />
+              <YAxis allowDecimals={false} />
               <Tooltip 
                 formatter={(value, name) => {
                   if (name === 'completed') return [value, 'Completed'];
@@ -41,6 +47,7 @@ const HabitTrendsChart: React.FC = () => {
                   return [value, name];
                 }}
               />
+              <Legend />
               <Bar dataKey="completed" name="Completed" fill="#10b981" />
               <Bar dataKey="total" name="Total Habits" fill="#94a3b8" />
             </BarChart>
