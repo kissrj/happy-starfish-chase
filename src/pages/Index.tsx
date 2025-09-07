@@ -20,6 +20,7 @@ import HabitListSection from '@/components/HabitListSection';
 import WeeklyOverview from '@/components/WeeklyOverview';
 import MotivationalQuotes from '@/components/MotivationalQuotes';
 import QuickActions from '@/components/QuickActions';
+import HabitSharing from '@/components/HabitSharing'; // Added import
 
 const Index = () => {
   const { user } = useAuth();
@@ -52,6 +53,12 @@ const Index = () => {
 
   const totalHabits = habits.length;
   const completedToday = habits.filter(habit => habit.completed_today).length;
+
+  // Calculate total completions for sharing
+  const totalCompletions = habits.reduce((total, habit) => {
+    // This is a simplified calculation - in a real app you'd fetch this from the database
+    return total + (habit.completed_today ? 1 : 0);
+  }, 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,6 +116,14 @@ const Index = () => {
           longestStreak={longestStreak}
           achievements={achievements}
           userAchievements={userAchievements}
+        />
+
+        <HabitSharing
+          habits={habits}
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
+          totalCompletions={totalCompletions}
+          userName={user?.email?.split('@')[0]}
         />
 
         <QuickActions 

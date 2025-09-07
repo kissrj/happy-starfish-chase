@@ -17,7 +17,8 @@ import HabitInsights from "./pages/HabitInsights";
 import Notifications from "./pages/Notifications";
 import AchievementsPage from './pages/Achievements';
 import HabitTemplates from './pages/HabitTemplates';
-import HabitArchivePage from './pages/HabitArchive'; // Added import
+import HabitArchivePage from './pages/HabitArchive';
+import ShareProgress from './pages/ShareProgress'; // Added import
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/share/:shareId" element={<ShareProgress />} /> {/* Added public route */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Index />} />
               <Route path="/habit/:id" element={<HabitDetail />} />
@@ -41,7 +43,7 @@ const App = () => (
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/templates" element={<HabitTemplates />} />
-              <Route path="/archive" element={<HabitArchivePage />} /> {/* Added route */}
+              <Route path="/archive" element={<HabitArchivePage />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
