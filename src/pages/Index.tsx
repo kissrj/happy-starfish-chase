@@ -11,18 +11,12 @@ import Confetti from 'react-confetti';
 import { useHabits } from '@/hooks/useHabits';
 import { useDailySummary } from '@/hooks/useDailySummary';
 import { useHabitActions } from '@/hooks/useHabitActions';
-import DailySummary from '@/components/DailySummary';
-import HabitFilters from '@/components/HabitFilters';
-import HabitList from '@/components/HabitList';
-import QuickStart from '@/components/QuickStart';
 import DeleteHabitDialog from '@/components/DeleteHabitDialog';
 import { exportHabitsData } from '@/utils/habitExport';
-import StreakCounter from '@/components/StreakCounter';
-import AchievementsPanel from '@/components/AchievementsPanel';
-import HabitTrendsChart from '@/components/HabitTrendsChart';
 import { useStreak } from '@/hooks/useStreak';
-import { useHabitTrends } from '@/hooks/useHabitTrends';
 import { useAchievements } from '@/hooks/useAchievements';
+import DashboardSummarySection from '@/components/DashboardSummarySection';
+import HabitListSection from '@/components/HabitListSection';
 
 const Index = () => {
   const { user } = useAuth();
@@ -32,9 +26,6 @@ const Index = () => {
   const { currentStreak, longestStreak } = useStreak();
   const { achievements, userAchievements } = useAchievements();
 
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
@@ -43,8 +34,6 @@ const Index = () => {
     if (!user?.id) return;
     exportHabitsData(habits, user.id);
   };
-
-  const categories = ['all', ...Array.from(new Set(habits.map(h => h.category).filter(Boolean)))];
 
   const totalHabits = habits.length;
   const completedToday = habits.filter(habit => habit.completed_today).length;
@@ -85,44 +74,20 @@ const Index = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <StreakCounter 
-          currentStreak={currentStreak}
-          longestStreak={longestStreak}
+        <DashboardSummarySection
           totalHabits={totalHabits}
           completedToday={completedToday}
-          unlockedAchievementsCount={userAchievements.length}
-          totalAchievementsCount={achievements.length}
-        />
-        
-        <AchievementsPanel />
-        
-        <HabitTrendsChart />
-        
-        <DailySummary
-          total={dailySummary.total}
-          completed={dailySummary.completed}
-          remaining={dailySummary.remaining}
+          dailySummary={dailySummary}
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
+          achievements={achievements}
+          userAchievements={userAchievements}
         />
 
-        {habits.length === 0 && <QuickStart onHabitAdded={fetchHabits} />}
-
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-          <h2 className="text-2xl font-bold text-gray-800">Your Habits</h2>
-          <HabitFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            categories={categories}
-            onHabitAdded={fetchHabits}
-          />
-        </div>
-
-        <HabitList
+        <HabitListSection
           habits={habits}
           loading={loading}
-          searchTerm={searchTerm}
-          selectedCategory={selectedCategory}
+          onHabitAdded={fetchHabits}
           onToggleCompletion={handleToggleCompletion}
           onDeleteHabit={setHabitToDelete}
         />
