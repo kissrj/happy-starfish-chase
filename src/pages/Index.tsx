@@ -17,7 +17,8 @@ import { useStreak } from '@/hooks/useStreak';
 import { useAchievements } from '@/hooks/useAchievements';
 import DashboardSummarySection from '@/components/DashboardSummarySection';
 import HabitListSection from '@/components/HabitListSection';
-import WeeklyOverview from '@/components/WeeklyOverview'; // Added import
+import WeeklyOverview from '@/components/WeeklyOverview';
+import MotivationalQuotes from '@/components/MotivationalQuotes'; // Added import
 
 const Index = () => {
   const { user } = useAuth();
@@ -75,6 +76,8 @@ const Index = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <MotivationalQuotes /> {/* Added MotivationalQuotes component */}
+
         <DashboardSummarySection
           totalHabits={totalHabits}
           completedToday={completedToday}
@@ -85,7 +88,7 @@ const Index = () => {
           userAchievements={userAchievements}
         />
 
-        <WeeklyOverview habits={habits} /> {/* Added WeeklyOverview component */}
+        <WeeklyOverview habits={habits} />
 
         <HabitListSection
           habits={habits}
