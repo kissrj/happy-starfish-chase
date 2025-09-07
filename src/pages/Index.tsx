@@ -18,7 +18,8 @@ import { useAchievements } from '@/hooks/useAchievements';
 import DashboardSummarySection from '@/components/DashboardSummarySection';
 import HabitListSection from '@/components/HabitListSection';
 import WeeklyOverview from '@/components/WeeklyOverview';
-import MotivationalQuotes from '@/components/MotivationalQuotes'; // Added import
+import MotivationalQuotes from '@/components/MotivationalQuotes';
+import QuickActions from '@/components/QuickActions'; // Added import
 
 const Index = () => {
   const { user } = useAuth();
@@ -76,7 +77,7 @@ const Index = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <MotivationalQuotes /> {/* Added MotivationalQuotes component */}
+        <MotivationalQuotes />
 
         <DashboardSummarySection
           totalHabits={totalHabits}
@@ -87,6 +88,8 @@ const Index = () => {
           achievements={achievements}
           userAchievements={userAchievements}
         />
+
+        <QuickActions habits={habits} onToggleCompletion={handleToggleCompletion} /> {/* Added QuickActions component */}
 
         <WeeklyOverview habits={habits} />
 
