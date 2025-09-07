@@ -6,10 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { useAuth } from '@/context/AuthProvider';
 import { useSettings } from '@/hooks/useSettings';
-import NotificationSettings from '@/components/NotificationSettings';
-import AppearanceSettings from '@/components/AppearanceSettings';
-import DataManagementSettings from '@/components/DataManagementSettings';
-import AccountInformation from '@/components/AccountInformation';
+import SettingsContent from '@/components/SettingsContent';
 
 const Settings = () => {
   const { user } = useAuth();
@@ -35,31 +32,15 @@ const Settings = () => {
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-2xl">
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Customize your Habit Tracker experience.
-            </p>
-          </div>
-
-          <NotificationSettings
-            notificationsEnabled={notificationsEnabled}
-            onNotificationToggle={handleNotificationToggle}
-          />
-
-          <AppearanceSettings
-            darkMode={darkMode}
-            onThemeToggle={handleThemeToggle}
-          />
-
-          <DataManagementSettings
-            onExportAllData={handleExportAllData}
-            onDeleteAllData={handleDeleteAllData}
-          />
-
-          <AccountInformation user={user} />
-        </div>
+        <SettingsContent
+          user={user}
+          notificationsEnabled={notificationsEnabled}
+          darkMode={darkMode}
+          onNotificationToggle={handleNotificationToggle}
+          onThemeToggle={handleThemeToggle}
+          onExportAllData={handleExportAllData}
+          onDeleteAllData={handleDeleteAllData}
+        />
       </main>
       <MadeWithDyad />
     </div>
