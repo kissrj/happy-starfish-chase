@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Habit } from '@/hooks/useHabits';
+import HabitCompletionAnimation from '@/components/HabitCompletionAnimation';
 
 interface HabitListProps {
   habits: Habit[];
@@ -16,6 +17,8 @@ interface HabitListProps {
   selectedCategory: string;
   onToggleCompletion: (habit: Habit) => void;
   onDeleteHabit: (habit: Habit) => void;
+  showCompletionAnimation: boolean;
+  onAnimationComplete: () => void;
 }
 
 const HabitList = ({
@@ -24,7 +27,9 @@ const HabitList = ({
   searchTerm,
   selectedCategory,
   onToggleCompletion,
-  onDeleteHabit
+  onDeleteHabit,
+  showCompletionAnimation,
+  onAnimationComplete
 }: HabitListProps) => {
   const filteredHabits = habits.filter(habit => {
     const matchesSearch = habit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -155,7 +160,15 @@ const HabitList = ({
     );
   };
 
-  return renderContent();
+  return (
+    <>
+      {renderContent()}
+      <HabitCompletionAnimation
+        isCompleted={showCompletionAnimation}
+        onAnimationComplete={onAnimationComplete}
+      />
+    </>
+  );
 };
 
 export default HabitList;

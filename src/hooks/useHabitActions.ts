@@ -6,11 +6,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { showError, showSuccess } from '@/utils/toast';
 import { Habit } from './useHabits';
 import { checkAndAwardAchievements } from '@/utils/achievementChecker';
+import { playCompletionSound, playStreakSound, playAllCompletedSound } from '@/utils/soundEffects';
 
 export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[]) => void) => {
   const { user } = useAuth();
   const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
 
   const handleToggleCompletion = async (habit: Habit) => {
     const today = new Date().toISOString().split('T')[0];
@@ -22,6 +24,12 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
     );
     updateHabits(updatedHabits);
 
+    // Play sound effect
+    if (!wasCompleted) {
+      playCompletionSound();
+      setShowCompletionAnimation(true);
+    }
+
     // Trigger confetti if all habits are completed
     const totalHabits = updatedHabits.length;
     const completedTodayCount = updatedHabits.filter(h => h.completed_today).length;
@@ -29,6 +37,7 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
 
     if (!wasCompleted && remainingTodayCount === 0 && totalHabits > 0) {
       setShowConfetti(true);
+      playAllCompletedSound();
       setTimeout(() => setShowConfetti(false), 5000);
     }
 
@@ -79,6 +88,8 @@ export const useHabitActions = (habits: Habit[], updateHabits: (habits: Habit[])
     habitToDelete,
     setHabitToDelete,
     showConfetti,
+    showCompletionAnimation,
+    setShowCompletionAnimation,
     handleToggleCompletion,
     handleDeleteHabit,
   };

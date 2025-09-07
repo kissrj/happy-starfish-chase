@@ -25,7 +25,15 @@ const Index = () => {
   const { user } = useAuth();
   const { habits, loading, fetchHabits, updateHabits } = useHabits();
   const { dailySummary } = useDailySummary(habits);
-  const { habitToDelete, setHabitToDelete, showConfetti, handleToggleCompletion, handleDeleteHabit } = useHabitActions(habits, updateHabits);
+  const { 
+    habitToDelete, 
+    setHabitToDelete, 
+    showConfetti, 
+    showCompletionAnimation,
+    setShowCompletionAnimation,
+    handleToggleCompletion, 
+    handleDeleteHabit 
+  } = useHabitActions(habits, updateHabits);
   const { currentStreak, longestStreak } = useStreak();
   const { achievements, userAchievements } = useAchievements();
 
@@ -36,6 +44,10 @@ const Index = () => {
   const handleExportHabits = () => {
     if (!user?.id) return;
     exportHabitsData(habits, user.id);
+  };
+
+  const handleAnimationComplete = () => {
+    setShowCompletionAnimation(false);
   };
 
   const totalHabits = habits.length;
@@ -99,7 +111,12 @@ const Index = () => {
           userAchievements={userAchievements}
         />
 
-        <QuickActions habits={habits} onToggleCompletion={handleToggleCompletion} />
+        <QuickActions 
+          habits={habits} 
+          onToggleCompletion={handleToggleCompletion}
+          showCompletionAnimation={showCompletionAnimation}
+          onAnimationComplete={handleAnimationComplete}
+        />
 
         <WeeklyOverview habits={habits} />
 
@@ -109,6 +126,8 @@ const Index = () => {
           onHabitAdded={fetchHabits}
           onToggleCompletion={handleToggleCompletion}
           onDeleteHabit={setHabitToDelete}
+          showCompletionAnimation={showCompletionAnimation}
+          onAnimationComplete={handleAnimationComplete}
         />
       </main>
       <MadeWithDyad />

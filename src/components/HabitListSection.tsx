@@ -12,6 +12,8 @@ interface HabitListSectionProps {
   onHabitAdded: () => void;
   onToggleCompletion: (habit: Habit) => void;
   onDeleteHabit: (habit: Habit) => void;
+  showCompletionAnimation: boolean;
+  onAnimationComplete: () => void;
 }
 
 const HabitListSection = ({
@@ -20,6 +22,8 @@ const HabitListSection = ({
   onHabitAdded,
   onToggleCompletion,
   onDeleteHabit,
+  showCompletionAnimation,
+  onAnimationComplete,
 }: HabitListSectionProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -52,6 +56,8 @@ const HabitListSection = ({
         selectedCategory={selectedCategory}
         onToggleCompletion={onToggleCompletion}
         onDeleteHabit={onDeleteHabit}
+        showCompletionAnimation={showCompletionAnimation}
+        onAnimationComplete={onAnimationComplete}
       />
     </>
   );
