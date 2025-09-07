@@ -64,7 +64,15 @@ const HabitGoalsSystem = ({ habitId, habitName, onGoalUpdate }: HabitGoalsSystem
   };
 
   const addGoal = async () => {
-    if (!user) return;
+    if (!user) {
+      showError('You must be logged in to add a goal.');
+      return;
+    }
+
+    if (!newGoal.target || newGoal.target <= 0) {
+      showError('Please enter a valid target.');
+      return;
+    }
 
     try {
       const { data, error } = await supabase
@@ -80,7 +88,11 @@ const HabitGoalsSystem = ({ habitId, habitName, onGoalUpdate }: HabitGoalsSystem
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error adding goal:', error);
+        showError('Failed to add goal. Please try again.');
+        return;
+      }
 
       setGoals([data, ...goals]);
       setNewGoal({ type: 'daily', target: 1, deadline: '' });
@@ -88,8 +100,8 @@ const HabitGoalsSystem = ({ habitId, habitName, onGoalUpdate }: HabitGoalsSystem
       showSuccess('Goal added successfully!');
       onGoalUpdate?.();
     } catch (error) {
-      showError('Failed to add goal');
-      console.error(error);
+      console.error('Error adding goal:', error);
+      showError('Failed to add goal. Please try again.');
     }
   };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 
 // Mock Supabase
 import { vi } from 'vitest';

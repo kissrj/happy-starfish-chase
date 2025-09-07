@@ -12,6 +12,7 @@ import HabitStreakDisplay from '@/components/HabitStreakDisplay';
 import HabitCalendar from '@/components/HabitCalendar';
 import HabitCompletionChart from '@/components/HabitCompletionChart';
 import HabitDetailStats from '@/components/HabitDetailStats';
+import HabitGoalsSystem from '@/components/HabitGoalsSystem';
 
 const HabitDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -91,6 +92,13 @@ const HabitDetail = () => {
         {habit.goal_type && habit.goal_type !== 'none' && habit.goal_target && (
           <HabitGoalProgress habit={habit as { id: string; name: string; goal_type: string; goal_target: number }} />
         )}
+
+        {/* Goals System */}
+        <HabitGoalsSystem 
+          habitId={habit.id} 
+          habitName={habit.name} 
+          onGoalUpdate={fetchHabitDetails}
+        />
 
         <HabitStreakDisplay currentStreak={currentStreak} longestStreak={longestStreak} />
 
