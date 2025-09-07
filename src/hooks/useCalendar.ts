@@ -10,6 +10,8 @@ export interface Habit {
   id: string;
   name: string;
   description: string | null;
+  created_at: string;
+  completed_today: boolean;
   category?: string;
 }
 
@@ -18,6 +20,8 @@ export interface CompletionData {
     [date: string]: boolean;
   };
 }
+
+export type CompletionStatus = boolean;
 
 export const useCalendar = () => {
   const { user } = useAuth();
@@ -89,7 +93,7 @@ export const useCalendar = () => {
     return eachDayOfInterval({ start, end });
   };
 
-  const getCompletionStatus = (date: Date, habitId: string) => {
+  const getCompletionStatus = (date: Date, habitId: string): CompletionStatus => {
     if (selectedHabit === 'all') {
       // For "all habits" view, show if ANY habit was completed that day
       return habits.some(habit => completionData[habit.id]?.[format(date, 'yyyy-MM-dd')]);
@@ -99,7 +103,7 @@ export const useCalendar = () => {
     }
   };
 
-  const getCompletionCount = (date: Date) => {
+  const getCompletionCount = (date: Date): number => {
     if (selectedHabit === 'all') {
       return habits.filter(habit => completionData[habit.id]?.[format(date, 'yyyy-MM-dd')]).length;
     }

@@ -26,13 +26,16 @@ const iconMap: { [key: string]: React.ElementType } = {
   Palette,
 };
 
-interface IconProps extends React.ComponentProps<typeof LucideIcon> {
+interface IconProps {
   name: string;
+  className?: string;
+  size?: number;
+  iconNode?: React.ReactNode;
 }
 
-const Icon = ({ name, ...props }: IconProps) => {
-  const IconComponent = iconMap[name] || Trophy; // Default to Trophy icon
-  return <IconComponent {...props} />;
+const Icon = ({ name, className, size, iconNode }: IconProps) => {
+  const IconComponent = iconMap[name] || Trophy;
+  return <IconComponent className={className} size={size} />;
 };
 
 export default Icon;

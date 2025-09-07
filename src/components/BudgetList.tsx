@@ -66,7 +66,7 @@ const BudgetList = ({ budgets, loading, onEditBudget, onDeleteBudget }: BudgetLi
                 </Button>
               </div>
             </div>
-            <Progress value={progress} className="h-2" indicatorClassName={progressColor} />
+            <Progress value={progress} className="h-2" />
             {progress > 100 && (
               <p className="text-xs text-red-600 mt-1">You've exceeded the budget!</p>
             )}

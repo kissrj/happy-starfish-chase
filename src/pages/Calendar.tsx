@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from 'react';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { useCalendar } from '@/hooks/useCalendar';
 import CalendarHeader from '@/components/CalendarHeader';
-import CalendarView from '@/components/CalendarView'; // Import the new component
+import CalendarView from '@/components/CalendarView';
 
 const Calendar = () => {
   const {
@@ -18,8 +19,7 @@ const Calendar = () => {
     getCompletionStatus,
     getCompletionCount,
     getMonthStats,
-  }
-  = useCalendar();
+  } = useCalendar();
 
   const days = getDaysInMonth();
   const stats = getMonthStats();

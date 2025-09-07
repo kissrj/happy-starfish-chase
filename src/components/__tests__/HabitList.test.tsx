@@ -16,6 +16,8 @@ describe('HabitList', () => {
     selectedCategory: 'all',
     onToggleCompletion: vi.fn(),
     onDeleteHabit: vi.fn(),
+    showCompletionAnimation: false,
+    onAnimationComplete: vi.fn(),
   };
 
   it('renders habits list', () => {

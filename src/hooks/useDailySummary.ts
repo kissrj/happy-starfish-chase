@@ -3,8 +3,14 @@
 import { useState, useEffect } from 'react';
 import { Habit } from './useHabits';
 
+export interface DailySummaryData {
+  total: number;
+  completed: number;
+  remaining: number;
+}
+
 export const useDailySummary = (habits: Habit[]) => {
-  const [dailySummary, setDailySummary] = useState({ total: 0, completed: 0, remaining: 0 });
+  const [dailySummary, setDailySummary] = useState<DailySummaryData>({ total: 0, completed: 0, remaining: 0 });
 
   useEffect(() => {
     const totalHabits = habits.length;

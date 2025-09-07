@@ -84,6 +84,6 @@ test.describe('Insights and Analytics', () => {
     
     // Should show stats cards
     await expect(page.locator('text=Total de Conclusões')).toBeVisible();
-    await expect(page.locator('text=Dias Ativos')).toBeInTheDocument();
+    await expect(page.locator('text=Dias Ativos')).toBeVisible();
   });
 });

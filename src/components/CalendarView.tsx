@@ -4,21 +4,22 @@ import HabitFilter from '@/components/HabitFilter';
 import MonthlyStats from '@/components/MonthlyStats';
 import CalendarGrid from '@/components/CalendarGrid';
 import CalendarLegend from '@/components/CalendarLegend';
-import { Habit } from '@/hooks/useHabits'; // Assuming Habit type is available from useHabits
-import { CompletionData, CompletionStatus } from '@/hooks/useCalendar'; // Assuming these types are defined in useCalendar
+import { Habit } from '@/hooks/useHabits';
+import { CompletionData, CompletionStatus } from '@/hooks/useCalendar';
 
 interface CalendarViewProps {
   habits: Habit[];
   completionData: CompletionData;
   loading: boolean;
-  selectedHabit: Habit | null;
-  setSelectedHabit: (habit: Habit | null) => void;
+  selectedHabit: string;
+  setSelectedHabit: (habitId: string) => void;
   days: Date[];
-  getCompletionStatus: (date: Date, habitId: string | null) => CompletionStatus;
-  getCompletionCount: (date: Date, habitId: string | null) => number;
+  getCompletionStatus: (date: Date, habitId: string) => CompletionStatus;
+  getCompletionCount: (date: Date) => number;
   stats: {
-    totalHabits: number;
-    completedHabits: number;
+    totalCompletions: number;
+    completedDays: number;
+    totalDays: number;
     completionRate: number;
   };
 }

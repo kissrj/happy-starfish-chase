@@ -59,7 +59,8 @@ test.describe('Habit Management', () => {
     await page.goto('/');
     
     // Click the delete button (trash icon)
-    await page.click('[aria-label*="excluir"]').first();
+    const deleteButton = page.locator('[aria-label*="excluir"]').first();
+    await deleteButton.click();
     
     // Confirm deletion in alert dialog
     await page.click('text=Excluir');
@@ -72,7 +73,8 @@ test.describe('Habit Management', () => {
     await page.goto('/');
     
     // Click edit button
-    await page.click('text=Editar Hábito').first();
+    const editButton = page.locator('text=Editar Hábito').first();
+    await editButton.click();
     
     // Wait for dialog
     await page.waitForSelector('[role="dialog"]');
