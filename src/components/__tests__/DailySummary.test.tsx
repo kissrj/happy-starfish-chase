@@ -1,5 +1,3 @@
-/// <reference types="@testing-library/jest-dom" />
-/// <reference types="vitest" />
 import { render, screen } from '@/test/utils';
 import { describe, it, expect, vi } from 'vitest';
 import DailySummary from '@/components/DailySummary';

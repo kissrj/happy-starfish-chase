@@ -21,6 +21,8 @@
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
 
+    "types": ["vitest/globals", "@testing-library/jest-dom", "@playwright/test"],
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

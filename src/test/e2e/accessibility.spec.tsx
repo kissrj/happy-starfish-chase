@@ -1,5 +1,3 @@
-/// <reference types="@testing-library/jest-dom" />
-/// <reference types="vitest" />
 import { test, expect } from '@playwright/test';
 
 test.describe('Accessibility', () => {

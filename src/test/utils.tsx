@@ -1,4 +1,3 @@
-/// <reference types="@testing-library/jest-dom" />
 import React, { ReactElement } from 'react';
 import { render as rtlRender, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

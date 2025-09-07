@@ -1,5 +1,3 @@
-/// <reference types="@testing-library/jest-dom" />
-/// <reference types="vitest" />
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { useDailySummary } from '@/hooks/useDailySummary';

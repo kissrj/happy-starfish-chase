@@ -1,5 +1,3 @@
-/// <reference types="@testing-library/jest-dom" />
-/// <reference types="vitest" />
 import { render, screen, fireEvent } from '@/test/utils';
 import { describe, it, expect, vi } from 'vitest';
 import HabitList from '@/components/HabitList';

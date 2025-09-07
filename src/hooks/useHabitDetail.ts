@@ -5,5 +5,5 @@ export interface HabitDetail {
   goal_type?: string;
   goal_target?: number;
   category?: string;
-  completed_today: boolean; // Added this property
+  completed_today: boolean;
 }

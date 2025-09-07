@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import React from 'react';
 
 // Mock Supabase
