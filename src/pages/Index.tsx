@@ -59,6 +59,11 @@ const Index = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
+              <Link to="/archive">
+                📦 Archive
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
               <Link to="/insights">
                 📊 Insights
               </Link>
