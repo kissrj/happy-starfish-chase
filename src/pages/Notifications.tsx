@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Bell } from 'lucide-react';
 import { MadeWithDyad } from '@/components/made-with-dyad';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNotifications } from '@/hooks/useNotifications';
-import NotificationCenter from '@/components/NotificationCenter';
-import AdvancedNotificationSettings from '@/components/AdvancedNotificationSettings';
 import { showSuccess } from '@/utils/toast';
+import NotificationsContent from '@/components/NotificationsContent';
 
 const Notifications = () => {
   const {
@@ -52,7 +50,7 @@ const Notifications = () => {
             <div></div>
           </div>
         </header>
-        <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <main className="container mx-auto p-4 sm:p-6 lg:px-8 max-w-4xl">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-gray-200 rounded w-1/4"></div>
             <div className="h-64 bg-gray-200 rounded"></div>
@@ -68,53 +66,32 @@ const Notifications = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Button asChild variant="outline" size="sm">
             <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
-            </Link>
-          </Button>
-          <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Notifications
-          </h1>
-          <div></div>
-        </div>
-      </header>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Link>
+            </Button>
+            <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              Notifications
+            </h1>
+            <div></div>
+          </div>
+        </header>
 
-      <main className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Notification Center</h2>
-          <p className="text-gray-600">
-            Manage your notifications and customize how you want to be reminded of your habits.
-          </p>
-        </div>
-
-        <Tabs defaultValue="center" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="center">Notification Center</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="center" className="space-y-6">
-            <NotificationCenter
-              notifications={history}
-              onMarkAsRead={markAsRead}
-              onClearAll={clearAllNotifications}
-              unreadCount={unreadCount}
-            />
-          </TabsContent>
-
-          <TabsContent value="settings" className="space-y-6">
-            <AdvancedNotificationSettings
-              settings={settings}
-              onSettingsChange={saveSettings}
-              onTestNotification={handleTestNotification}
-            />
-          </TabsContent>
-        </Tabs>
-      </main>
-      <MadeWithDyad />
-    </div>
-  );
-};
+        <main className="container mx-auto p-4 sm:p-6 lg:px-8 max-w-4xl">
+          <NotificationsContent
+            settings={settings}
+            history={history}
+            unreadCount={unreadCount}
+            onSettingsChange={saveSettings}
+            onMarkAsRead={markAsRead}
+            onClearAll={clearAllNotifications}
+            onTestNotification={handleTestNotification}
+          />
+        </main>
+        <MadeWithDyad />
+      </div>
+    );
+  };
 
 export default Notifications;
