@@ -84,7 +84,6 @@ DialogFooter.displayName = "DialogFooter"
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props<dyad-write path="src/components/ui/dialog.tsx" description="Completing the dialog component.">
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
