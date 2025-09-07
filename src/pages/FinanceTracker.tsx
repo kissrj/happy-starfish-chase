@@ -7,6 +7,7 @@ import { MadeWithDyad } from '@/components/made-with-dyad';
 import BudgetManager from '@/components/BudgetManager';
 import TransactionManager from '@/components/TransactionManager';
 import FinancialSummary from '@/components/FinancialSummary';
+import ExpenseChart from '@/components/ExpenseChart'; // Added import
 
 const FinanceTracker = () => {
   return (
@@ -24,13 +25,14 @@ const FinanceTracker = () => {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
         <FinancialSummary />
+        
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Budgets Section */}
+          <ExpenseChart /> {/* Added ExpenseChart component */}
+          
           <BudgetManager />
-
-          {/* Transactions Section */}
-          <TransactionManager />
         </div>
+
+        <TransactionManager />
       </main>
       <MadeWithDyad />
     </div>
