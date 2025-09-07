@@ -20,7 +20,8 @@ import HabitListSection from '@/components/HabitListSection';
 import WeeklyOverview from '@/components/WeeklyOverview';
 import MotivationalQuotes from '@/components/MotivationalQuotes';
 import QuickActions from '@/components/QuickActions';
-import HabitSharing from '@/components/HabitSharing'; // Added import
+import HabitSharing from '@/components/HabitSharing';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
   const { user } = useAuth();
@@ -63,11 +64,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {showConfetti && <Confetti recycle={false} onConfettiComplete={() => {}} />}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">My Dashboard</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">My Dashboard</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 hidden sm:block">{user?.email}</span>
+            <span className="text-sm text-gray-600 hidden sm:block dark:text-gray-300">{user?.email}</span>
+            <ThemeToggle />
             <Button variant="outline" size="sm" onClick={handleExportHabits} disabled={habits.length === 0}>
               <Download className="mr-2 h-4 w-4" />
               Export Habits
