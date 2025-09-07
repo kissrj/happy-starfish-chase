@@ -6,8 +6,7 @@ import { ArrowLeft, BarChart3 } from 'lucide-react';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHabitInsights } from '@/hooks/useHabitInsights';
-import HabitInsightsSummary from '@/components/HabitInsightsSummary';
-import HabitInsightsCard from '@/components/HabitInsightsCard';
+import InsightsContent from '@/components/InsightsContent';
 
 const HabitInsights = () => {
   const { insights, loading } = useHabitInsights();
@@ -65,34 +64,7 @@ const HabitInsights = () => {
       </header>
 
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Performance Analysis</h2>
-          <p className="text-gray-600">
-            Detailed insights into your habits, trends, and personalized recommendations.
-          </p>
-        </div>
-
-        <HabitInsightsSummary insights={insights} />
-
-        <div className="space-y-6">
-          <h3 className="text-xl font-semibold">Individual Analysis</h3>
-          {insights.length === 0 ? (
-            <div className="text-center py-16 border-2 border-dashed rounded-lg bg-gray-50">
-              <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No insights available</h3>
-              <p className="text-gray-600 mb-4">
-                Add some habits and start tracking to see detailed insights.
-              </p>
-              <Button asChild>
-                <Link to="/">Add Habits</Link>
-              </Button>
-            </div>
-          ) : (
-            insights.map((insight) => (
-              <HabitInsightsCard key={insight.id} insight={insight} />
-            ))
-          )}
-        </div>
+        <InsightsContent insights={insights} />
       </main>
       <MadeWithDyad />
     </div>
