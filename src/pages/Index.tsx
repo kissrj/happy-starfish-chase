@@ -17,6 +17,7 @@ import { useStreak } from '@/hooks/useStreak';
 import { useAchievements } from '@/hooks/useAchievements';
 import DashboardSummarySection from '@/components/DashboardSummarySection';
 import HabitListSection from '@/components/HabitListSection';
+import WeeklyOverview from '@/components/WeeklyOverview'; // Added import
 
 const Index = () => {
   const { user } = useAuth();
@@ -83,6 +84,8 @@ const Index = () => {
           achievements={achievements}
           userAchievements={userAchievements}
         />
+
+        <WeeklyOverview habits={habits} /> {/* Added WeeklyOverview component */}
 
         <HabitListSection
           habits={habits}
