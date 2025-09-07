@@ -19,7 +19,7 @@ import DashboardSummarySection from '@/components/DashboardSummarySection';
 import HabitListSection from '@/components/HabitListSection';
 import WeeklyOverview from '@/components/WeeklyOverview';
 import MotivationalQuotes from '@/components/MotivationalQuotes';
-import QuickActions from '@/components/QuickActions'; // Added import
+import QuickActions from '@/components/QuickActions';
 
 const Index = () => {
   const { user } = useAuth();
@@ -52,6 +52,11 @@ const Index = () => {
             <Button variant="outline" size="sm" onClick={handleExportHabits} disabled={habits.length === 0}>
               <Download className="mr-2 h-4 w-4" />
               Export Habits
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/templates">
+                🎯 Templates
+              </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/insights">
@@ -89,7 +94,7 @@ const Index = () => {
           userAchievements={userAchievements}
         />
 
-        <QuickActions habits={habits} onToggleCompletion={handleToggleCompletion} /> {/* Added QuickActions component */}
+        <QuickActions habits={habits} onToggleCompletion={handleToggleCompletion} />
 
         <WeeklyOverview habits={habits} />
 

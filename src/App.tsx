@@ -16,6 +16,7 @@ import Calendar from "./pages/Calendar";
 import HabitInsights from "./pages/HabitInsights";
 import Notifications from "./pages/Notifications";
 import AchievementsPage from './pages/Achievements';
+import HabitTemplates from './pages/HabitTemplates'; // Added import
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/insights" element={<HabitInsights />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/templates" element={<HabitTemplates />} /> {/* Added route */}
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
